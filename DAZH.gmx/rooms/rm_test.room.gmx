@@ -3,8 +3,8 @@
   <caption></caption>
   <width>512</width>
   <height>384</height>
-  <vsnap>8</vsnap>
-  <hsnap>8</hsnap>
+  <vsnap>4</vsnap>
+  <hsnap>4</hsnap>
   <isometric>0</isometric>
   <speed>60</speed>
   <persistent>0</persistent>
@@ -51,18 +51,35 @@
     <view visible="0" objName="&lt;undefined&gt;" xview="0" yview="0" wview="1024" hview="768" xport="0" yport="0" wport="1024" hport="768" hborder="32" vborder="32" hspeed="-1" vspeed="-1"/>
   </views>
   <instances>
-    <instance objName="obj_player_test" x="224" y="256" name="inst_7DE291AB" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_player_test" x="128" y="88" name="inst_7DE291AB" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_env" x="-16" y="-16" name="inst_77EAA3DF" locked="0" code="GRAVITY = 0.2;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_block_solid_par" x="112" y="248" name="inst_89FD99D7" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_block_solid_par" x="328" y="256" name="inst_29D70F3C" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_block_solid_par" x="216" y="296" name="inst_5B894362" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_block_solid_par" x="232" y="296" name="inst_0B92407D" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_block_solid_par" x="248" y="296" name="inst_E163D7E1" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_block_solid_par" x="264" y="296" name="inst_BA0804EC" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_block_solid_par" x="200" y="296" name="inst_47966303" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_block_solid_par" x="280" y="296" name="inst_4DD41525" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_block_solid_par" x="160" y="280" name="inst_70B4BCF2" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_block_solid_par" x="144" y="280" name="inst_37A23B77" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="&lt;undefined&gt;" x="0" y="0" name="inst_476794CF" locked="0" code="" scaleX="0" scaleY="0" colour="0" rotation="0"/>
+    <instance objName="obj_block_solid_2x1" x="200" y="204" name="inst_4EDB7D5D" locked="0" code="FRICTION = 0.2;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_block_solid_2x1" x="332" y="204" name="inst_08F7C108" locked="0" code="FRICTION = 0.5;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_block_solid_2x1" x="104" y="204" name="inst_E578DC64" locked="0" code="FRICTION = 0.2;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_block_solid_2x1" x="168" y="204" name="inst_E978103E" locked="0" code="FRICTION = 0.2;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_block_solid_2x1" x="128" y="280" name="inst_B8DF6050" locked="0" code="FRICTION = 0.05;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_block_solid_2x1" x="136" y="204" name="inst_6C5E4E84" locked="0" code="FRICTION = 0.2;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_block_solid_2x1" x="396" y="204" name="inst_C4DDA6ED" locked="0" code="FRICTION = 0.5;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_block_solid_2x1" x="300" y="204" name="inst_49E216AF" locked="0" code="FRICTION = 0.5;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_block_solid_2x1" x="428" y="204" name="inst_5B5A15AA" locked="0" code="FRICTION = 0.5;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_block_solid_2x1" x="364" y="204" name="inst_F022306A" locked="0" code="FRICTION = 0.5;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_block_solid_2x1" x="72" y="204" name="inst_C3B5499F" locked="0" code="FRICTION = 0.2;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_block_solid_2x1" x="160" y="280" name="inst_0C31B774" locked="0" code="FRICTION = 0.05;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_block_solid_2x1" x="192" y="280" name="inst_5E461D66" locked="0" code="FRICTION = 0.05;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_block_solid_2x1" x="256" y="280" name="inst_10F1AC1B" locked="0" code="FRICTION = 0.05;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_block_solid_2x1" x="224" y="280" name="inst_8FA9D985" locked="0" code="FRICTION = 0.05;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_block_solid_2x1" x="220" y="344" name="inst_2421299C" locked="0" code="FRICTION = -0.1;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_block_solid_2x1" x="96" y="280" name="inst_F2E2B053" locked="0" code="FRICTION = 0.05;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_block_solid_2x1" x="288" y="280" name="inst_7C5C85A9" locked="0" code="FRICTION = 0.05;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_block_solid_2x1" x="252" y="344" name="inst_DA1FD900" locked="0" code="FRICTION = -0.1;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_block_solid_2x1" x="284" y="344" name="inst_75484984" locked="0" code="FRICTION = -0.1;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_block_solid_2x1" x="316" y="344" name="inst_7806793B" locked="0" code="FRICTION = -0.1;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_block_solid_2x1" x="348" y="344" name="inst_331BDAB8" locked="0" code="FRICTION = -0.1;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_block_solid_2x1" x="380" y="344" name="inst_5FA0FF0B" locked="0" code="FRICTION = -0.1;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_block_solid_2x1" x="412" y="344" name="inst_83C8532E" locked="0" code="FRICTION = -0.1;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_block_solid_2x1" x="444" y="344" name="inst_64F0F427" locked="0" code="FRICTION = -0.1;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_block_solid_2x1" x="188" y="344" name="inst_19FF4DE0" locked="0" code="FRICTION = -0.1;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
   </instances>
   <tiles/>
   <PhysicsWorld>0</PhysicsWorld>

@@ -59,7 +59,65 @@ xvel = 0;           /* Horizontal velocity */
 yvel = 0;           /* Vertical velocity */
 extra_jumps[0] = 1; /* [max jumps, jumps remaining] */ 
 extra_jumps[1] = extra_jumps[0];
-airborne = false;   /* Is the object off the ground? */
+airborn = true;    /* Is the object off the ground? */
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>605</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>Particles</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/* Particles */
+player_part_sys = part_system_create();
+
+/* Jump particles */
+player_part_jump = part_type_create();
+part_type_shape(player_part_jump, pt_shape_star);
+part_type_size(player_part_jump, 0.1, 0.1, 0, 0);
+part_type_speed(player_part_jump, 1, 1, 0, 0);
+part_type_direction(player_part_jump, 200, 330, 0, 0);
+part_type_life(player_part_jump, 10, 20);
+
+/* Land particles */
+player_part_land = part_type_create();
+part_type_shape(player_part_land, pt_shape_star);
+part_type_size(player_part_land, 0.1, 0.1, 0, 0);
+part_type_speed(player_part_land, 0.8, 0.8, 0, 0);
+part_type_direction(player_part_land, 0, 180, 0, 0);
+part_type_life(player_part_land, 15, 25);
 </string>
           </argument>
         </arguments>
@@ -82,7 +140,7 @@ airborne = false;   /* Is the object off the ground? */
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>env</string>
+            <string>Env &amp; Instances</string>
           </argument>
         </arguments>
       </action>
@@ -104,6 +162,10 @@ airborne = false;   /* Is the object off the ground? */
             <kind>1</kind>
             <string>/* env */
 ENV = instance_nearest(x, y, obj_env);
+
+/* Instances */
+if (airborn) BLOCK = noone;
+else BLOCK = instance_nearest(x, y + 1, obj_block_solid_par);
 </string>
           </argument>
         </arguments>
@@ -193,22 +255,41 @@ in_negative = keyboard_check(27);
           <argument>
             <kind>1</kind>
             <string>/* Horz acceleration */
-if (!in_left &amp;&amp; !in_right &amp;&amp; xvel != 0) /* Normal friction */
+if (airborn)
 {
-    if (xvel*sign(xvel) &lt; 0.8*XACCEL) xvel = 0;
-    else xvel -= (sign(xvel)*(0.8*XACCEL)); 
+    if (in_left &amp;&amp; (-1*xvel) &lt; TERMXVEL) xvel -= (0.4*XACCEL); /* Left */
+    if (in_right &amp;&amp; xvel &lt; TERMXVEL)     xvel += (0.4*XACCEL); /* Right */
 }
-if (in_left &amp;&amp; (-1*xvel) &lt; TERMXVEL) xvel -= XACCEL; /* Left */
-if (in_right &amp;&amp; xvel &lt; TERMXVEL)     xvel += XACCEL; /* Right */
+else
+{
+    if (in_left &amp;&amp; (-1*xvel) &lt; TERMXVEL) xvel -= XACCEL;
+    if (in_right &amp;&amp; xvel &lt; TERMXVEL)     xvel += XACCEL;
+}
+
+/* Horz friction */
+if (BLOCK = noone) /* Air friction */
+{
+    if (xvel*sign(xvel) &lt; 0.1*XACCEL) xvel = 0; 
+    else xvel -= (sign(xvel)*(0.1*XACCEL));
+}
+else               /* Block friction */ 
+{
+    if (xvel*sign(xvel) &lt; BLOCK.FRICTION) xvel = 0;
+    else xvel -= (sign(xvel)*(BLOCK.FRICTION)); 
+}
 
 /* Vert acceleration */
-if (airborne &amp;&amp; yvel &lt; TERMYVEL) yvel += WEIGHT*ENV.GRAVITY; /* Gravity */
+if (airborn &amp;&amp; yvel &lt; TERMYVEL) yvel += WEIGHT*ENV.GRAVITY; /* Gravity */
 if (in_jump) /* Jumping */
 {
-    if (!airborne || extra_jumps[1] &gt; 0)
-        yvel = -1*JUMPSTR;
-    if (airborne) 
+    if (airborn &amp;&amp; extra_jumps[1] &gt; 0) 
+    {
+        yvel = -0.8*JUMPSTR;
         extra_jumps[1]--;
+        part_particles_create(player_part_sys, x, y, player_part_jump, 1);
+    }
+    else if (!airborn)
+        yvel = -1*JUMPSTR;         
 }
 </string>
           </argument>
@@ -253,15 +334,23 @@ if (in_jump) /* Jumping */
             <string>/* Movement */
 xprev = x; /* Store last valid positions */
 yprev = y;
+
 if (place_meeting(x + xvel, y, obj_block_solid_par)) /* Horz collision */
 {
     while (!place_meeting(x + sign(xvel), y, obj_block_solid_par))
         x += sign(xvel); /* Simulate collision */
     xvel = 0;            /* Halt velocity */      
 }
-if (y &gt; room_height) room_restart();
-if (place_meeting(x, y + 1, obj_block_solid_par)) airborne = false;
-else airborne = true;
+if (y &gt; room_height) room_restart(); /* Restart when fall out of room */
+if (place_meeting(x, y + 1, obj_block_solid_par) &amp;&amp; airborn)        /* Land */
+{
+    airborn = false; 
+    part_particles_create(player_part_sys, x, y + sprite_height/2, player_part_land, 2);
+}
+else if (!place_meeting(x, y + 1, obj_block_solid_par) &amp;&amp; !airborn) /* Liftoff */
+{
+    airborn = true;
+}
 if (place_meeting(x, y + yvel, obj_block_solid_par)) /* Vert collision */
 {
     while (!place_meeting(x, y + sign(yvel), obj_block_solid_par))
@@ -270,8 +359,15 @@ if (place_meeting(x, y + yvel, obj_block_solid_par)) /* Vert collision */
         extra_jumps[1] = extra_jumps[0];
     yvel = 0;      
 }
-x += xvel;
+
+x += xvel; /* Translate */
 y += yvel;
+
+if (place_meeting(x, y, obj_block_solid_par)) /* Fix if stuck in a wall */
+{
+    x = xprev; xvel = 0;
+    y = yprev; yvel = 0;
+}
 </string>
           </argument>
         </arguments>

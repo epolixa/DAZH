@@ -48,7 +48,7 @@
             <string>/* Constants for environment objects are defined in creation code */
 
 /* Variables */
- 
+freezer = 0;
 </string>
           </argument>
         </arguments>
@@ -161,7 +161,7 @@ in_negative = keyboard_check(27);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>Toggle debug_enabled</string>
+            <string>Control</string>
           </argument>
         </arguments>
       </action>
@@ -181,10 +181,8 @@ in_negative = keyboard_check(27);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (in_debug)
-{
-    debug_enabled = !debug_enabled;
-}
+            <string>if (in_debug) debug_enabled = !debug_enabled;
+if (in_negative) game_end();
 </string>
           </argument>
         </arguments>
@@ -274,20 +272,41 @@ debug_enabled = false;
             <kind>1</kind>
             <string>if (debug_enabled)
 {
+    line = 0; lineheight = 9;
+
     /* BG */
     draw_set_colour(c_gray); draw_set_alpha(0.5);
     draw_rectangle(0, 0, room_width, room_height/2, false);
     draw_set_font(font_debug); draw_set_colour(c_lime); draw_set_alpha(1);
     
     /* Room conditions */
-    draw_text(0, 0, "FPS: " + string(fps));
-    draw_text(0, 9, "ROOM: " + room_get_name(room));
-    draw_text(0, 18, "GRAVITY: " + string(GRAVITY));
+    draw_text(0, (line*lineheight), "ROOM"); line++;
+    draw_text(8, (line*lineheight), "NAME: " + room_get_name(room)); line++;
+    if      (freezer == 0) draw_text(8, (line*lineheight), "FPS: " + string(fps));
+    else if (freezer == 1) draw_text(8, (line*lineheight), "FPS: " + string(fps) + ".");
+    else if (freezer == 2) draw_text(8, (line*lineheight), "FPS: " + string(fps) + ".."); 
+    else if (freezer == 3) draw_text(8, (line*lineheight), "FPS: " + string(fps) + "..."); line++;
+    draw_text(8, (line*lineheight), "GRAVITY: " + string(GRAVITY)); line++;
+    draw_text(8, (line*lineheight), "INSTANCES: " + string(instance_count)); line+=2;
     
     /* Player */
-    draw_text(0, 36, "PLAYER");
-    draw_text(9, 45, "X: " + string(PLAYER.x)); draw_text(100, 45, "XVEL: " + string(PLAYER.xvel));    
-    draw_text(9, 54, "Y: " + string(PLAYER.y)); draw_text(100, 54, "YVEL: " + string(PLAYER.yvel));  
+    draw_text(0, (line*lineheight), "PLAYER"); line++;
+    draw_text(8, (line*lineheight), "X: " + string(PLAYER.x)); draw_text(100, (line*lineheight), "Y: " + string(PLAYER.y)); line++;   
+    draw_text(8, (line*lineheight), "XVEL: " + string(PLAYER.xvel)); draw_text(100, (line*lineheight), "YVEL: " + string(PLAYER.yvel)); line++;
+    draw_text(8, (line*lineheight), "AIRBORN: " + string(PLAYER.airborn)); line+=2;
+
+    /* Block */
+    draw_text(0, (line*lineheight), "BLOCK"); line++;
+    if (PLAYER.airborn) draw_text(8, (line*lineheight), "N/A");
+    else 
+    {
+        draw_text(8, (line*lineheight), "TYPE: " + object_get_name(PLAYER.BLOCK.object_index) + " (" + string(PLAYER.BLOCK.id) + ")"); line++;
+        draw_text(8, (line*lineheight), "X: " + string(PLAYER.BLOCK.x)); draw_text(100, (line*lineheight), "Y: " + string(PLAYER.BLOCK.y)); line++;
+        draw_text(8, (line*lineheight), "FRICTION: " + string(PLAYER.BLOCK.FRICTION));
+    } line+=2;
+    
+    if (freezer &gt;= 3) freezer = 0;
+    else              freezer++;
 }
 </string>
           </argument>
