@@ -7,13 +7,22 @@
   <sounds name="sound"/>
   <sprites name="sprites">
     <sprite>sprites\spr_player_test</sprite>
-    <sprite>sprites\spr_tile_test</sprite>
+    <sprite>sprites\spr_block_test</sprite>
+    <sprites name="Character"/>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
+  <fonts name="fonts">
+    <font>fonts\font</font>
+  </fonts>
   <objects name="objects">
-    <object>objects\obj_tile_test</object>
-    <object>objects\obj_player</object>
+    <objects name="Block">
+      <object>objects\obj_block_par</object>
+    </objects>
+    <objects name="Character">
+      <object>objects\obj_player_test</object>
+    </objects>
+    <object>objects\obj_env</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\rm_test</room>
