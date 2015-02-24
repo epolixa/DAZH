@@ -93,7 +93,13 @@ debug_enabled = false; /* Is debug mode enabled? */
           <argument>
             <kind>1</kind>
             <string>/* Get user input */
-in_debug = keyboard_check(114);
+in_debug = keyboard_check_pressed(vk_f3);
+in_up = keyboard_check(ord('W'));
+in_down = keyboard_check(ord('S'));
+in_left = keyboard_check(ord('A'));
+in_right = keyboard_check(ord('D'));
+in_positive = keyboard_check(32);
+in_negative = keyboard_check(27);
 </string>
           </argument>
         </arguments>
@@ -114,7 +120,7 @@ in_debug = keyboard_check(114);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>Render debug</string>
+            <string>Draw debug info</string>
           </argument>
         </arguments>
       </action>
@@ -134,7 +140,40 @@ in_debug = keyboard_check(114);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>draw_text(0, 0, "FPS: " + fps);
+            <string>if (in_debug)
+{
+    debug_enabled = !debug_enabled;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if (debug_enabled)
+{
+    draw_set_colour(c_gray); draw_set_alpha(0.5);
+    draw_rectangle(0, 0, room_width, room_height/2, false);
+    draw_set_font(font_debug); draw_set_colour(c_lime); draw_set_alpha(1);
+    draw_text(0, 0, "FPS: " + string(fps));
+    draw_text(0, 9, "GRAVITY: " + string(GRAVITY));   
+}
 </string>
           </argument>
         </arguments>

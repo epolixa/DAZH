@@ -8,16 +8,15 @@
   <sprites name="sprites">
     <sprite>sprites\spr_player_test</sprite>
     <sprite>sprites\spr_block_test</sprite>
-    <sprites name="Character"/>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
   <fonts name="fonts">
-    <font>fonts\font</font>
+    <font>fonts\font_debug</font>
   </fonts>
   <objects name="objects">
     <objects name="Block">
-      <object>objects\obj_block_par</object>
+      <object>objects\obj_block_solid_par</object>
     </objects>
     <objects name="Character">
       <object>objects\obj_player_test</object>

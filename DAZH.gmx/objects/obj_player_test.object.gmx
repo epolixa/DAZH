@@ -46,22 +46,68 @@
           <argument>
             <kind>1</kind>
             <string>/* Constants */
-WEIGHT = 0;   /* Effect of gravity */
-XACCEL = 0;   /* Horizontal acceleration */
-TERMXVEL = 0; /* Terminal horizontal velocity */
-TERMYVEL = 0; /* Terminal verical velocity, should be the same for most objects */
+WEIGHT = 1;   /* Effect of gravity */
+XACCEL = 0.6; /* Horizontal acceleration */
+JUMPSTR = 4;  /* Jump strength */
+TERMXVEL = 4; /* Terminal horizontal velocity */
+TERMYVEL = 8; /* Terminal verical velocity, should be the same for most objects */
 
 /* Variables */
-xpos = x; /* Horizontal position */
-ypos = y; /* Vertical position */
-xvel = 0; /* Horizontal velocity */
-yvel = 0; /* Vertical velocity */
+xprev = x;          /* Last valid horizontal position */
+yprev = y;          /* Last valid vertical position */
+xvel = 0;           /* Horizontal velocity */
+yvel = 0;           /* Vertical velocity */
+extra_jumps[0] = 1; /* [max jumps, jumps remaining] */ 
+extra_jumps[1] = extra_jumps[0];
+airborne = false;   /* Is the object off the ground? */
 </string>
           </argument>
         </arguments>
       </action>
     </event>
     <event eventtype="3" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>605</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>env</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/* env */
+ENV = instance_nearest(x, y, obj_env);
+</string>
+          </argument>
+        </arguments>
+      </action>
       <action>
         <libid>1</libid>
         <id>605</id>
@@ -99,12 +145,13 @@ yvel = 0; /* Vertical velocity */
           <argument>
             <kind>1</kind>
             <string>/* Get user input */
-in_up = keyboard_check(18);
-in_down = keyboard_check(32);
-in_left = keyboard_check(31);
-in_right = keyboard_check(33);
-in_positive = keyboard_check(61);
-in_negative = keyboard_check(110);
+in_up = keyboard_check(ord('W'));
+in_down = keyboard_check(ord('S'));
+in_left = keyboard_check(ord('A'));
+in_right = keyboard_check(ord('D'));
+in_jump = keyboard_check_pressed(32);
+//in_positive = keyboard_check(32);
+in_negative = keyboard_check(27);
 </string>
           </argument>
         </arguments>
@@ -145,9 +192,24 @@ in_negative = keyboard_check(110);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>/* Acceleration */
-if (in_left)  if ((-1*xvel) &lt; TERMXVEL) xvel -= XACCEL; /* Left */
-if (in_right) if (xvel &lt; TERMXVEL)      xvel += XACCEL; /* Right */
+            <string>/* Horz acceleration */
+if (!in_left &amp;&amp; !in_right &amp;&amp; xvel != 0) /* Normal friction */
+{
+    if (xvel*sign(xvel) &lt; 0.8*XACCEL) xvel = 0;
+    else xvel -= (sign(xvel)*(0.8*XACCEL)); 
+}
+if (in_left &amp;&amp; (-1*xvel) &lt; TERMXVEL) xvel -= XACCEL; /* Left */
+if (in_right &amp;&amp; xvel &lt; TERMXVEL)     xvel += XACCEL; /* Right */
+
+/* Vert acceleration */
+if (airborne &amp;&amp; yvel &lt; TERMYVEL) yvel += WEIGHT*ENV.GRAVITY; /* Gravity */
+if (in_jump) /* Jumping */
+{
+    if (!airborne || extra_jumps[1] &gt; 0)
+        yvel = -1*JUMPSTR;
+    if (airborne) 
+        extra_jumps[1]--;
+}
 </string>
           </argument>
         </arguments>
@@ -188,50 +250,29 @@ if (in_right) if (xvel &lt; TERMXVEL)      xvel += XACCEL; /* Right */
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>/* Translation */
-xpos += xvel;
-x = xpos;
+            <string>/* Movement */
+xprev = x; /* Store last valid positions */
+yprev = y;
+if (place_meeting(x + xvel, y, obj_block_solid_par)) /* Horz collision */
+{
+    while (!place_meeting(x + sign(xvel), y, obj_block_solid_par))
+        x += sign(xvel); /* Simulate collision */
+    xvel = 0;            /* Halt velocity */      
+}
+if (y &gt; room_height) room_restart();
+if (place_meeting(x, y + 1, obj_block_solid_par)) airborne = false;
+else airborne = true;
+if (place_meeting(x, y + yvel, obj_block_solid_par)) /* Vert collision */
+{
+    while (!place_meeting(x, y + sign(yvel), obj_block_solid_par))
+        y += sign(yvel);
+    if (sign(yvel) == 1)
+        extra_jumps[1] = extra_jumps[0];
+    yvel = 0;      
+}
+x += xvel;
+y += yvel;
 </string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>605</id>
-        <kind>0</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>0</useapplyto>
-        <exetype>0</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>Detect collision</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string></string>
           </argument>
         </arguments>
       </action>
