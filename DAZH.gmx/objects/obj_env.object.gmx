@@ -200,7 +200,49 @@ if (debug_entering_text)
         /* ### COMMAND EXECUTION ### */
         if (command == "exit") game_end();
         else if (command == "restart") game_restart();   
-        else if (command == "spawn player") instance_create(PLAYER.x + 64, PLAYER.y - 32, obj_player_test);     
+        else if (command == "toggle blocks")
+        {
+            if (instance_exists(obj_block_solid_par))
+                with (obj_block_solid_par)
+                    visible = !visible; 
+            debug_output[0] = "Block visibility toggled."; debug_output[1] = 600;
+        }
+        else if (string_lower(string_copy(command, 0, 7)) == "gravity")
+        {
+            if (string_delete(command, 1, 8) == "") {debug_output[0] = "No value specified."; debug_output[1] = 600;}
+            else
+            {
+                GRAVITY = real(string_delete(command, 1, 8)); 
+                {debug_output[0] = "Gravity set to " + string(GRAVITY) + "."; debug_output[1] = 600;}
+            }            
+        }
+        else if (string_lower(string_copy(command, 0, 8)) == "friction")
+        {
+            if (string_delete(command, 1, 9) == "") {debug_output[0] = "No value specified."; debug_output[1] = 600;}
+            else if (PLAYER.BLOCK == noone) {debug_output[0] = "No target surface."; debug_output[1] = 600;}
+            else
+            {
+                PLAYER.BLOCK.FRICTION = real(string_delete(command, 1, 9)); 
+                {debug_output[0] = "Friction of " + object_get_name(PLAYER.BLOCK.object_index) + " (" + string(PLAYER.BLOCK.id) + ") set to " + string(PLAYER.BLOCK.FRICTION) + "."; debug_output[1] = 600;}
+            }            
+        }
+        else if (string_lower(string_copy(command, 0, 6)) == "create") 
+        {
+            name = string_delete(command, 1, 7);
+            if (name == "") {debug_output[0] = "No object specified."; debug_output[1] = 600;}
+            else if (string_copy(name, 0, 5) == "block") {debug_output[0] = "Could not create 'obj_" + name + "', requires creation code."; debug_output[1] = 600;}
+            else
+            {
+                obj = asset_get_index("obj_" + name);   
+                if (!object_exists(obj))
+                {debug_output[0] = "Could not create 'obj_" + name + "', does not exist."; debug_output[1] = 600;}
+                else
+                {
+                    inst = instance_create(PLAYER.x + 64, PLAYER.y - 32, obj);
+                    debug_output[0] = "Created " + object_get_name(inst.object_index) + " (" + string(inst.id) + ") at " + string(inst.x) + ", " + string(inst.y) + "."; debug_output[1] = 600;
+                }
+            }
+        }    
         else {debug_output[0] = "Command '" + command + "' not recognized."; debug_output[1] = 600;}
         /* ### /COMMAND EXECUTION ### */
         
@@ -267,8 +309,8 @@ debug_entering_text = false;
 globalvar command_list; /* List of previously-entered commands */
 command_list = ds_list_create();
 globalvar debug_output; /* Command output */
-debug_output[0] = "";
-debug_output[2] = 0;
+debug_output[0] = "Press ENTER to use commands.";
+debug_output[1] = 600;
 </string>
           </argument>
         </arguments>
