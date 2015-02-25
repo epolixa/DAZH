@@ -12,9 +12,20 @@
       <sprite>sprites\spr_block_solid_2x2</sprite>
       <sprite>sprites\spr_block_solid_1x2</sprite>
       <sprite>sprites\spr_block_solid_2x1</sprite>
+      <sprite>sprites\spr_block_solid_1x3</sprite>
+      <sprite>sprites\spr_block_solid_3x1</sprite>
+      <sprite>sprites\spr_block_solid_3x3</sprite>
     </sprites>
     <sprites name="Character">
       <sprite>sprites\spr_player_test</sprite>
+    </sprites>
+    <sprites name="Particle">
+      <sprite>sprites\spr_particle_puff</sprite>
+    </sprites>
+    <sprites name="Item">
+      <sprites name="Chip">
+        <sprite>sprites\spr_chip_red</sprite>
+      </sprites>
     </sprites>
   </sprites>
   <backgrounds name="background"/>
@@ -30,6 +41,9 @@
       <object>objects\obj_block_solid_2x1</object>
       <object>objects\obj_block_solid_1x2</object>
       <object>objects\obj_block_solid__5x_5</object>
+      <object>objects\obj_block_solid_3x1</object>
+      <object>objects\obj_block_solid_1x3</object>
+      <object>objects\obj_block_solid_3x3</object>
     </objects>
     <objects name="Character">
       <object>objects\obj_player_test</object>

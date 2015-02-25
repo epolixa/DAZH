@@ -134,13 +134,8 @@ PLAYER = instance_nearest(x, y, obj_player_test);
           <argument>
             <kind>1</kind>
             <string>/* Get user input */
-in_debug = keyboard_check_pressed(vk_f3);
-in_up = keyboard_check(ord('W'));
-in_down = keyboard_check(ord('S'));
-in_left = keyboard_check(ord('A'));
-in_right = keyboard_check(ord('D'));
-in_positive = keyboard_check(32);
-in_negative = keyboard_check(27);
+in_debug = keyboard_check_pressed(vk_f3) &amp;&amp; !debug_entering_text;
+in_prompt = keyboard_check_pressed(vk_enter);
 </string>
           </argument>
         </arguments>
@@ -181,8 +176,25 @@ in_negative = keyboard_check(27);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (in_debug) debug_enabled = !debug_enabled;
-if (in_negative) game_end();
+            <string>/* Toggle debug mode */
+if (in_debug) debug_enabled = !debug_enabled;
+
+/* Command Prompt */
+if (debug_entering_text)
+{   
+    if (in_prompt) 
+    {
+        command = keyboard_string; /* Store command */
+        
+        /* Execute command */
+        if (command == "exit") game_end();
+        if (command == "restart") game_restart();        
+        
+        debug_entering_text = false; /* Close prompt */
+    }
+}
+else if (debug_enabled &amp;&amp; in_prompt)
+{keyboard_string = ""; debug_entering_text = true;}
 </string>
           </argument>
         </arguments>
@@ -228,12 +240,14 @@ if (in_negative) game_end();
             <string>/* Global variables */
 globalvar debug_enabled; /* Is debug mode enabled? */
 debug_enabled = false;
+globalvar debug_entering_text; /* Is the user entering text in debug mode? */
+debug_entering_text = false;
 </string>
           </argument>
         </arguments>
       </action>
     </event>
-    <event eventtype="8" enumb="0">
+    <event eventtype="8" enumb="73">
       <action>
         <libid>1</libid>
         <id>605</id>
@@ -272,41 +286,91 @@ debug_enabled = false;
             <kind>1</kind>
             <string>if (debug_enabled)
 {
-    line = 0; lineheight = 9;
-
     /* BG */
-    draw_set_colour(c_gray); draw_set_alpha(0.5);
-    draw_rectangle(0, 0, room_width, room_height/2, false);
+    draw_set_colour(c_olive); draw_set_alpha(0.5);
+    draw_rectangle(view_xview[0], view_yview[0], view_xview[0]+view_wview[0], view_yview[0]+view_hview[0], false);
+
+    line = 0; lineheight = 7;
     draw_set_font(font_debug); draw_set_colour(c_lime); draw_set_alpha(1);
     
     /* Room conditions */
-    draw_text(0, (line*lineheight), "ROOM"); line++;
-    draw_text(8, (line*lineheight), "NAME: " + room_get_name(room)); line++;
-    if      (freezer == 0) draw_text(8, (line*lineheight), "FPS: " + string(fps));
-    else if (freezer == 1) draw_text(8, (line*lineheight), "FPS: " + string(fps) + ".");
-    else if (freezer == 2) draw_text(8, (line*lineheight), "FPS: " + string(fps) + ".."); 
-    else if (freezer == 3) draw_text(8, (line*lineheight), "FPS: " + string(fps) + "..."); line++;
-    draw_text(8, (line*lineheight), "GRAVITY: " + string(GRAVITY)); line++;
-    draw_text(8, (line*lineheight), "INSTANCES: " + string(instance_count)); line+=2;
+    draw_text(view_xview[0], view_yview[0] + (line*lineheight), "ROOM"); line++;
+    draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "NAME: " + room_get_name(room)); line++;
+    if      (freezer == 0) draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "FPS: " + string(fps));
+    else if (freezer == 1) draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "FPS: " + string(fps) + ".");
+    else if (freezer == 2) draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "FPS: " + string(fps) + ".."); 
+    else if (freezer == 3) draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "FPS: " + string(fps) + "..."); line++;
+    draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "GRAVITY: " + string(GRAVITY)); line++;
+    draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "INSTANCES: " + string(instance_count)); line+=2;
     
     /* Player */
-    draw_text(0, (line*lineheight), "PLAYER"); line++;
-    draw_text(8, (line*lineheight), "X: " + string(PLAYER.x)); draw_text(100, (line*lineheight), "Y: " + string(PLAYER.y)); line++;   
-    draw_text(8, (line*lineheight), "XVEL: " + string(PLAYER.xvel)); draw_text(100, (line*lineheight), "YVEL: " + string(PLAYER.yvel)); line++;
-    draw_text(8, (line*lineheight), "AIRBORN: " + string(PLAYER.airborn)); line+=2;
+    draw_text(view_xview[0], view_yview[0] + (line*lineheight), "PLAYER"); line++;
+    draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "X: " + string(PLAYER.x)); draw_text(view_xview[0] + 100, view_yview[0] + (line*lineheight), "Y: " + string(PLAYER.y)); line++;   
+    draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "XVEL: " + string(PLAYER.xvel)); draw_text(view_xview[0] + 100, view_yview[0] + (line*lineheight), "YVEL: " + string(PLAYER.yvel)); line++;
+    draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "AIRBORN: " + string(PLAYER.airborn)); line+=2;
 
     /* Block */
-    draw_text(0, (line*lineheight), "BLOCK"); line++;
-    if (PLAYER.airborn) draw_text(8, (line*lineheight), "N/A");
+    draw_text(view_xview[0], view_yview[0] + (line*lineheight), "BLOCK"); line++;
+    if (PLAYER.BLOCK == noone) draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "N/A");
     else 
     {
-        draw_text(8, (line*lineheight), "TYPE: " + object_get_name(PLAYER.BLOCK.object_index) + " (" + string(PLAYER.BLOCK.id) + ")"); line++;
-        draw_text(8, (line*lineheight), "X: " + string(PLAYER.BLOCK.x)); draw_text(100, (line*lineheight), "Y: " + string(PLAYER.BLOCK.y)); line++;
-        draw_text(8, (line*lineheight), "FRICTION: " + string(PLAYER.BLOCK.FRICTION));
+        draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "TYPE: " + object_get_name(PLAYER.BLOCK.object_index) + " (" + string(PLAYER.BLOCK.id) + ")"); line++;
+        draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "X: " + string(PLAYER.BLOCK.x)); draw_text(view_xview[0] + 100, view_yview[0] + (line*lineheight), "Y: " + string(PLAYER.BLOCK.y)); line++;
+        draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "FRICTION: " + string(PLAYER.BLOCK.FRICTION));
     } line+=2;
     
     if (freezer &gt;= 3) freezer = 0;
     else              freezer++;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>605</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>Draw prompt</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if (debug_entering_text)
+{
+    /* BG */
+    draw_set_colour(c_olive); draw_set_alpha(0.5);
+    draw_rectangle(view_xview[0], view_yview[0]+view_hview[0]-7, view_xview[0]+view_wview[0], view_yview[0]+view_hview[0], false);
+
+    /* Prompt */
+    draw_set_font(font_debug); draw_set_colour(c_lime); draw_set_alpha(1);
+    draw_text(view_xview[0], view_yview[0]+view_hview[0]-7, "&gt;"); draw_text(view_xview[0]+7, view_yview[0]+view_hview[0]-7, keyboard_string);
 }
 </string>
           </argument>
