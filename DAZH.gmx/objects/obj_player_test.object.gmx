@@ -48,7 +48,7 @@
             <string>/* Constants */
 WEIGHT = 1;   /* Effect of gravity */
 XACCEL = 0.6; /* Horizontal acceleration */
-JUMPSTR = 4;  /* Jump strength */
+JUMPSTR = 6;  /* Jump strength */
 TERMXVEL = 4; /* Terminal horizontal velocity */
 TERMYVEL = 8; /* Terminal verical velocity, should be the same for most objects */
 

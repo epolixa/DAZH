@@ -136,6 +136,9 @@ PLAYER = instance_nearest(x, y, obj_player_test);
             <string>/* Get user input */
 in_debug = keyboard_check_pressed(vk_f3) &amp;&amp; !debug_entering_text;
 in_prompt = keyboard_check_pressed(vk_enter);
+in_up = keyboard_check_pressed(vk_up);
+in_down = keyboard_check_pressed(vk_down);
+in_esc = keyboard_check_pressed(vk_escape);
 </string>
           </argument>
         </arguments>
@@ -182,19 +185,32 @@ if (in_debug) debug_enabled = !debug_enabled;
 /* Command Prompt */
 if (debug_entering_text)
 {   
+    if (in_up &amp;&amp; i &gt; 0)
+    {keyboard_string = ds_list_find_value(command_list, i); i--;}
+    if (in_down)
+    {
+        if (i &lt;= ds_list_size(command_list)) {keyboard_string = ds_list_find_value(command_list, i); i++;}
+        else keyboard_string = "";
+    }
+
     if (in_prompt) 
     {
         command = keyboard_string; /* Store command */
         
         /* Execute command */
         if (command == "exit") game_end();
-        if (command == "restart") game_restart();        
+        if (command == "restart") game_restart();   
+        if (command == "spawn player") instance_create(PLAYER.x + 64, PLAYER.y - 32, obj_player_test);     
         
+        if (command != "") ds_list_add(command_list, command);
         debug_entering_text = false; /* Close prompt */
     }
+    
+    if (in_esc)
+    {debug_entering_text = false;}
 }
 else if (debug_enabled &amp;&amp; in_prompt)
-{keyboard_string = ""; debug_entering_text = true;}
+{keyboard_string = ""; debug_entering_text = true; i = ds_list_size(command_list);}
 </string>
           </argument>
         </arguments>
@@ -242,6 +258,8 @@ globalvar debug_enabled; /* Is debug mode enabled? */
 debug_enabled = false;
 globalvar debug_entering_text; /* Is the user entering text in debug mode? */
 debug_entering_text = false;
+globalvar command_list; /* List of previously-entered commands */
+command_list = ds_list_create();
 </string>
           </argument>
         </arguments>

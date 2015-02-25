@@ -7,14 +7,11 @@
   <sounds name="sound"/>
   <sprites name="sprites">
     <sprites name="Block">
-      <sprite>sprites\spr_block_solid__5x_5</sprite>
       <sprite>sprites\spr_block_solid_1x1</sprite>
       <sprite>sprites\spr_block_solid_2x2</sprite>
-      <sprite>sprites\spr_block_solid_1x2</sprite>
-      <sprite>sprites\spr_block_solid_2x1</sprite>
-      <sprite>sprites\spr_block_solid_1x3</sprite>
-      <sprite>sprites\spr_block_solid_3x1</sprite>
-      <sprite>sprites\spr_block_solid_3x3</sprite>
+      <sprite>sprites\spr_block_solid_4x4</sprite>
+      <sprite>sprites\spr_block_solid_1x4</sprite>
+      <sprite>sprites\spr_block_solid_4x1</sprite>
     </sprites>
     <sprites name="Character">
       <sprite>sprites\spr_player_test</sprite>
@@ -38,12 +35,9 @@
       <object>objects\obj_block_solid_par</object>
       <object>objects\obj_block_solid_1x1</object>
       <object>objects\obj_block_solid_2x2</object>
-      <object>objects\obj_block_solid_2x1</object>
-      <object>objects\obj_block_solid_1x2</object>
-      <object>objects\obj_block_solid__5x_5</object>
-      <object>objects\obj_block_solid_3x1</object>
-      <object>objects\obj_block_solid_1x3</object>
-      <object>objects\obj_block_solid_3x3</object>
+      <object>objects\obj_block_solid_4x1</object>
+      <object>objects\obj_block_solid_1x4</object>
+      <object>objects\obj_block_solid_4x4</object>
     </objects>
     <objects name="Character">
       <object>objects\obj_player_test</object>
