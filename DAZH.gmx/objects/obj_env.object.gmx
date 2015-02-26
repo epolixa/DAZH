@@ -161,12 +161,17 @@ if (debug_entering_text)
         /* ### COMMAND EXECUTION ### */
         if (command == "exit") game_end();
         else if (command == "restart") game_restart();   
+        else if (string_lower(string_copy(command, 0, 6)) == "noclip")
+        {
+            PLAYER.noclip = !PLAYER.noclip;
+            debug_output[0] = "Toggled player noclip."; debug_output[1] = 600;
+        }
         else if (command == "toggle blocks")
         {
             if (instance_exists(obj_block_solid_par))
                 with (obj_block_solid_par)
                     visible = !visible; 
-            debug_output[0] = "Block visibility toggled."; debug_output[1] = 600;
+            debug_output[0] = "Toggled block visibility."; debug_output[1] = 600;
         }
         else if (string_lower(string_copy(command, 0, 7)) == "gravity")
         {
@@ -183,15 +188,14 @@ if (debug_entering_text)
             else if (PLAYER.BLOCK == noone) {debug_output[0] = "No target surface."; debug_output[1] = 600;}
             else
             {
-                PLAYER.BLOCK.FRICTION = real(string_delete(command, 1, 9)); 
-                {debug_output[0] = "Friction of " + object_get_name(PLAYER.BLOCK.object_index) + " (" + string(PLAYER.BLOCK.id) + ") set to " + string(PLAYER.BLOCK.FRICTION) + "."; debug_output[1] = 600;}
+                ds_map_replace(PLAYER.BLOCK.attr, "friction", real(string_delete(command, 1, 9))); 
+                {debug_output[0] = "Friction of " + object_get_name(PLAYER.BLOCK.object_index) + " (" + string(PLAYER.BLOCK.id) + ") set to " + string(ds_map_find_value(PLAYER.BLOCK.attr, "friction")) + "."; debug_output[1] = 600;}
             }            
         }
         else if (string_lower(string_copy(command, 0, 6)) == "create") 
         {
             name = string_delete(command, 1, 7);
             if (name == "") {debug_output[0] = "No object specified."; debug_output[1] = 600;}
-            else if (string_copy(name, 0, 5) == "block") {debug_output[0] = "Could not create 'obj_" + name + "', requires creation code."; debug_output[1] = 600;}
             else
             {
                 obj = asset_get_index("obj_" + name);   
@@ -346,7 +350,7 @@ debug_output[1] = 600;
     {
         draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "TYPE: " + object_get_name(PLAYER.BLOCK.object_index) + " (" + string(PLAYER.BLOCK.id) + ")"); line++;
         draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "X: " + string(PLAYER.BLOCK.x)); draw_text(view_xview[0] + 100, view_yview[0] + (line*lineheight), "Y: " + string(PLAYER.BLOCK.y)); line++;
-        draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "FRICTION: " + string(PLAYER.BLOCK.FRICTION));
+        draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "FRICTION: " + string(ds_map_find_value(PLAYER.BLOCK.attr, "friction")));
     } line+=2;
     
     /* Command output */

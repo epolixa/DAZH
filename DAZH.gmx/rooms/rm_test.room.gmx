@@ -53,25 +53,9 @@
   <instances>
     <instance objName="obj_player" x="120" y="40" name="inst_7DE291AB" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_env" x="-16" y="-16" name="inst_77EAA3DF" locked="0" code="GRAVITY = 0.3;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_block_solid_4x1" x="88" y="80" name="inst_4411C5C3" locked="0" code="FRICTION = 0.4;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_block_solid_4x1" x="148" y="204" name="inst_E578DC64" locked="0" code="FRICTION = 0.2;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_block_solid_4x1" x="212" y="204" name="inst_E978103E" locked="0" code="FRICTION = 0.2;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_block_solid_4x1" x="160" y="280" name="inst_B8DF6050" locked="0" code="FRICTION = 0.05;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_block_solid_4x1" x="408" y="220" name="inst_C4DDA6ED" locked="0" code="FRICTION = 0.5;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_block_solid_4x1" x="472" y="220" name="inst_5B5A15AA" locked="0" code="FRICTION = 0.5;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_block_solid_4x1" x="344" y="220" name="inst_F022306A" locked="0" code="FRICTION = 0.5;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_block_solid_4x1" x="184" y="80" name="inst_C3B5499F" locked="0" code="FRICTION = 0.4;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_block_solid_4x1" x="224" y="280" name="inst_0C31B774" locked="0" code="FRICTION = 0.05;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_block_solid_4x1" x="288" y="280" name="inst_5E461D66" locked="0" code="FRICTION = 0.05;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_block_solid_2x2" x="136" y="88" name="inst_D96A4467" locked="0" code="FRICTION = 0.4;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_block_solid_4x1" x="252" y="344" name="inst_2421299C" locked="0" code="FRICTION = -0.1;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_block_solid_4x1" x="96" y="280" name="inst_F2E2B053" locked="0" code="FRICTION = 0.05;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_block_solid_4x1" x="84" y="204" name="inst_D52FF8AB" locked="0" code="FRICTION = 0.2;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_block_solid_4x1" x="316" y="344" name="inst_DA1FD900" locked="0" code="FRICTION = -0.1;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_block_solid_4x1" x="124" y="344" name="inst_75484984" locked="0" code="FRICTION = -0.1;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_block_solid_4x1" x="380" y="344" name="inst_7806793B" locked="0" code="FRICTION = -0.1;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_block_solid_4x1" x="444" y="344" name="inst_331BDAB8" locked="0" code="FRICTION = -0.1;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_block_solid_4x1" x="188" y="344" name="inst_19FF4DE0" locked="0" code="FRICTION = -0.1;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_block_solid_4x1" x="88" y="80" name="inst_4411C5C3" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_block_solid_4x1" x="184" y="80" name="inst_C3B5499F" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_block_solid_2x2" x="136" y="88" name="inst_D96A4467" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
   </instances>
   <tiles>
     <tile bgName="bg_tile_test" x="144" y="96" w="8" h="8" xo="40" yo="40" id="10000203" name="inst_845DB20E" depth="1000000" locked="0" colour="4294967295" scaleX="1" scaleY="1"/>
