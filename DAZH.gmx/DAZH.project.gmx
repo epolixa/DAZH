@@ -14,7 +14,7 @@
       <sprite>sprites\spr_block_solid_4x1</sprite>
     </sprites>
     <sprites name="Character">
-      <sprite>sprites\spr_player_test</sprite>
+      <sprite>sprites\spr_player</sprite>
     </sprites>
     <sprites name="Particle">
       <sprite>sprites\spr_particle_puff</sprite>
@@ -26,7 +26,7 @@
     </sprites>
   </sprites>
   <backgrounds name="background">
-    <background>background\bg_tile_grass</background>
+    <background>background\bg_tile_test</background>
   </backgrounds>
   <paths name="paths"/>
   <fonts name="fonts">
@@ -42,7 +42,7 @@
       <object>objects\obj_block_solid_4x4</object>
     </objects>
     <objects name="Character">
-      <object>objects\obj_player_test</object>
+      <object>objects\obj_player</object>
     </objects>
     <object>objects\obj_env</object>
   </objects>
