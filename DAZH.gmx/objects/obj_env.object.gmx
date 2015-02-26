@@ -48,7 +48,7 @@
             <string>/* Constants for environment objects are defined in creation code */
 
 /* Instances */
-PLAYER = instance_nearest(x, y, obj_player);
+SELINST = noone;
 
 /* Variables */
 freezer = 0;
@@ -98,6 +98,7 @@ freezer = 0;
             <string>/* Get user input */
 in_debug = keyboard_check_pressed(vk_f3) &amp;&amp; !debug_entering_text;
 in_prompt = keyboard_check_pressed(vk_enter);
+in_leftclick = mouse_check_button_pressed(mb_left);
 in_up = keyboard_check_pressed(vk_up);
 in_down = keyboard_check_pressed(vk_down);
 in_esc = keyboard_check_pressed(vk_escape);
@@ -142,7 +143,15 @@ in_esc = keyboard_check_pressed(vk_escape);
           <argument>
             <kind>1</kind>
             <string>/* Toggle debug mode */
-if (in_debug) debug_enabled = !debug_enabled;
+if (in_debug)
+{
+    debug_enabled = !debug_enabled;
+}
+
+if (in_leftclick)
+{
+    SELINST = instance_nearest(mouse_x, mouse_y, obj_par);
+}
 
 /* Command Prompt */
 if (debug_entering_text)
@@ -164,51 +173,56 @@ if (debug_entering_text)
         else if (string_lower(string_copy(command, 0, 6)) == "noclip")
         {
             PLAYER.noclip = !PLAYER.noclip;
-            debug_output[0] = "Toggled player noclip."; debug_output[1] = 600;
+            command_output[0] = "Toggled player noclip."; command_output[1] = 600;
         }
-        else if (command == "toggle blocks")
+        else if (command == "toggle areas")
         {
-            if (instance_exists(obj_block_solid_par))
-                with (obj_block_solid_par)
-                    visible = !visible; 
-            debug_output[0] = "Toggled block visibility."; debug_output[1] = 600;
+            showareas = !showareas; 
+            command_output[0] = "Toggled area visibility."; command_output[1] = 600;
         }
         else if (string_lower(string_copy(command, 0, 7)) == "gravity")
         {
-            if (string_delete(command, 1, 8) == "") {debug_output[0] = "No value specified."; debug_output[1] = 600;}
+            if (string_delete(command, 1, 8) == "") {command_output[0] = "No value specified."; command_output[1] = 600;}
             else
             {
                 GRAVITY = real(string_delete(command, 1, 8)); 
-                {debug_output[0] = "Gravity set to " + string(GRAVITY) + "."; debug_output[1] = 600;}
+                {command_output[0] = "Gravity set to " + string(GRAVITY) + "."; command_output[1] = 600;}
             }            
         }
         else if (string_lower(string_copy(command, 0, 8)) == "friction")
         {
-            if (string_delete(command, 1, 9) == "") {debug_output[0] = "No value specified."; debug_output[1] = 600;}
-            else if (PLAYER.BLOCK == noone) {debug_output[0] = "No target surface."; debug_output[1] = 600;}
+            if (string_delete(command, 1, 9) == "") {command_output[0] = "No value specified."; command_output[1] = 600;}
+            else if (PLAYER.BLOCK == noone) {command_output[0] = "No target surface."; command_output[1] = 600;}
             else
             {
                 ds_map_replace(PLAYER.BLOCK.attr, "friction", real(string_delete(command, 1, 9))); 
-                {debug_output[0] = "Friction of " + object_get_name(PLAYER.BLOCK.object_index) + " (" + string(PLAYER.BLOCK.id) + ") set to " + string(ds_map_find_value(PLAYER.BLOCK.attr, "friction")) + "."; debug_output[1] = 600;}
+                {command_output[0] = "Friction of " + object_get_name(PLAYER.BLOCK.object_index) + " (" + string(PLAYER.BLOCK.id) + ") set to " + string(ds_map_find_value(PLAYER.BLOCK.attr, "friction")) + "."; command_output[1] = 600;}
             }            
         }
         else if (string_lower(string_copy(command, 0, 6)) == "create") 
         {
             name = string_delete(command, 1, 7);
-            if (name == "") {debug_output[0] = "No object specified."; debug_output[1] = 600;}
+            if (name == "") {command_output[0] = "No object specified."; command_output[1] = 600;}
             else
             {
                 obj = asset_get_index("obj_" + name);   
                 if (!object_exists(obj))
-                {debug_output[0] = "Could not create 'obj_" + name + "', does not exist."; debug_output[1] = 600;}
+                {command_output[0] = "Could not create 'obj_" + name + "', does not exist."; command_output[1] = 600;}
                 else
                 {
                     inst = instance_create(PLAYER.x + 64, PLAYER.y - 32, obj);
-                    debug_output[0] = "Created " + object_get_name(inst.object_index) + " (" + string(inst.id) + ") at " + string(inst.x) + ", " + string(inst.y) + "."; debug_output[1] = 600;
+                    command_output[0] = "Created " + object_get_name(inst.object_index) + " (" + string(inst.id) + ") at " + string(inst.x) + ", " + string(inst.y) + "."; command_output[1] = 600;
                 }
             }
+        }
+        else if (string_lower(string_copy(command, 0, 7)) == "destroy")
+        {
+            command_output[0] = "Destroyed " + object_get_name(SELINST.object_index) + " (" + string(SELINST.id) + ")."; command_output[1] = 600;
+            with (SELINST)
+                instance_destroy();
+            SELINST = noone;
         }    
-        else {debug_output[0] = "Command '" + command + "' not recognized."; debug_output[1] = 600;}
+        else {command_output[0] = "Command '" + command + "' not recognized."; /*command_output[0] = string_split(command, " ");*/ command_output[1] = 600;}
         /* ### /COMMAND EXECUTION ### */
         
         if (command != "") 
@@ -273,9 +287,11 @@ globalvar debug_entering_text; /* Is the user entering text in debug mode? */
 debug_entering_text = false;
 globalvar command_list; /* List of previously-entered commands */
 command_list = ds_list_create();
-globalvar debug_output; /* Command output */
-debug_output[0] = "Press ENTER to use commands.";
-debug_output[1] = 600;
+globalvar command_output; /* Command output */
+command_output[0] = "Press ENTER to use commands.";
+command_output[1] = 600;
+globalvar showareas; /* Are areas visible? */
+showareas = false;
 </string>
           </argument>
         </arguments>
@@ -337,24 +353,38 @@ debug_output[1] = 600;
     draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "GRAVITY: " + string(GRAVITY)); line++;
     draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "INSTANCES: " + string(instance_count)); line+=2;
     
-    /* Player */
-    draw_text(view_xview[0], view_yview[0] + (line*lineheight), "PLAYER"); line++;
-    draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "X: " + string(PLAYER.x)); draw_text(view_xview[0] + 100, view_yview[0] + (line*lineheight), "Y: " + string(PLAYER.y)); line++;   
-    draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "XVEL: " + string(PLAYER.xvel)); draw_text(view_xview[0] + 100, view_yview[0] + (line*lineheight), "YVEL: " + string(PLAYER.yvel)); line++;
-    draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "AIRBORN: " + string(PLAYER.airborn)); line+=2;
-
-    /* Block */
-    draw_text(view_xview[0], view_yview[0] + (line*lineheight), "BLOCK"); line++;
-    if (PLAYER.BLOCK == noone) draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "N/A");
-    else 
+    /* Selected instance */
+    if (SELINST != noone)
     {
-        draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "TYPE: " + object_get_name(PLAYER.BLOCK.object_index) + " (" + string(PLAYER.BLOCK.id) + ")"); line++;
-        draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "X: " + string(PLAYER.BLOCK.x)); draw_text(view_xview[0] + 100, view_yview[0] + (line*lineheight), "Y: " + string(PLAYER.BLOCK.y)); line++;
-        draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "FRICTION: " + string(ds_map_find_value(PLAYER.BLOCK.attr, "friction")));
-    } line+=2;
+        /* Type */
+        if (object_get_parent(SELINST.object_index) == obj_area_wall_par) draw_text(view_xview[0], view_yview[0] + (line*lineheight), "WALL (AREA)");
+        else if (SELINST.object_index == obj_char_player) draw_text(view_xview[0], view_yview[0] + (line*lineheight), "PLAYER");
+        line++;
+        
+        /* Properties */
+        draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "INDEX: " + object_get_name(SELINST.object_index) + " (" + string(SELINST.id) + ")"); line++;
+        draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "X: " + string(SELINST.x)); draw_text(view_xview[0] + 100, view_yview[0] + (line*lineheight), "Y: " + string(SELINST.y)); line++;
+        
+        /* Attributes */
+        if (object_get_parent(SELINST.object_index) == obj_area_par)
+        {
+            if (ds_map_exists(SELINST.attr, "friction")) draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "FRICTION: " + string(ds_map_find_value(SELINST.attr, "friction"))); 
+            line+=2;
+        }
+        else if (SELINST.object_index == obj_char_player)
+        {
+            draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "XVEL: " + string(SELINST.xvel)); draw_text(view_xview[0] + 100, view_yview[0] + (line*lineheight), "YVEL: " + string(SELINST.yvel)); line++;
+            draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "AIRBORN: " + string(SELINST.airborn)); 
+            line+=2;
+        }
+        
+        /* Highlight */
+        with (SELINST)
+            draw_rectangle(x - sprite_width/2, y - sprite_height/2, x + sprite_width/2, y + sprite_height/2, true);
+    }
     
     /* Command output */
-    if (debug_output[1] &gt; 0) {draw_text(view_xview[0], view_yview[0]+view_hview[0]-14, debug_output[0]); debug_output[1]--;}
+    if (command_output[1] &gt; 0) {draw_text(view_xview[0], view_yview[0]+view_hview[0]-14, command_output[0]); command_output[1]--;}
     
     if (freezer &gt;= 3) freezer = 0;
     else              freezer++;
