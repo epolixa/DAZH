@@ -3,10 +3,10 @@
   <spriteName>spr_amb_butterfly</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>0</depth>
+  <depth>-1</depth>
   <persistent>0</persistent>
   <parentName>obj_amb_par</parentName>
-  <maskName>&lt;undefined&gt;</maskName>
+  <maskName>spr_amb_butterfly_mask</maskName>
   <events>
     <event eventtype="0" enumb="0">
       <action>
@@ -50,17 +50,19 @@ ACCEL = 0.02; /* Normal acceleration */
 TERMVEL = 1; /* Normal terminal velocity */
 
 /* Variables */
+xprev = 0;
+yprev = 0;
 xvel = 0; /* Horizontal velocity */
 yvel = 0; /* Vertical velocity */
 xtar = 0; /* Movement targets */
 ytar = 0;
 life = 0; /* How long until self destruct */
 
-/* Set move target alarm */
-alarm[0] = 60 + random(60); /* Two to four seconds */
-
 /* Random color */
 image_blend = make_colour_rgb(random(255), random(255), random(255));
+
+/* Get initial target */
+event_perform(ev_alarm, 0);
 </string>
           </argument>
         </arguments>
@@ -155,14 +157,59 @@ alarm[0] = 60 + random(60);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>/* Horz velocity */
-if      (x &lt; xtar &amp;&amp; xvel + ACCEL &lt; TERMVEL) xvel += ACCEL;
-else if (x &gt; xtar &amp;&amp; abs(xvel - ACCEL) &lt; TERMVEL) xvel -= ACCEL;
+            <string>/* Horz accel */
+if      (x &lt; xtar &amp;&amp; xvel &lt; TERMVEL)  xvel += ACCEL;
+else if (x &gt; xtar &amp;&amp; -xvel &lt; TERMVEL) xvel -= ACCEL;
 
-/* Vert velocity */
-if      (y &lt; ytar &amp;&amp; yvel + ACCEL &lt; TERMVEL) yvel += ACCEL;
-else if (y &gt; ytar &amp;&amp; abs(yvel - ACCEL) &lt; TERMVEL) yvel -= ACCEL;
+/* Vert accel */
+if      (y &lt; ytar &amp;&amp; yvel &lt; TERMVEL)  yvel += ACCEL;
+else if (y &gt; ytar &amp;&amp; -yvel &lt; TERMVEL) yvel -= ACCEL;
 
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>605</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>Sprite</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/* Facing */
+if (image_xscale != sign(xvel)) image_xscale = sign(xvel);
+
+/* Speed */
+image_speed = 0.4*((abs(xvel) + abs(yvel))/2);
 </string>
           </argument>
         </arguments>
@@ -204,8 +251,34 @@ else if (y &gt; ytar &amp;&amp; abs(yvel - ACCEL) &lt; TERMVEL) yvel -= ACCEL;
           <argument>
             <kind>1</kind>
             <string>/* Movement */
+xprev = x;
+yprev = y;
+
+if (place_meeting(x + xvel, y, obj_area_wall_par)) /* Horz collision */
+{
+    while(!place_meeting(x + sign(xvel), y, obj_area_wall_par))
+        x += sign(xvel);
+    xvel = 0;
+    event_perform(ev_alarm, 0); 
+}
+
+if (place_meeting(x, y + yvel, obj_area_wall_par)) /* Vert collision */
+{
+    while (!place_meeting(x, y + sign(yvel), obj_area_wall_par))
+        y += sign(yvel);
+    yvel = 0;
+    event_perform(ev_alarm, 0);  
+}
+
 x += xvel; /* Translate */
 y += yvel;
+
+if (place_meeting(x, y, obj_area_wall_par)) 
+{
+    x = xprev; xvel = 0; 
+    y = yprev; yvel = 0; 
+    event_perform(ev_alarm, 0); 
+}
 
 </string>
           </argument>
