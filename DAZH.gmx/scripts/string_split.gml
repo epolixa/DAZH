@@ -13,4 +13,3 @@ for(i = 0; i < string_length(str); i++)
     }
 }
 return result;
-

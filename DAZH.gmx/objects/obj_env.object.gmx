@@ -210,7 +210,7 @@ if (debug_entering_text)
                 {command_output[0] = "Could not create 'obj_" + name + "', does not exist."; command_output[1] = 600;}
                 else
                 {
-                    inst = instance_create(PLAYER.x + 64, PLAYER.y - 32, obj);
+                    inst = instance_create(mouse_x, mouse_y, obj);
                     command_output[0] = "Created " + object_get_name(inst.object_index) + " (" + string(inst.id) + ") at " + string(inst.x) + ", " + string(inst.y) + "."; command_output[1] = 600;
                 }
             }
@@ -366,7 +366,7 @@ showareas = false;
         draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "X: " + string(SELINST.x)); draw_text(view_xview[0] + 100, view_yview[0] + (line*lineheight), "Y: " + string(SELINST.y)); line++;
         
         /* Attributes */
-        if (object_get_parent(SELINST.object_index) == obj_area_par)
+        if (object_get_parent(SELINST.object_index) == obj_area_wall_par)
         {
             if (ds_map_exists(SELINST.attr, "friction")) draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "FRICTION: " + string(ds_map_find_value(SELINST.attr, "friction"))); 
             line+=2;
