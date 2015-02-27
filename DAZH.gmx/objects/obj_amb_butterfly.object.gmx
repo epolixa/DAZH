@@ -25,7 +25,7 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>Random color</string>
+            <string>Variables &amp; Constants, Color</string>
           </argument>
         </arguments>
       </action>
@@ -45,8 +45,168 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>/* Random color */
+            <string>/* Constants */
+ACCEL = 0.02; /* Normal acceleration */
+TERMVEL = 1; /* Normal terminal velocity */
+
+/* Variables */
+xvel = 0; /* Horizontal velocity */
+yvel = 0; /* Vertical velocity */
+xtar = 0; /* Movement targets */
+ytar = 0;
+life = 0; /* How long until self destruct */
+
+/* Set move target alarm */
+alarm[0] = 60 + random(60); /* Two to four seconds */
+
+/* Random color */
 image_blend = make_colour_rgb(random(255), random(255), random(255));
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>605</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>Movement target refresh</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/* Find random movement target in the room */
+do
+{
+    xtar = random(room_width);
+    ytar = random(room_height);
+}
+until (!place_meeting(xtar, ytar, obj_area_wall_par));
+
+/* Reset alarm */
+alarm[0] = 60 + random(60);
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="3" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>605</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>Affect velocity</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/* Horz velocity */
+if      (x &lt; xtar &amp;&amp; xvel + ACCEL &lt; TERMVEL) xvel += ACCEL;
+else if (x &gt; xtar &amp;&amp; abs(xvel - ACCEL) &lt; TERMVEL) xvel -= ACCEL;
+
+/* Vert velocity */
+if      (y &lt; ytar &amp;&amp; yvel + ACCEL &lt; TERMVEL) yvel += ACCEL;
+else if (y &gt; ytar &amp;&amp; abs(yvel - ACCEL) &lt; TERMVEL) yvel -= ACCEL;
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>605</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>Movement</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/* Movement */
+x += xvel; /* Translate */
+y += yvel;
+
 </string>
           </argument>
         </arguments>
