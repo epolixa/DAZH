@@ -256,50 +256,6 @@ alarm[0] = 120 + random(120);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>Instances</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>/* Instances */
-if (airborn &amp;&amp; (place_meeting(x + 1, y, obj_area_wall_par) || place_meeting(x - 1, y, obj_area_wall_par))) WALL = instance_nearest(x, y, obj_area_wall_par);
-else if (!airborn) WALL = instance_nearest(x, y + 1, obj_area_wall_par);
-else WALL = noone;
-</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>605</id>
-        <kind>0</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>0</useapplyto>
-        <exetype>0</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
             <string>Check user input</string>
           </argument>
         </arguments>
@@ -346,6 +302,50 @@ in_jump =  (keyboard_check_pressed(32) || gamepad_button_check_pressed(0, gp_fac
         <arguments>
           <argument>
             <kind>1</kind>
+            <string>Instances</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/* Instances */
+if (airborn &amp;&amp; ((place_meeting(x + 1, y, obj_area_wall_par) &amp;&amp; in_right) || (place_meeting(x - 1, y, obj_area_wall_par) &amp;&amp; in_left))) WALL = instance_nearest(x, y, obj_area_wall_par);
+else if (!airborn) WALL = instance_nearest(x, y + 1, obj_area_wall_par);
+else WALL = noone;
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>605</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
             <string>Affect velocity</string>
           </argument>
         </arguments>
@@ -366,29 +366,29 @@ in_jump =  (keyboard_check_pressed(32) || gamepad_button_check_pressed(0, gp_fac
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>/* Horz acceleration */
+            <string>fric = ds_map_find_value(WALL.attr, "friction"); side = sign(WALL.x - x);
+
+/* Horz acceleration */
 if (airborn || noclip)
 {
     if (in_right &amp;&amp; xvel &lt; TERMXVEL) xvel += (0.4*XACCEL); /* Right */
     if (in_left &amp;&amp; -xvel &lt; TERMXVEL) xvel -= (0.4*XACCEL); /* Left */
+    if (!in_left &amp;&amp; !in_right &amp;&amp; xvel != 0)
+    {
+        if (abs(xvel) &lt; 0.2*XACCEL) xvel = 0; 
+        else xvel -= (sign(xvel)*(0.2*XACCEL));
+    }
 }
-else
+else if (WALL != noone)
 {
-    if (in_right &amp;&amp; xvel &lt; TERMXVEL) xvel += XACCEL;
-    if (in_left &amp;&amp; -xvel &lt; TERMXVEL) xvel -= XACCEL;
-    if (!in_left &amp;&amp; !in_right &amp;&amp; xvel != 0) part_particles_create(global.part_sys, x - sprite_width/3, y + sprite_height/2, player_part_slide, 1);
-}
-
-/* Horz friction */
-if (WALL == noone || noclip) /* Air friction */
-{
-    if (abs(xvel) &lt; 0.1*XACCEL) xvel = 0; 
-    else xvel -= (sign(xvel)*(0.1*XACCEL));
-}
-else               /* Surface friction */ 
-{
-    if (xvel*sign(xvel) &lt; ds_map_find_value(WALL.attr, "friction")) xvel = 0;
-    else xvel -= (sign(xvel)*(ds_map_find_value(WALL.attr, "friction"))); 
+    if (in_right &amp;&amp; xvel &lt; TERMXVEL) xvel += 2*fric*XACCEL;
+    if (in_left &amp;&amp; -xvel &lt; TERMXVEL) xvel -= 2*fric*XACCEL;
+    if (!in_left &amp;&amp; !in_right &amp;&amp; xvel != 0) 
+    {
+        part_particles_create(global.part_sys, x - sprite_width/3, y + sprite_height/2, player_part_slide, 1);
+        if (abs(xvel) &lt; fric*XACCEL) xvel = 0;
+        else xvel -= (sign(xvel)*fric*XACCEL); 
+    }
 }
 
 /* Vert acceleration */
@@ -397,9 +397,8 @@ if (airborn &amp;&amp; yvel &lt; TERMYVEL &amp;&amp; !noclip) /* Gravity */
     yvel += WEIGHT*ENV.GRAVITY; 
     if (WALL != noone) /* Wall sliding */
     {
-        side = sign(WALL.x - x);
-        if ((yvel - sign(yvel)*0.5*ds_map_find_value(WALL.attr,"friction")) &gt; 0)
-            yvel -= sign(yvel)*0.5*ds_map_find_value(WALL.attr,"friction");
+        if ((yvel - sign(yvel)*0.5*fric) &gt; 0)
+            yvel -= sign(yvel)*0.5*fric;
         if (abs(yvel) &gt; XACCEL)
             part_particles_create(global.part_sys, x - sprite_width/2, y + sprite_height/3, player_part_slide, 1);
         if (image_xscale != -side) image_xscale = -side;
@@ -409,8 +408,7 @@ if (in_jump &amp;&amp; !noclip) /* Jumping */
 {
     if (airborn &amp;&amp; WALL != noone) /* Wall jumping */
     {
-        side = sign(WALL.x - x);
-        yvel = -(2*ds_map_find_value(WALL.attr, "friction"))*JUMPSTR;
+        yvel = -2*fric*JUMPSTR;
         xvel = -0.5*side*JUMPSTR; 
     }
     else if (airborn &amp;&amp; jumps[1] &gt; 0) /* Multi-jumping */
@@ -601,10 +599,10 @@ if (!noclip &amp;&amp; place_meeting(x, y, obj_area_wall_par)) /* Fix if stuck i
             <string>/* Base checks */
 if      (!airborn &amp;&amp; xvel == 0 &amp;&amp; sprite_index != spr_char_player &amp;&amp; sprite_index != spr_char_player_idle) {sprite_index = spr_char_player; image_index = 0; image_speed = 0;} /* Standing */
 else if (!airborn &amp;&amp; !in_left &amp;&amp; !in_right &amp;&amp; xvel != 0 &amp;&amp; sprite_index != spr_char_player_slide)          {sprite_index = spr_char_player_slide; image_speed = 0;}          /* Slide (Skid)? */
-else if (!airborn &amp;&amp; xvel != 0 &amp;&amp; sprite_index != spr_char_player_walk)                                    {sprite_index = spr_char_player_walk;}                               /* Walking */
+else if (!airborn &amp;&amp; (in_left || in_right) &amp;&amp; xvel != 0 &amp;&amp; sprite_index != spr_char_player_walk)                                    {sprite_index = spr_char_player_walk;}                               /* Walking */
 else if (airborn &amp;&amp; WALL != noone &amp;&amp; sprite_index != spr_char_player_wslide)                               {sprite_index = spr_char_player_wslide; image_speed = 0;}         /* Wallsliding */
-else if (airborn &amp;&amp; yvel &lt;= 0 &amp;&amp; sprite_index != spr_char_player_rising)                                   {sprite_index = spr_char_player_rising; image_speed = 0;}           /* Rising */
-else if (airborn &amp;&amp; yvel &gt; 0 &amp;&amp; sprite_index != spr_char_player_falling)                                   {sprite_index = spr_char_player_falling; image_speed = 0.2;}        /* Falling */
+else if (airborn &amp;&amp; WALL == noone &amp;&amp; yvel &lt;= 0 &amp;&amp; sprite_index != spr_char_player_rising)                                   {sprite_index = spr_char_player_rising; image_speed = 0;}           /* Rising */
+else if (airborn &amp;&amp; WALL == noone &amp;&amp; yvel &gt; 0 &amp;&amp; sprite_index != spr_char_player_falling)                                   {sprite_index = spr_char_player_falling; image_speed = 0.2;}        /* Falling */
 
 /* While standing */
 if (sprite_index == spr_char_player)
@@ -628,10 +626,8 @@ if (sprite_index == spr_char_player_walk)
 }
 
 /* Facing */
-if (!airborn)
-{
-    if (xvel != 0 &amp;&amp; image_xscale != sign(xvel)) image_xscale = sign(xvel);
-}
+if (!airborn &amp;&amp; (in_left || in_right)) image_xscale = in_right - in_left;
+
 </string>
           </argument>
         </arguments>

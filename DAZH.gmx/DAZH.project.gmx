@@ -16,12 +16,12 @@
     <sprites name="Character">
       <sprites name="Player">
         <sprite>sprites\spr_char_player</sprite>
+        <sprite>sprites\spr_char_player_idle</sprite>
         <sprite>sprites\spr_char_player_walk</sprite>
         <sprite>sprites\spr_char_player_slide</sprite>
-        <sprite>sprites\spr_char_player_wslide</sprite>
-        <sprite>sprites\spr_char_player_idle</sprite>
         <sprite>sprites\spr_char_player_rising</sprite>
         <sprite>sprites\spr_char_player_falling</sprite>
+        <sprite>sprites\spr_char_player_wslide</sprite>
         <sprite>sprites\spr_char_player_mask</sprite>
       </sprites>
     </sprites>
