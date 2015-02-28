@@ -48,7 +48,7 @@
             <string>/* Constants for environment objects are defined in creation code */
 
 /* Instances */
-SELINST = noone;
+TARINST = noone;
 
 /* Variables */
 freezer = 0;
@@ -145,12 +145,14 @@ in_esc = keyboard_check_pressed(vk_escape);
             <string>/* Toggle debug mode */
 if (in_debug)
 {
+    if (!debug_enabled) TARINST = noone; 
     debug_enabled = !debug_enabled;
 }
 
+/* Selecting instances */
 if (in_leftclick)
 {
-    SELINST = instance_nearest(mouse_x, mouse_y, obj_par);
+    TARINST = instance_nearest(mouse_x, mouse_y, obj_par);
 }
 
 /* Command Prompt */
@@ -172,8 +174,8 @@ if (debug_entering_text)
         else if (command == "restart") game_restart();   
         else if (string_lower(string_copy(command, 0, 6)) == "noclip")
         {
-            PLAYER = instance_nearest(x, y, obj_char_player);
-            PLAYER.noclip = !PLAYER.noclip;
+            player = instance_nearest(x, y, obj_char_player);
+            player.noclip = !player.noclip;
             command_output[0] = "Toggled player noclip."; command_output[1] = 600;
         }
         else if (command == "toggle areas")
@@ -193,17 +195,25 @@ if (debug_entering_text)
         else if (string_lower(string_copy(command, 0, 8)) == "friction")
         {
             if (string_delete(command, 1, 9) == "") {command_output[0] = "No value specified."; command_output[1] = 600;}
-            else if (PLAYER.BLOCK == noone) {command_output[0] = "No target surface."; command_output[1] = 600;}
+            else if (object_get_parent(TARINST.object_index) != obj_area_wall_par) {command_output[0] = "Target has no friction."; command_output[1] = 600;}
             else
             {
-                ds_map_replace(PLAYER.BLOCK.attr, "friction", real(string_delete(command, 1, 9))); 
-                {command_output[0] = "Friction of " + object_get_name(PLAYER.BLOCK.object_index) + " (" + string(PLAYER.BLOCK.id) + ") set to " + string(ds_map_find_value(PLAYER.BLOCK.attr, "friction")) + "."; command_output[1] = 600;}
+                ds_map_replace(TARINST.attr, "friction", real(string_delete(command, 1, 9))); 
+                {command_output[0] = "Friction of " + object_get_name(TARINST.object_index) + " (" + string(TARINST.id) + ") set to " + string(ds_map_find_value(TARINST.attr, "friction")) + "."; command_output[1] = 600;}
             }            
         }
         else if (string_lower(string_copy(command, 0, 6)) == "create") 
         {
             name = string_delete(command, 1, 7);
-            if (name == "") {command_output[0] = "No object specified."; command_output[1] = 600;}
+            if (name == "") 
+            {
+                if (TARINST != noone)
+                {
+                    inst = instance_create(mouse_x, mouse_y, TARINST.object_index);
+                    command_output[0] = "Created " + object_get_name(inst.object_index) + " (" + string(inst.id) + ") at " + string(inst.x) + ", " + string(inst.y) + "."; command_output[1] = 600;
+                }
+                else {command_output[0] = "No object specified."; command_output[1] = 600;}
+            }
             else
             {
                 obj = asset_get_index("obj_" + name);   
@@ -218,15 +228,15 @@ if (debug_entering_text)
         }
         else if (string_lower(string_copy(command, 0, 7)) == "destroy")
         {
-            command_output[0] = "Destroyed " + object_get_name(SELINST.object_index) + " (" + string(SELINST.id) + ")."; command_output[1] = 600;
-            with (SELINST)
+            command_output[0] = "Destroyed " + object_get_name(TARINST.object_index) + " (" + string(TARINST.id) + ")."; command_output[1] = 600;
+            with (TARINST)
                 instance_destroy();
-            SELINST = noone;
+            TARINST = noone;
         }    
-        else {command_output[0] = "Command '" + command + "' not recognized."; /*command_output[0] = string_split(command, " ");*/ command_output[1] = 600;}
+        else if (string_length(command) &gt;= 1) {command_output[0] = "Command '" + command + "' not recognized."; /*command_output[0] = string_split(command, " ");*/ command_output[1] = 600;}
         /* ### /COMMAND EXECUTION ### */
         
-        if (command != "") 
+        if (string_length(command) &gt;= 1) 
         {
             if (ds_list_find_index(command_list, command) != -1) ds_list_delete(command_list, ds_list_find_index(command_list, command));        
             ds_list_add(command_list, command);
@@ -355,29 +365,29 @@ showareas = false;
     draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "INSTANCES: " + string(instance_count)); line+=2;
     
     /* Selected instance */
-    if (SELINST != noone)
+    if (TARINST != noone)
     {    
         draw_text(view_xview[0], view_yview[0] + (line*lineheight), "SELECTED"); line++;
     
         /* Name &amp; universal properties */
-        draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), object_get_name(SELINST.object_index) + " (" + string(SELINST.id) + ")"); line++;
-        draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "X: " + string(SELINST.x)); draw_text(view_xview[0] + 100, view_yview[0] + (line*lineheight), "Y: " + string(SELINST.y)); line++;
+        draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), object_get_name(TARINST.object_index) + " (" + string(TARINST.id) + ")"); line++;
+        draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "X: " + string(TARINST.x)); draw_text(view_xview[0] + 100, view_yview[0] + (line*lineheight), "Y: " + string(TARINST.y)); line++;
         
         /* Special attributes */
-        if (object_get_parent(SELINST.object_index) == obj_area_wall_par)
+        if (object_get_parent(TARINST.object_index) == obj_area_wall_par)
         {
-            if (ds_map_exists(SELINST.attr, "friction")) draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "FRICTION: " + string(ds_map_find_value(SELINST.attr, "friction"))); 
+            if (ds_map_exists(TARINST.attr, "friction")) draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "FRICTION: " + string(ds_map_find_value(TARINST.attr, "friction"))); 
             line+=2;
         }
-        else if (SELINST.object_index == obj_amb_butterfly)
+        else if (TARINST.object_index == obj_amb_butterfly)
         {
-            draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "XTAR: " + string(SELINST.xtar)); draw_text(view_xview[0] + 100, view_yview[0] + (line*lineheight), "YTAR: " + string(SELINST.ytar)); line++;
-            draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "COLOR: " + string(colour_get_red(SELINST.image_blend)) + string(colour_get_green(SELINST.image_blend)) + string(colour_get_blue(SELINST.image_blend))); 
+            draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "XTAR: " + string(TARINST.xtar)); draw_text(view_xview[0] + 100, view_yview[0] + (line*lineheight), "YTAR: " + string(TARINST.ytar)); line++;
+            draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "COLOR: " + string(colour_get_red(TARINST.image_blend)) + string(colour_get_green(TARINST.image_blend)) + string(colour_get_blue(TARINST.image_blend))); 
             line+=2;
         }
         
         /* Highlight */
-        with (SELINST)
+        with (TARINST)
             draw_rectangle(x - sprite_width/2, y - sprite_height/2, x + sprite_width/2, y + sprite_height/2, true);
     }
     

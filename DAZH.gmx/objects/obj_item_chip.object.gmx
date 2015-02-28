@@ -50,7 +50,10 @@ ENV = instance_nearest(x, y, obj_env);
 
 /* Constants */
 WEIGHT = 0.2;   /* Effect of gravity */
-COLOR = c_red; /* Default color is red */
+COLOR = random(3); /* Initial color is random unless specified in creation code */
+if      (COLOR &gt;= 0 &amp;&amp; COLOR &lt; 1) COLOR = c_red;
+else if (COLOR &gt;= 1 &amp;&amp; COLOR &lt; 2) COLOR = c_aqua;
+else                              COLOR = c_yellow;
 alarm[0] = 1;  /* Apply image blend immediately after instance create */
 
 /* Variables */
@@ -59,7 +62,7 @@ yprev = y;          /* Last valid vertical position */
 xvel = 0;           /* Horizontal velocity */
 yvel = 0;           /* Vertical velocity */
 airborn = false;    /* Is the object off the ground? */
-collected = false; /* Do stuff when true */
+collected = false; /* trigger collection when true */
 
 image_speed = 0.2;
 

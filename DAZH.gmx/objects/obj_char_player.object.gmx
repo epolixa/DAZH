@@ -516,6 +516,8 @@ if (!noclip &amp;&amp; place_meeting(x, y, obj_area_wall_par)) /* Fix if stuck i
     else if (chip.COLOR == c_yellow) chip_reserve[2]++;
     
     chip.collected = true;
+    
+    if (ENV.TARINST == chip) ENV.TARINST = noone;
 }
 </string>
           </argument>
@@ -607,17 +609,20 @@ if (sprite_index = spr_char_player)
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>draw_set_font(font_reserve); draw_set_alpha(1);
-line = 0; lineheight = 16;
-
-draw_set_colour(c_red);
-draw_text(view_xview[0], view_yview[0] + (line*lineheight), "Red: " + string(chip_reserve[0])); line++;
-
-draw_set_colour(c_aqua);
-draw_text(view_xview[0], view_yview[0] + (line*lineheight), "Blue: " + string(chip_reserve[1])); line++;
-
-draw_set_color(c_yellow); 
-draw_text(view_xview[0], view_yview[0] + (line*lineheight), "Yellow: " + string(chip_reserve[2])); line++;
+            <string>if (!debug_enabled)
+{
+    draw_set_font(font_reserve); draw_set_alpha(1);
+    line = 0; lineheight = 16;
+    
+    draw_set_colour(c_red);
+    draw_text(view_xview[0], view_yview[0] + (line*lineheight), "Red: " + string(chip_reserve[0])); line++;
+    
+    draw_set_colour(c_aqua);
+    draw_text(view_xview[0], view_yview[0] + (line*lineheight), "Blue: " + string(chip_reserve[1])); line++;
+    
+    draw_set_color(c_yellow); 
+    draw_text(view_xview[0], view_yview[0] + (line*lineheight), "Yellow: " + string(chip_reserve[2])); line++;
+}
 </string>
           </argument>
         </arguments>
