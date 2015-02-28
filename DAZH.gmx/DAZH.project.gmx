@@ -32,6 +32,11 @@
         <sprite>sprites\spr_amb_butterfly</sprite>
         <sprite>sprites\spr_amb_butterfly_mask</sprite>
       </sprites>
+      <sprites name="Frog">
+        <sprite>sprites\spr_amb_frog</sprite>
+        <sprite>sprites\spr_amb_frog_jump</sprite>
+        <sprite>sprites\spr_frog_mask</sprite>
+      </sprites>
     </sprites>
   </sprites>
   <backgrounds name="background">
@@ -70,6 +75,7 @@
     <objects name="Ambient">
       <object>objects\obj_amb_par</object>
       <object>objects\obj_amb_butterfly</object>
+      <object>objects\obj_amb_frog</object>
     </objects>
   </objects>
   <rooms name="rooms">
