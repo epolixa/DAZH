@@ -45,7 +45,10 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>/* Constants */
+            <string>/* env */
+ENV = instance_nearest(x, y, obj_env); /* Update on room change... */
+
+/* Constants */
 WEIGHT = 1;   /* Effect of gravity */
 XACCEL = 0.6; /* Horizontal acceleration */
 JUMPSTR = 6;  /* Jump strength */
@@ -61,6 +64,15 @@ jumps[0] = 1; /* [max jumps, jumps remaining] */
 jumps[1] = jumps[0];
 airborn = true;    /* Is the object off the ground? */
 noclip = false;    /* noclip mode enabled? */
+
+/* Puzzle chips &amp; bar */
+chip_reserve[0] = 0; /* Red chips in reserve */
+chip_reserve[1] = 0; /* Blue chips */
+chip_reserve[2] = 0; /* Yellow chips */
+puzzlebar_cap = 8; /* Puzzle bar capacity */
+var puzzlebar; /* The puzzle bar [row, column] */
+for (i = 0; i &lt; puzzlebar_cap; i++)
+{puzzlebar[0, i] = noone; puzzlebar[1, i] = noone; puzzlebar[2, i] = noone;}
 
 /* Set alarms */
 image_speed = 0; /* Blink */
@@ -200,7 +212,7 @@ alarm[0] = 120 + random(120);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>Env &amp; Instances</string>
+            <string>Instances</string>
           </argument>
         </arguments>
       </action>
@@ -220,10 +232,7 @@ alarm[0] = 120 + random(120);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>/* env */
-ENV = instance_nearest(x, y, obj_env);
-
-/* Instances */
+            <string>/* Instances */
 if (airborn) WALL = noone;
 else WALL = instance_nearest(x, y + 1, obj_area_wall_par);
 </string>
@@ -478,6 +487,56 @@ if (!noclip &amp;&amp; place_meeting(x, y, obj_area_wall_par)) /* Fix if stuck i
         <arguments>
           <argument>
             <kind>1</kind>
+            <string>Chip collect</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if (place_meeting(x, y, obj_item_chip))
+{
+    chip = instance_nearest(x, y, obj_item_chip);
+    
+    if      (chip.COLOR == c_red)    chip_reserve[0]++;
+    else if (chip.COLOR == c_aqua)   chip_reserve[1]++;
+    else if (chip.COLOR == c_yellow) chip_reserve[2]++;
+    
+    chip.collected = true;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>605</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
             <string>Sprite</string>
           </argument>
         </arguments>
@@ -506,6 +565,59 @@ if (sprite_index = spr_char_player)
     if (image_index = 0 &amp;&amp; image_speed != 0) image_speed = 0;
     else if (image_index != 0 &amp;&amp; image_speed = 0) image_speed = 0.2;
 }
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="73">
+      <action>
+        <libid>1</libid>
+        <id>605</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>Chip reserve</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>draw_set_font(font_reserve); draw_set_alpha(1);
+line = 0; lineheight = 16;
+
+draw_set_colour(c_red);
+draw_text(view_xview[0], view_yview[0] + (line*lineheight), "Red: " + string(chip_reserve[0])); line++;
+
+draw_set_colour(c_aqua);
+draw_text(view_xview[0], view_yview[0] + (line*lineheight), "Blue: " + string(chip_reserve[1])); line++;
+
+draw_set_color(c_yellow); 
+draw_text(view_xview[0], view_yview[0] + (line*lineheight), "Yellow: " + string(chip_reserve[2])); line++;
 </string>
           </argument>
         </arguments>

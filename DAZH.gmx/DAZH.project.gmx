@@ -20,11 +20,13 @@
       </sprites>
     </sprites>
     <sprites name="Particle">
+      <sprite>sprites\spr_particle_collect</sprite>
       <sprite>sprites\spr_particle_puff</sprite>
     </sprites>
     <sprites name="Item">
       <sprites name="Chip">
-        <sprite>sprites\spr_chip_red</sprite>
+        <sprite>sprites\spr_item_chip</sprite>
+        <sprite>sprites\spr_item_chip_mask</sprite>
       </sprites>
     </sprites>
     <sprites name="Ambient">
@@ -53,6 +55,7 @@
   </scripts>
   <fonts name="fonts">
     <font>fonts\font_debug</font>
+    <font>fonts\font_reserve</font>
   </fonts>
   <objects name="objects">
     <objects name="Area">
@@ -76,6 +79,12 @@
       <object>objects\obj_amb_par</object>
       <object>objects\obj_amb_butterfly</object>
       <object>objects\obj_amb_frog</object>
+    </objects>
+    <objects name="Item">
+      <objects name="Chip">
+        <object>objects\obj_item_chip</object>
+      </objects>
+      <object>objects\obj_item_par</object>
     </objects>
   </objects>
   <rooms name="rooms">
