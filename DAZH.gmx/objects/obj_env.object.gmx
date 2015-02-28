@@ -145,8 +145,8 @@ in_esc = keyboard_check_pressed(vk_escape);
             <string>/* Toggle debug mode */
 if (in_debug)
 {
-    if (!debug_enabled) TARINST = noone; 
-    debug_enabled = !debug_enabled;
+    if (!global.debug_enabled) TARINST = noone; 
+    global.debug_enabled = !global.debug_enabled;
 }
 
 /* Selecting instances */
@@ -156,14 +156,14 @@ if (in_leftclick)
 }
 
 /* Command Prompt */
-if (debug_entering_text)
+if (global.debug_entering_text)
 {   
     if (in_up)
     { 
-        if (ds_list_find_index(command_list, keyboard_string) == -1) keyboard_string = ds_list_find_value(command_list, ds_list_size(command_list) - 1);
-        else if (ds_list_find_index(command_list, keyboard_string) != 0) keyboard_string = ds_list_find_value(command_list, ds_list_find_index(command_list, keyboard_string) - 1);
+        if (ds_list_find_index(global.command_list, keyboard_string) == -1) keyboard_string = ds_list_find_value(global.command_list, ds_list_size(global.command_list) - 1);
+        else if (ds_list_find_index(global.command_list, keyboard_string) != 0) keyboard_string = ds_list_find_value(global.command_list, ds_list_find_index(global.command_list, keyboard_string) - 1);
     }
-    if (in_down &amp;&amp; ds_list_find_index(command_list, keyboard_string) != -1) keyboard_string = ds_list_find_value(command_list, ds_list_find_index(command_list, keyboard_string) + 1);
+    if (in_down &amp;&amp; ds_list_find_index(global.command_list, keyboard_string) != -1) keyboard_string = ds_list_find_value(global.command_list, ds_list_find_index(global.command_list, keyboard_string) + 1);
 
     if (in_prompt) 
     {
@@ -176,30 +176,30 @@ if (debug_entering_text)
         {
             player = instance_nearest(x, y, obj_char_player);
             player.noclip = !player.noclip;
-            command_output[0] = "Toggled player noclip."; command_output[1] = 600;
+            global.command_output[0] = "Toggled player noclip."; global.command_output[1] = 600;
         }
         else if (command == "toggle areas")
         {
-            showareas = !showareas; 
-            command_output[0] = "Toggled area visibility."; command_output[1] = 600;
+            global.showareas = !global.showareas; 
+            global.command_output[0] = "Toggled area visibility."; global.command_output[1] = 600;
         }
         else if (string_lower(string_copy(command, 0, 7)) == "gravity")
         {
-            if (string_delete(command, 1, 8) == "") {command_output[0] = "No value specified."; command_output[1] = 600;}
+            if (string_delete(command, 1, 8) == "") {global.command_output[0] = "No value specified."; global.command_output[1] = 600;}
             else
             {
                 GRAVITY = real(string_delete(command, 1, 8)); 
-                {command_output[0] = "Gravity set to " + string(GRAVITY) + "."; command_output[1] = 600;}
+                {global.command_output[0] = "Gravity set to " + string(GRAVITY) + "."; global.command_output[1] = 600;}
             }            
         }
         else if (string_lower(string_copy(command, 0, 8)) == "friction")
         {
-            if (string_delete(command, 1, 9) == "") {command_output[0] = "No value specified."; command_output[1] = 600;}
-            else if (object_get_parent(TARINST.object_index) != obj_area_wall_par) {command_output[0] = "Target has no friction."; command_output[1] = 600;}
+            if (string_delete(command, 1, 9) == "") {global.command_output[0] = "No value specified."; global.command_output[1] = 600;}
+            else if (object_get_parent(TARINST.object_index) != obj_area_wall_par) {global.command_output[0] = "Target has no friction."; global.command_output[1] = 600;}
             else
             {
                 ds_map_replace(TARINST.attr, "friction", real(string_delete(command, 1, 9))); 
-                {command_output[0] = "Friction of " + object_get_name(TARINST.object_index) + " (" + string(TARINST.id) + ") set to " + string(ds_map_find_value(TARINST.attr, "friction")) + "."; command_output[1] = 600;}
+                {global.command_output[0] = "Friction of " + object_get_name(TARINST.object_index) + " (" + string(TARINST.id) + ") set to " + string(ds_map_find_value(TARINST.attr, "friction")) + "."; global.command_output[1] = 600;}
             }            
         }
         else if (string_lower(string_copy(command, 0, 6)) == "create") 
@@ -210,51 +210,51 @@ if (debug_entering_text)
                 if (TARINST != noone)
                 {
                     inst = instance_create(mouse_x, mouse_y, TARINST.object_index);
-                    command_output[0] = "Created " + object_get_name(inst.object_index) + " (" + string(inst.id) + ") at " + string(inst.x) + ", " + string(inst.y) + "."; command_output[1] = 600;
+                    global.command_output[0] = "Created " + object_get_name(inst.object_index) + " (" + string(inst.id) + ") at " + string(inst.x) + ", " + string(inst.y) + "."; global.command_output[1] = 600;
                 }
-                else {command_output[0] = "No object specified."; command_output[1] = 600;}
+                else {global.command_output[0] = "No object specified."; global.command_output[1] = 600;}
             }
             else
             {
                 obj = asset_get_index("obj_" + name);   
                 if (!object_exists(obj))
-                {command_output[0] = "Could not create 'obj_" + name + "', does not exist."; command_output[1] = 600;}
+                {global.command_output[0] = "Could not create 'obj_" + name + "', does not exist."; global.command_output[1] = 600;}
                 else
                 {
                     inst = instance_create(mouse_x, mouse_y, obj);
-                    command_output[0] = "Created " + object_get_name(inst.object_index) + " (" + string(inst.id) + ") at " + string(inst.x) + ", " + string(inst.y) + "."; command_output[1] = 600;
+                    global.command_output[0] = "Created " + object_get_name(inst.object_index) + " (" + string(inst.id) + ") at " + string(inst.x) + ", " + string(inst.y) + "."; global.command_output[1] = 600;
                 }
             }
         }
         else if (string_lower(string_copy(command, 0, 7)) == "destroy")
         {
-            command_output[0] = "Destroyed " + object_get_name(TARINST.object_index) + " (" + string(TARINST.id) + ")."; command_output[1] = 600;
+            global.command_output[0] = "Destroyed " + object_get_name(TARINST.object_index) + " (" + string(TARINST.id) + ")."; global.command_output[1] = 600;
             with (TARINST)
                 instance_destroy();
             TARINST = noone;
         }    
-        else if (string_length(command) &gt;= 1) {command_output[0] = "Command '" + command + "' not recognized."; /*command_output[0] = string_split(command, " ");*/ command_output[1] = 600;}
+        else if (string_length(command) &gt;= 1) {global.command_output[0] = "Command '" + command + "' not recognized."; /*global.command_output[0] = string_split(command, " ");*/ global.command_output[1] = 600;}
         /* ### /COMMAND EXECUTION ### */
         
         if (string_length(command) &gt;= 1) 
         {
-            if (ds_list_find_index(command_list, command) != -1) ds_list_delete(command_list, ds_list_find_index(command_list, command));        
-            ds_list_add(command_list, command);
+            if (ds_list_find_index(global.command_list, command) != -1) ds_list_delete(global.command_list, ds_list_find_index(global.command_list, command));        
+            ds_list_add(global.command_list, command);
         }
-        debug_entering_text = false; /* Close prompt */
+        global.debug_entering_text = false; /* Close prompt */
     }
     
     if (in_esc)
-    {debug_entering_text = false;}
+    {global.debug_entering_text = false;}
 }
-else if (debug_enabled &amp;&amp; in_prompt)
-{keyboard_string = ""; debug_entering_text = true;}
+else if (global.debug_enabled &amp;&amp; in_prompt)
+{keyboard_string = ""; global.debug_entering_text = true;}
 </string>
           </argument>
         </arguments>
       </action>
     </event>
-    <event eventtype="7" enumb="2">
+    <event eventtype="7" enumb="3">
       <action>
         <libid>1</libid>
         <id>605</id>
@@ -271,7 +271,7 @@ else if (debug_enabled &amp;&amp; in_prompt)
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>Global variables</string>
+            <string>Destroy Stuff</string>
           </argument>
         </arguments>
       </action>
@@ -291,18 +291,8 @@ else if (debug_enabled &amp;&amp; in_prompt)
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>/* Global variables */
-globalvar debug_enabled; /* Is debug mode enabled? */
-debug_enabled = false;
-globalvar debug_entering_text; /* Is the user entering text in debug mode? */
-debug_entering_text = false;
-globalvar command_list; /* List of previously-entered commands */
-command_list = ds_list_create();
-globalvar command_output; /* Command output */
-command_output[0] = "Press ENTER to use commands.";
-command_output[1] = 600;
-globalvar showareas; /* Are areas visible? */
-showareas = false;
+            <string>/* Particle system */
+part_system_destroy(global.part_sys);
 </string>
           </argument>
         </arguments>
@@ -345,7 +335,7 @@ showareas = false;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (debug_enabled)
+            <string>if (global.debug_enabled)
 {
     /* BG */
     draw_set_colour(c_olive); draw_set_alpha(0.5);
@@ -392,7 +382,7 @@ showareas = false;
     }
     
     /* Command output */
-    if (command_output[1] &gt; 0) {draw_text(view_xview[0], view_yview[0]+view_hview[0]-14, command_output[0]); command_output[1]--;}
+    if (global.command_output[1] &gt; 0) {draw_text(view_xview[0], view_yview[0]+view_hview[0]-14, global.command_output[0]); global.command_output[1]--;}
     
     if (freezer &gt;= 3) freezer = 0;
     else              freezer++;
@@ -437,7 +427,7 @@ showareas = false;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (debug_entering_text)
+            <string>if (global.debug_entering_text)
 {
     /* BG */
     draw_set_colour(c_olive); draw_set_alpha(0.5);

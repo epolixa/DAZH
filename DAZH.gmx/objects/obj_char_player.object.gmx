@@ -117,8 +117,7 @@ alarm[0] = 120 + random(120);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>/* Particles */
-player_part_sys = part_system_create();
+            <string>/* Player particles */
 
 /* Jump particles */
 player_part_jump = part_type_create();
@@ -128,12 +127,12 @@ part_type_speed(player_part_jump, 1, 1, 0, 0);
 part_type_direction(player_part_jump, 200, 330, 0, 0);
 part_type_life(player_part_jump, 10, 20);
 
-/* Wallslide particles */
+/* Slide particles */
 player_part_slide = part_type_create();
 part_type_sprite(player_part_slide, spr_particle_puff, true, true, false);
 part_type_size(player_part_slide, 1, 1, 0, 0);
-part_type_speed(player_part_slide, 0, 0, 0, 0);
-part_type_direction(player_part_slide, 0, 0, 0, 0);
+part_type_speed(player_part_slide, 0.2, 0.2, 0, 0);
+part_type_direction(player_part_slide, 0, 359, 0, 0);
 part_type_life(player_part_slide, 10, 10);
 
 /* Land particles */
@@ -331,6 +330,7 @@ else
 {
     if (in_right &amp;&amp; xvel &lt; TERMXVEL) xvel += XACCEL;
     if (in_left &amp;&amp; -xvel &lt; TERMXVEL) xvel -= XACCEL;
+    if (!in_left &amp;&amp; !in_right &amp;&amp; xvel != 0) part_particles_create(global.part_sys, x - sprite_width/3, y + sprite_height/2, player_part_slide, 1);
 }
 
 /* Horz friction */
@@ -355,7 +355,7 @@ if (airborn &amp;&amp; yvel &lt; TERMYVEL &amp;&amp; !noclip) /* Gravity */
         if ((yvel - sign(yvel)*0.5*ds_map_find_value(wall.attr,"friction")) &gt; 0)
             yvel -= sign(yvel)*0.5*ds_map_find_value(wall.attr,"friction");
         if (abs(yvel) &gt; XACCEL)
-            part_particles_create(player_part_sys, x - sprite_width/2, y + sprite_height/3, player_part_slide, 1);
+            part_particles_create(global.part_sys, x - sprite_width/2, y + sprite_height/3, player_part_slide, 1);
         if (image_xscale != -side) image_xscale = -side;
     }
 }
@@ -363,14 +363,15 @@ if (in_jump &amp;&amp; !noclip) /* Jumping */
 {
     if (airborn &amp;&amp; (place_meeting(x + 1, y, obj_area_wall_par) || place_meeting(x - 1, y, obj_area_wall_par))) /* Wall jumping */
     {
-        yvel = -0.8*JUMPSTR;
-        xvel = -0.5*side*JUMPSTR;
+        wall = instance_nearest(x, y, obj_area_wall_par); side = sign(wall.x - x);
+        yvel = -(2*ds_map_find_value(wall.attr, "friction"))*JUMPSTR;
+        xvel = -0.5*side*JUMPSTR; 
     }
     else if (airborn &amp;&amp; jumps[1] &gt; 0) /* Multi-jumping */
     {
         yvel = -0.8*JUMPSTR;
         jumps[1]--;
-        part_particles_create(player_part_sys, x, y + sprite_height/2, player_part_jump, 1);
+        part_particles_create(global.part_sys, x, y + sprite_height/2, player_part_jump, 1);
     }
     else if (!airborn) /* A regular jump */
         yvel = -1*JUMPSTR;         
@@ -440,8 +441,6 @@ if (!noclip &amp;&amp; place_meeting(x + xvel, y, obj_area_wall_par)) /* Horz co
     xvel = 0;            /* Halt velocity */      
 }
 
-if (y &gt; room_height) room_restart(); /* Restart when fall out of room */
-
 if (!noclip &amp;&amp; place_meeting(x, y + yvel, obj_area_wall_par)) /* Vert collision */
 {
     while (!place_meeting(x, y + sign(yvel), obj_area_wall_par))
@@ -450,7 +449,7 @@ if (!noclip &amp;&amp; place_meeting(x, y + yvel, obj_area_wall_par)) /* Vert co
     {
         airborn = false; 
         jumps[1] = jumps[0];
-        part_particles_create(player_part_sys, x, y + sprite_height/2, player_part_land, 2);
+        part_particles_create(global.part_sys, x, y + sprite_height/2, player_part_land, 2);
     }
     yvel = 0;      
 }
@@ -571,6 +570,50 @@ if (sprite_index = spr_char_player)
           </argument>
         </arguments>
       </action>
+      <action>
+        <libid>1</libid>
+        <id>605</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>Fallout</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if (x &lt; 0 || x &gt; room_width || y &lt; 0 || y &gt; room_height)
+{
+    room_restart();
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
     </event>
     <event eventtype="8" enumb="73">
       <action>
@@ -612,16 +655,19 @@ if (sprite_index = spr_char_player)
             <string>if (!debug_enabled)
 {
     draw_set_font(font_reserve); draw_set_alpha(1);
-    line = 0; lineheight = 16;
+    line = 0; lineheight = 10;
     
     draw_set_colour(c_red);
-    draw_text(view_xview[0], view_yview[0] + (line*lineheight), "Red: " + string(chip_reserve[0])); line++;
+    draw_sprite_ext(spr_item_chip, 0, view_xview[0] + 6, view_yview[0] + (line*lineheight) + 8, 1, 1, 0, c_red, 1);
+    draw_text(view_xview[0] + 12, view_yview[0] + (line*lineheight), string(chip_reserve[0])); line++;
     
     draw_set_colour(c_aqua);
-    draw_text(view_xview[0], view_yview[0] + (line*lineheight), "Blue: " + string(chip_reserve[1])); line++;
+    draw_sprite_ext(spr_item_chip, 0, view_xview[0] + 6, view_yview[0] + (line*lineheight) + 8, 1, 1, 0, c_aqua, 1);
+    draw_text(view_xview[0] + 12, view_yview[0] + (line*lineheight), string(chip_reserve[1])); line++;
     
-    draw_set_color(c_yellow); 
-    draw_text(view_xview[0], view_yview[0] + (line*lineheight), "Yellow: " + string(chip_reserve[2])); line++;
+    draw_set_colour(c_yellow);
+    draw_sprite_ext(spr_item_chip, 0, view_xview[0] + 6, view_yview[0] + (line*lineheight) + 8, 1, 1, 0, c_yellow, 1); 
+    draw_text(view_xview[0] + 12, view_yview[0] + (line*lineheight), string(chip_reserve[2])); line++;
 }
 </string>
           </argument>

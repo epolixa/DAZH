@@ -86,11 +86,12 @@
       </objects>
       <object>objects\obj_item_par</object>
     </objects>
+    <object>objects\obj_load</object>
   </objects>
   <rooms name="rooms">
+    <room>rooms\rm_load</room>
     <room>rooms\rm_test</room>
     <room>rooms\rm_title</room>
-    <room>rooms\rm_load</room>
   </rooms>
   <constants number="2">
     <constant name="GM_build_date">41883.6565948727</constant>
