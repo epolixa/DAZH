@@ -147,6 +147,51 @@ part_type_life(player_part_land, 15, 25);
         </arguments>
       </action>
     </event>
+    <event eventtype="2" enumb="1">
+      <action>
+        <libid>1</libid>
+        <id>605</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>Trigger idle animation</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/* Trigger idle animation */
+sprite_index = spr_char_player_idle;
+image_speed = 0.2;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
     <event eventtype="2" enumb="0">
       <action>
         <libid>1</libid>
@@ -164,7 +209,7 @@ part_type_life(player_part_land, 15, 25);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>Trigger blink</string>
+            <string>Trigger blink animation</string>
           </argument>
         </arguments>
       </action>
@@ -232,8 +277,9 @@ alarm[0] = 120 + random(120);
           <argument>
             <kind>1</kind>
             <string>/* Instances */
-if (airborn) WALL = noone;
-else WALL = instance_nearest(x, y + 1, obj_area_wall_par);
+if (airborn &amp;&amp; (place_meeting(x + 1, y, obj_area_wall_par) || place_meeting(x - 1, y, obj_area_wall_par))) WALL = instance_nearest(x, y, obj_area_wall_par);
+else if (!airborn) WALL = instance_nearest(x, y + 1, obj_area_wall_par);
+else WALL = noone;
 </string>
           </argument>
         </arguments>
@@ -349,11 +395,11 @@ else               /* Surface friction */
 if (airborn &amp;&amp; yvel &lt; TERMYVEL &amp;&amp; !noclip) /* Gravity */
 {
     yvel += WEIGHT*ENV.GRAVITY; 
-    if (place_meeting(x + 1, y, obj_area_wall_par) || place_meeting(x - 1, y, obj_area_wall_par)) /* Wall sliding */
+    if (WALL != noone) /* Wall sliding */
     {
-        wall = instance_nearest(x, y, obj_area_wall_par); side = sign(wall.x - x);
-        if ((yvel - sign(yvel)*0.5*ds_map_find_value(wall.attr,"friction")) &gt; 0)
-            yvel -= sign(yvel)*0.5*ds_map_find_value(wall.attr,"friction");
+        side = sign(WALL.x - x);
+        if ((yvel - sign(yvel)*0.5*ds_map_find_value(WALL.attr,"friction")) &gt; 0)
+            yvel -= sign(yvel)*0.5*ds_map_find_value(WALL.attr,"friction");
         if (abs(yvel) &gt; XACCEL)
             part_particles_create(global.part_sys, x - sprite_width/2, y + sprite_height/3, player_part_slide, 1);
         if (image_xscale != -side) image_xscale = -side;
@@ -361,10 +407,10 @@ if (airborn &amp;&amp; yvel &lt; TERMYVEL &amp;&amp; !noclip) /* Gravity */
 }
 if (in_jump &amp;&amp; !noclip) /* Jumping */
 {
-    if (airborn &amp;&amp; (place_meeting(x + 1, y, obj_area_wall_par) || place_meeting(x - 1, y, obj_area_wall_par))) /* Wall jumping */
+    if (airborn &amp;&amp; WALL != noone) /* Wall jumping */
     {
-        wall = instance_nearest(x, y, obj_area_wall_par); side = sign(wall.x - x);
-        yvel = -(2*ds_map_find_value(wall.attr, "friction"))*JUMPSTR;
+        side = sign(WALL.x - x);
+        yvel = -(2*ds_map_find_value(WALL.attr, "friction"))*JUMPSTR;
         xvel = -0.5*side*JUMPSTR; 
     }
     else if (airborn &amp;&amp; jumps[1] &gt; 0) /* Multi-jumping */
@@ -383,12 +429,6 @@ else if (noclip)
     
     if (abs(yvel) &lt; 0.1*XACCEL) yvel = 0;              /* Air friction */ 
     else yvel -= (sign(yvel)*(0.1*XACCEL));  
-}
-
-/* Sprite */
-if (!airborn)
-{
-    if (xvel != 0 &amp;&amp; image_xscale != sign(xvel)) image_xscale = sign(xvel);
 }
 </string>
           </argument>
@@ -558,13 +598,39 @@ if (!noclip &amp;&amp; place_meeting(x, y, obj_area_wall_par)) /* Fix if stuck i
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (xvel = 0 &amp;&amp; sprite_index != spr_char_player) sprite_index = spr_char_player;
+            <string>/* Base checks */
+if      (!airborn &amp;&amp; xvel == 0 &amp;&amp; sprite_index != spr_char_player &amp;&amp; sprite_index != spr_char_player_idle) {sprite_index = spr_char_player; image_index = 0; image_speed = 0;} /* Standing */
+else if (!airborn &amp;&amp; !in_left &amp;&amp; !in_right &amp;&amp; xvel != 0 &amp;&amp; sprite_index != spr_char_player_slide)          {sprite_index = spr_char_player_slide; image_speed = 0;}          /* Slide (Skid)? */
+else if (!airborn &amp;&amp; xvel != 0 &amp;&amp; sprite_index != spr_char_player_walk)                                    {sprite_index = spr_char_player_walk;}                               /* Walking */
+else if (airborn &amp;&amp; WALL != noone &amp;&amp; sprite_index != spr_char_player_wslide)                               {sprite_index = spr_char_player_wslide; image_speed = 0;}         /* Wallsliding */
+else if (airborn &amp;&amp; yvel &lt;= 0 &amp;&amp; sprite_index != spr_char_player_rising)                                   {sprite_index = spr_char_player_rising; image_speed = 0;}           /* Rising */
+else if (airborn &amp;&amp; yvel &gt; 0 &amp;&amp; sprite_index != spr_char_player_falling)                                   {sprite_index = spr_char_player_falling; image_speed = 0.2;}        /* Falling */
 
-if (sprite_index = spr_char_player)
+/* While standing */
+if (sprite_index == spr_char_player)
 {
     /* Blinking, triggered by alarm 1 */
-    if (image_index = 0 &amp;&amp; image_speed != 0) image_speed = 0;
+    if      (image_index = 0 &amp;&amp; image_speed != 0) image_speed = 0;
     else if (image_index != 0 &amp;&amp; image_speed = 0) image_speed = 0.2;
+    
+    /* Set idle animation alarm */
+    if (alarm[1] &lt;= -1) alarm[1] = 600;
+}
+
+/* While walking */
+if (sprite_index == spr_char_player_walk)
+{
+    /* Image speed relative to xvel */
+    image_speed = 0.1*abs(xvel);
+
+    /* Unset idle animation alarm */
+    if (alarm[1] &gt; -1) alarm[1] = -1;
+}
+
+/* Facing */
+if (!airborn)
+{
+    if (xvel != 0 &amp;&amp; image_xscale != sign(xvel)) image_xscale = sign(xvel);
 }
 </string>
           </argument>
