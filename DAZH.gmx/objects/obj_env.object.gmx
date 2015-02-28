@@ -356,27 +356,17 @@ showareas = false;
     
     /* Selected instance */
     if (SELINST != noone)
-    {
-        /* Type */
-        if (object_get_parent(SELINST.object_index) == obj_area_wall_par) draw_text(view_xview[0], view_yview[0] + (line*lineheight), "WALL (AREA)");
-        else if (SELINST.object_index == obj_char_player) draw_text(view_xview[0], view_yview[0] + (line*lineheight), "PLAYER");
-        else if (SELINST.object_index == obj_amb_butterfly) draw_text(view_xview[0], view_yview[0] + (line*lineheight), "BUTTERFLY");
-        line++;
-        
-        /* Universal properties */
-        draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "INDEX: " + object_get_name(SELINST.object_index) + " (" + string(SELINST.id) + ")"); line++;
+    {    
+        draw_text(view_xview[0], view_yview[0] + (line*lineheight), "SELECTED"); line++;
+    
+        /* Name &amp; universal properties */
+        draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), object_get_name(SELINST.object_index) + " (" + string(SELINST.id) + ")"); line++;
         draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "X: " + string(SELINST.x)); draw_text(view_xview[0] + 100, view_yview[0] + (line*lineheight), "Y: " + string(SELINST.y)); line++;
         
         /* Special attributes */
         if (object_get_parent(SELINST.object_index) == obj_area_wall_par)
         {
             if (ds_map_exists(SELINST.attr, "friction")) draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "FRICTION: " + string(ds_map_find_value(SELINST.attr, "friction"))); 
-            line+=2;
-        }
-        else if (SELINST.object_index == obj_char_player)
-        {
-            draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "XVEL: " + string(SELINST.xvel)); draw_text(view_xview[0] + 100, view_yview[0] + (line*lineheight), "YVEL: " + string(SELINST.yvel)); line++;
-            draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "AIRBORN: " + string(SELINST.airborn)); 
             line+=2;
         }
         else if (SELINST.object_index == obj_amb_butterfly)

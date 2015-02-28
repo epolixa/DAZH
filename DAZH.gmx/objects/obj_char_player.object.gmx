@@ -61,6 +61,10 @@ jumps[0] = 1; /* [max jumps, jumps remaining] */
 jumps[1] = jumps[0];
 airborn = true;    /* Is the object off the ground? */
 noclip = false;    /* noclip mode enabled? */
+
+/* Set alarms */
+image_speed = 0; /* Blink */
+alarm[0] = 120 + random(120);
 </string>
           </argument>
         </arguments>
@@ -127,6 +131,53 @@ part_type_size(player_part_land, 1, 1, 0, 0);
 part_type_speed(player_part_land, 0.8, 0.8, 0, 0);
 part_type_direction(player_part_land, 0, 180, 0, 0);
 part_type_life(player_part_land, 15, 25);
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>605</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>Trigger blink</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/* Trigger a blink */
+image_index = 1;
+
+/* Reset alarm */
+alarm[0] = 120 + random(120);
 </string>
           </argument>
         </arguments>
@@ -216,11 +267,11 @@ else WALL = instance_nearest(x, y + 1, obj_area_wall_par);
           <argument>
             <kind>1</kind>
             <string>/* Get user input */
-in_up = keyboard_check(ord('W')) &amp;&amp; !debug_entering_text;
-in_down = keyboard_check(ord('S')) &amp;&amp; !debug_entering_text;
-in_left = keyboard_check(ord('A')) &amp;&amp; !debug_entering_text;
-in_right = keyboard_check(ord('D')) &amp;&amp; !debug_entering_text;
-in_jump = keyboard_check_pressed(32) &amp;&amp; !debug_entering_text;
+in_up =    (keyboard_check(vk_up)      || -gamepad_axis_value(0, gp_axislv))         &amp;&amp; !debug_entering_text;
+in_down =  (keyboard_check(vk_down)    || gamepad_axis_value(0, gp_axislv))          &amp;&amp; !debug_entering_text;
+in_left =  (keyboard_check(vk_left)    || -gamepad_axis_value(0, gp_axislh))         &amp;&amp; !debug_entering_text;
+in_right = (keyboard_check(vk_right)   || gamepad_axis_value(0, gp_axislh))          &amp;&amp; !debug_entering_text;
+in_jump =  (keyboard_check_pressed(32) || gamepad_button_check_pressed(0, gp_face1)) &amp;&amp; !debug_entering_text;
 </string>
           </argument>
         </arguments>
@@ -295,7 +346,7 @@ if (airborn &amp;&amp; yvel &lt; TERMYVEL &amp;&amp; !noclip) /* Gravity */
         if ((yvel - sign(yvel)*0.5*ds_map_find_value(wall.attr,"friction")) &gt; 0)
             yvel -= sign(yvel)*0.5*ds_map_find_value(wall.attr,"friction");
         if (abs(yvel) &gt; XACCEL)
-            part_particles_create(player_part_sys, x + side*(sprite_width/2), y + sprite_height/3, player_part_slide, 1);
+            part_particles_create(player_part_sys, x - sprite_width/2, y + sprite_height/3, player_part_slide, 1);
         if (image_xscale != -side) image_xscale = -side;
     }
 }
@@ -406,6 +457,54 @@ if (!noclip &amp;&amp; place_meeting(x, y, obj_area_wall_par)) /* Fix if stuck i
 {
     x = xprev; xvel = 0;
     y = yprev; yvel = 0;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>605</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>Sprite</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if (xvel = 0 &amp;&amp; sprite_index != spr_char_player) sprite_index = spr_char_player;
+
+if (sprite_index = spr_char_player)
+{
+    /* Blinking, triggered by alarm 1 */
+    if (image_index = 0 &amp;&amp; image_speed != 0) image_speed = 0;
+    else if (image_index != 0 &amp;&amp; image_speed = 0) image_speed = 0.2;
 }
 </string>
           </argument>
