@@ -282,6 +282,7 @@ in_down =  (keyboard_check(vk_down)    || gamepad_axis_value(0, gp_axislv))     
 in_left =  (keyboard_check(vk_left)    || -gamepad_axis_value(0, gp_axislh))         &amp;&amp; !debug_entering_text;
 in_right = (keyboard_check(vk_right)   || gamepad_axis_value(0, gp_axislh))          &amp;&amp; !debug_entering_text;
 in_jump =  (keyboard_check_pressed(32) || gamepad_button_check_pressed(0, gp_face1)) &amp;&amp; !debug_entering_text;
+in_shoot = (keyboard_check_pressed(ord("F")) || gamepad_button_check_pressed(0, gp_face2)) &amp;&amp; !debug_entering_text;
 </string>
           </argument>
         </arguments>
@@ -371,8 +372,8 @@ else WALL = noone;
 /* Horz acceleration */
 if (airborn || noclip)
 {
-    if (in_right &amp;&amp; xvel &lt; TERMXVEL) xvel += (0.4*XACCEL); /* Right */
-    if (in_left &amp;&amp; -xvel &lt; TERMXVEL) xvel -= (0.4*XACCEL); /* Left */
+    if (in_right) xvel += (0.4*XACCEL); /* Right */
+    if (in_left) xvel -= (0.4*XACCEL); /* Left */
     if (!in_left &amp;&amp; !in_right &amp;&amp; xvel != 0)
     {
         if (abs(xvel) &lt; 0.2*XACCEL) xvel = 0; 
@@ -381,8 +382,8 @@ if (airborn || noclip)
 }
 else if (WALL != noone)
 {
-    if (in_right &amp;&amp; xvel &lt; TERMXVEL) xvel += 2*fric*XACCEL;
-    if (in_left &amp;&amp; -xvel &lt; TERMXVEL) xvel -= 2*fric*XACCEL;
+    if (in_right) xvel += 2*fric*XACCEL;
+    if (in_left) xvel -= 2*fric*XACCEL;
     if (!in_left &amp;&amp; !in_right &amp;&amp; xvel != 0) 
     {
         part_particles_create(global.part_sys, x - sprite_width/3, y + sprite_height/2, player_part_slide, 1);
@@ -390,9 +391,10 @@ else if (WALL != noone)
         else xvel -= (sign(xvel)*fric*XACCEL); 
     }
 }
+if (abs(xvel) &gt; TERMXVEL) xvel = sign(xvel)*TERMXVEL;
 
 /* Vert acceleration */
-if (airborn &amp;&amp; yvel &lt; TERMYVEL &amp;&amp; !noclip) /* Gravity */
+if (airborn &amp;&amp; !noclip) /* Gravity */
 {
     yvel += WEIGHT*ENV.GRAVITY; 
     if (WALL != noone) /* Wall sliding */
@@ -403,6 +405,8 @@ if (airborn &amp;&amp; yvel &lt; TERMYVEL &amp;&amp; !noclip) /* Gravity */
             part_particles_create(global.part_sys, x - sprite_width/2, y + sprite_height/3, player_part_slide, 1);
         if (image_xscale != -side) image_xscale = -side;
     }
+    
+    if (abs(yvel) &gt; TERMYVEL) yvel = sign(yvel)*TERMYVEL;
 }
 if (in_jump &amp;&amp; !noclip) /* Jumping */
 {
@@ -555,6 +559,51 @@ if (!noclip &amp;&amp; place_meeting(x, y, obj_area_wall_par)) /* Fix if stuck i
     chip.collected = true;
     
     if (ENV.TARINST == chip) ENV.TARINST = noone;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>605</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>Shoot chips</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if (in_shoot)
+{
+    shot = instance_create(x + sprite_width/2, y, obj_proj_chip);
+    shot.xvel = image_xscale*8;
 }
 </string>
           </argument>

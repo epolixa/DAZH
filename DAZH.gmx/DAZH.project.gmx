@@ -49,6 +49,9 @@
     <sprites name="Puzzle Bar">
       <sprite>sprites\spr_puzz_chip</sprite>
     </sprites>
+    <sprites name="Projectile">
+      <sprite>sprites\spr_proj_chip</sprite>
+    </sprites>
   </sprites>
   <backgrounds name="background">
     <background>background\bg_tile_gardens</background>
@@ -90,12 +93,14 @@
       <object>objects\obj_amb_frog</object>
     </objects>
     <objects name="Item">
-      <objects name="Chip">
-        <object>objects\obj_item_chip</object>
-      </objects>
       <object>objects\obj_item_par</object>
+      <object>objects\obj_item_chip</object>
     </objects>
     <object>objects\obj_load</object>
+    <objects name="Projectile">
+      <object>objects\obj_proj_chip</object>
+      <object>objects\obj_proj_par</object>
+    </objects>
   </objects>
   <rooms name="rooms">
     <room>rooms\rm_load</room>
