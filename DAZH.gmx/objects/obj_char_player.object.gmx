@@ -599,10 +599,10 @@ if (!noclip &amp;&amp; place_meeting(x, y, obj_area_wall_par)) /* Fix if stuck i
             <string>/* Base checks */
 if      (!airborn &amp;&amp; xvel == 0 &amp;&amp; sprite_index != spr_char_player &amp;&amp; sprite_index != spr_char_player_idle) {sprite_index = spr_char_player; image_index = 0; image_speed = 0;} /* Standing */
 else if (!airborn &amp;&amp; !in_left &amp;&amp; !in_right &amp;&amp; xvel != 0 &amp;&amp; sprite_index != spr_char_player_slide)          {sprite_index = spr_char_player_slide; image_speed = 0;}          /* Slide (Skid)? */
-else if (!airborn &amp;&amp; (in_left || in_right) &amp;&amp; xvel != 0 &amp;&amp; sprite_index != spr_char_player_walk)                                    {sprite_index = spr_char_player_walk;}                               /* Walking */
+else if (!airborn &amp;&amp; (in_left || in_right) &amp;&amp; xvel != 0 &amp;&amp; sprite_index != spr_char_player_walk)           {sprite_index = spr_char_player_walk;}                               /* Walking */
 else if (airborn &amp;&amp; WALL != noone &amp;&amp; sprite_index != spr_char_player_wslide)                               {sprite_index = spr_char_player_wslide; image_speed = 0;}         /* Wallsliding */
-else if (airborn &amp;&amp; WALL == noone &amp;&amp; yvel &lt;= 0 &amp;&amp; sprite_index != spr_char_player_rising)                                   {sprite_index = spr_char_player_rising; image_speed = 0;}           /* Rising */
-else if (airborn &amp;&amp; WALL == noone &amp;&amp; yvel &gt; 0 &amp;&amp; sprite_index != spr_char_player_falling)                                   {sprite_index = spr_char_player_falling; image_speed = 0.2;}        /* Falling */
+else if (airborn &amp;&amp; WALL == noone &amp;&amp; yvel &lt;= 0 &amp;&amp; sprite_index != spr_char_player_rising)                  {sprite_index = spr_char_player_rising; image_speed = 0;}           /* Rising */
+else if (airborn &amp;&amp; WALL == noone &amp;&amp; yvel &gt; 0 &amp;&amp; sprite_index != spr_char_player_falling)                  {sprite_index = spr_char_player_falling; image_speed = 0.2;}        /* Falling */
 
 /* While standing */
 if (sprite_index == spr_char_player)
@@ -626,7 +626,8 @@ if (sprite_index == spr_char_player_walk)
 }
 
 /* Facing */
-if (!airborn &amp;&amp; (in_left || in_right)) image_xscale = in_right - in_left;
+if (!airborn &amp;&amp; (in_left || in_right) &amp;&amp; !(in_left &amp;&amp; in_right)) image_xscale = in_right - in_left;
+else if (!in_left &amp;&amp; !in_right &amp;&amp; xvel != 0) image_xscale = sign(xvel);
 
 </string>
           </argument>
