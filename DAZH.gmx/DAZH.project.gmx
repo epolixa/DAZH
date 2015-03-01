@@ -46,11 +46,18 @@
         <sprite>sprites\spr_frog_mask</sprite>
       </sprites>
     </sprites>
-    <sprites name="Puzzle Bar">
-      <sprite>sprites\spr_puzz_chip</sprite>
+    <sprites name="HUD">
+      <sprites name="Puzzle Bar">
+        <sprite>sprites\spr_hud_puzzle_chip</sprite>
+        <sprite>sprites\spr_hud_puzzle_frame_side</sprite>
+        <sprite>sprites\spr_hud_puzzle_endcap</sprite>
+      </sprites>
     </sprites>
     <sprites name="Projectile">
       <sprite>sprites\spr_proj_chip</sprite>
+    </sprites>
+    <sprites name="Enemy">
+      <sprite>sprites\spr_enemy_bub</sprite>
     </sprites>
   </sprites>
   <backgrounds name="background">
@@ -100,6 +107,10 @@
     <objects name="Projectile">
       <object>objects\obj_proj_chip</object>
       <object>objects\obj_proj_par</object>
+    </objects>
+    <objects name="Enemy">
+      <object>objects\obj_enemy_bub</object>
+      <object>objects\obj_enemy_par</object>
     </objects>
   </objects>
   <rooms name="rooms">

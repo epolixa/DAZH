@@ -276,7 +276,8 @@ if (place_meeting(x, y + yvel, obj_area_wall_par)) /* Vert collision */
     event_perform(ev_alarm, 1);      
 }
 
-if (xvel != 0) {part_particles_create(global.part_sys, x, y, chip_part_tail, 1); image_xscale = sign(xvel);}
+image_angle = point_direction(x, y, x + xvel, y + yvel);
+if (xvel != 0 || yvel != 0) part_particles_create(part_sys, x, y, chip_part_tail, 1);
 
 x += xvel; /* Translate */
 y += yvel;

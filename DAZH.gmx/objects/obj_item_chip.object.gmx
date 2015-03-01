@@ -66,7 +66,8 @@ collected = false; /* trigger collection when true */
 
 image_speed = 0.2;
 
-
+alarm[1] = 600; /* Time till despawn */
+flash_interval = 0; /* Despawn flash effect */
 </string>
           </argument>
         </arguments>
@@ -115,6 +116,51 @@ part_type_speed(chip_part_collect, 1, 3, 0, 0);
 part_type_direction(chip_part_collect, 0, 359, 0, 0);
 part_type_gravity(chip_part_collect, 0.4, 135);
 part_type_life(chip_part_collect, 40, 40);
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="1">
+      <action>
+        <libid>1</libid>
+        <id>605</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>Despawn</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/* Despawn */
+if (ENV.TARINST == id) ENV.TARINST = noone;
+instance_destroy();
 </string>
           </argument>
         </arguments>
@@ -388,6 +434,56 @@ if (place_meeting(x, y, obj_area_wall_par)) /* Fix if stuck in a wall */
         <arguments>
           <argument>
             <kind>1</kind>
+            <string>Despawn effect</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if (alarm[1] &lt; 180 &amp;&amp; flash_interval &gt;= (0.3*alarm[1]))
+{
+    if (image_alpha == 1) image_alpha = 0.2;
+    else image_alpha = 1;
+    
+    flash_interval = 0;
+}
+else if (alarm[1] &lt; 180)
+    flash_interval++;
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>605</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
             <string>Fallout</string>
           </argument>
         </arguments>
@@ -410,8 +506,7 @@ if (place_meeting(x, y, obj_area_wall_par)) /* Fix if stuck in a wall */
             <kind>1</kind>
             <string>if (x &lt; 0 || x &gt; room_width || y &lt; 0 || y &gt; room_height)
 {
-    if (ENV.TARINST == id) ENV.TARINST = noone;
-    instance_destroy();
+    event_perform(ev_alarm, 1);
 }
 </string>
           </argument>
