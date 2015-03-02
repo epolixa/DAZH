@@ -59,6 +59,7 @@
     </sprites>
     <sprites name="Enemy">
       <sprite>sprites\spr_enemy_bub</sprite>
+      <sprite>sprites\spr_enemy_bub_mask</sprite>
     </sprites>
   </sprites>
   <backgrounds name="background">
@@ -112,6 +113,10 @@
     <objects name="Enemy">
       <object>objects\obj_enemy_bub</object>
       <object>objects\obj_enemy_par</object>
+    </objects>
+    <objects name="Container">
+      <object>objects\obj_cont_par</object>
+      <object>objects\obj_cont_chest</object>
     </objects>
   </objects>
   <rooms name="rooms">
