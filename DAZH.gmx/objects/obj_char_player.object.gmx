@@ -284,9 +284,10 @@ in_down =       (keyboard_check(vk_down)    || gamepad_axis_value(0, gp_axislv))
 in_left =       (keyboard_check(vk_left)    || -gamepad_axis_value(0, gp_axislh))         &amp;&amp; !debug_entering_text;
 in_right =      (keyboard_check(vk_right)   || gamepad_axis_value(0, gp_axislh))          &amp;&amp; !debug_entering_text;
 in_jump =       (keyboard_check_pressed(32) || gamepad_button_check_pressed(0, gp_face1)) &amp;&amp; !debug_entering_text;
-in_shoot =      (keyboard_check_pressed(ord("F")) || gamepad_button_check_pressed(0, gp_face2)) &amp;&amp; !debug_entering_text;
-in_changeslot = (keyboard_check_pressed(ord("D"))) &amp;&amp; !debug_enabled;
-in_loadslot =       (keyboard_check_pressed(ord("S"))) &amp;&amp; !debug_enabled;
+in_shoot =      (keyboard_check_pressed(ord("F")) || gamepad_button_check_pressed(0, gp_shoulderrb)) &amp;&amp; !debug_entering_text;
+in_slotup =     (keyboard_check_pressed(ord("W")) || gamepad_button_check_pressed(0, gp_padu) || gamepad_button_check_pressed(0, gp_shoulderl)) &amp;&amp; !debug_enabled;
+in_slotdown =   (keyboard_check_pressed(ord("S")) || gamepad_button_check_pressed(0, gp_padd) || gamepad_button_check_pressed(0, gp_shoulderr)) &amp;&amp; !debug_enabled;
+in_loadslot =   (keyboard_check_pressed(ord("D")) || gamepad_button_check_pressed(0, gp_shoulderlb)) &amp;&amp; !debug_enabled;
 </string>
           </argument>
         </arguments>
@@ -591,11 +592,8 @@ if (in_shoot &amp;&amp; puzzlebar[slot, 0] != noone &amp;&amp; puzzlebar[slot, 0
 }
 
 /* Change slot */
-if (in_changeslot)
-{
-    if (slot &gt;= 2) slot = 0;
-    else slot++;
-}
+if (in_slotdown &amp;&amp; slot &lt; 2) slot++;
+else if (in_slotup &amp;&amp; slot &gt; 0) slot --;
 
 /* Loading chips */
 if (in_loadslot)

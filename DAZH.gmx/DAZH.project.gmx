@@ -55,7 +55,9 @@
       </sprites>
     </sprites>
     <sprites name="Projectile">
+      <sprite>sprites\spr_proj_2chip</sprite>
       <sprite>sprites\spr_proj_chip</sprite>
+      <sprite>sprites\spr_proj_3chip</sprite>
     </sprites>
     <sprites name="Enemy">
       <sprite>sprites\spr_enemy_bub</sprite>
@@ -108,6 +110,8 @@
     <object>objects\obj_load</object>
     <objects name="Projectile">
       <object>objects\obj_proj_chip</object>
+      <object>objects\obj_proj_2chip</object>
+      <object>objects\obj_proj_3chip</object>
       <object>objects\obj_proj_par</object>
     </objects>
     <objects name="Enemy">
