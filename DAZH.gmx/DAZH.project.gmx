@@ -50,7 +50,8 @@
       <sprites name="Puzzle Bar">
         <sprite>sprites\spr_hud_puzzle_chip</sprite>
         <sprite>sprites\spr_hud_puzzle_frame_side</sprite>
-        <sprite>sprites\spr_hud_puzzle_endcap</sprite>
+        <sprite>sprites\spr_hud_puzzle_frame_endcap</sprite>
+        <sprite>sprites\spr_hud_puzzle_slotloader</sprite>
       </sprites>
     </sprites>
     <sprites name="Projectile">

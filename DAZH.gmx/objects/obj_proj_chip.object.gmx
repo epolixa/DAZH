@@ -6,7 +6,7 @@
   <depth>0</depth>
   <persistent>0</persistent>
   <parentName>obj_proj_par</parentName>
-  <maskName>&lt;undefined&gt;</maskName>
+  <maskName>spr_item_chip_mask</maskName>
   <events>
     <event eventtype="0" enumb="0">
       <action>
@@ -170,6 +170,7 @@ item.COLOR = COLOR;
 
 part_particles_create(part_sys, x, y, chip_part_item, 1);
 
+if (ENV.TARINST == id) ENV.TARINST = item;
 instance_destroy();
 </string>
           </argument>
