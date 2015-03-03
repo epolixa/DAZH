@@ -72,7 +72,7 @@ chip_reserve[2] = 0; /* Yellow chips */
 chip_total = 0;      /* Count of all chips in reserve */
 next_chip = -1;       /* Next chip to load */  
 slot = 0;            /* Slot selected */
-puzzlebar_cap = 8; /* Puzzle bar capacity */
+puzzlebar_cap = 9; /* Puzzle bar capacity */
 for (i = 0; i &lt; puzzlebar_cap; i++) /* The puzzle bar [row, column] */
 {puzzlebar[0, i] = noone; puzzlebar[1, i] = noone; puzzlebar[2, i] = noone;}
 
@@ -329,8 +329,8 @@ in_loadslot =   (keyboard_check_pressed(ord("D")) || gamepad_button_check_presse
           <argument>
             <kind>1</kind>
             <string>/* Instances */
-if (airborn &amp;&amp; ((place_meeting(x + 1, y, obj_area_wall_par) &amp;&amp; in_right) || (place_meeting(x - 1, y, obj_area_wall_par) &amp;&amp; in_left))) WALL = instance_nearest(x, y, obj_area_wall_par);
-else if (!airborn) WALL = instance_nearest(x, y + 1, obj_area_wall_par);
+if (airborn &amp;&amp; ((place_meeting(x + 1, y, obj_area_wall) &amp;&amp; in_right) || (place_meeting(x - 1, y, obj_area_wall) &amp;&amp; in_left))) WALL = instance_nearest(x, y, obj_area_wall);
+else if (!airborn) WALL = instance_nearest(x, y + 1, obj_area_wall);
 else WALL = noone;
 </string>
           </argument>
@@ -484,16 +484,16 @@ else if (noclip)
 xprev = x; /* Store last valid positions */
 yprev = y;
 
-if (!noclip &amp;&amp; place_meeting(x + xvel, y, obj_area_wall_par)) /* Horz collision */
+if (!noclip &amp;&amp; place_meeting(x + xvel, y, obj_area_wall)) /* Horz collision */
 {
-    while (!place_meeting(x + sign(xvel), y, obj_area_wall_par))
+    while (!place_meeting(x + sign(xvel), y, obj_area_wall))
         x += sign(xvel); /* Simulate collision */
     xvel = 0;            /* Halt velocity */      
 }
 
-if (!noclip &amp;&amp; place_meeting(x, y + yvel, obj_area_wall_par)) /* Vert collision */
+if (!noclip &amp;&amp; place_meeting(x, y + yvel, obj_area_wall)) /* Vert collision */
 {
-    while (!place_meeting(x, y + sign(yvel), obj_area_wall_par))
+    while (!place_meeting(x, y + sign(yvel), obj_area_wall))
         y += sign(yvel);
     if (sign(yvel) == 1 &amp;&amp; airborn) /* Landing */
     {
@@ -503,7 +503,7 @@ if (!noclip &amp;&amp; place_meeting(x, y + yvel, obj_area_wall_par)) /* Vert co
     }
     yvel = 0;      
 }
-else if (!noclip &amp;&amp; !place_meeting(x, y + 1, obj_area_wall_par) &amp;&amp; !airborn) /* Liftoff */
+else if (!noclip &amp;&amp; !place_meeting(x, y + 1, obj_area_wall) &amp;&amp; !airborn) /* Liftoff */
 {
     airborn = true;
 }
@@ -511,7 +511,7 @@ else if (!noclip &amp;&amp; !place_meeting(x, y + 1, obj_area_wall_par) &amp;&am
 x += xvel; /* Translate */
 y += yvel;
 
-if (!noclip &amp;&amp; place_meeting(x, y, obj_area_wall_par)) /* Fix if stuck in a wall */
+if (!noclip &amp;&amp; place_meeting(x, y, obj_area_wall)) /* Fix if stuck in a wall */
 {
     x = xprev; xvel = 0;
     y = yprev; yvel = 0;
@@ -557,7 +557,12 @@ if (!noclip &amp;&amp; place_meeting(x, y, obj_area_wall_par)) /* Fix if stuck i
           <argument>
             <kind>1</kind>
             <string>/* Die if overloaded with chips */
-
+if (puzzlebar[0, puzzlebar_cap - 1] != noone &amp;&amp;
+    puzzlebar[1, puzzlebar_cap - 1] != noone &amp;&amp;
+    puzzlebar[2, puzzlebar_cap - 1] != noone)
+{
+    room_restart();
+}
 
 /* Chip collect */
 if (place_meeting(x, y, obj_item_chip))
@@ -598,10 +603,10 @@ else if (in_slotup &amp;&amp; slot &gt; 0) slot --;
 /* Loading chips */
 if (in_loadslot)
 {
-    if (next_chip &gt;= 0 &amp;&amp; puzzlebar[slot, puzzlebar_cap - 1] == noone)
+    if (next_chip &gt;= 0 &amp;&amp; puzzlebar[slot, puzzlebar_cap - 2] == noone)
     {
         chip_reserve[next_chip]--; chip_total--; next_chip = -1; 
-        puzzlebar[slot, puzzlebar_cap - 1] = next_chip_color;
+        puzzlebar[slot, puzzlebar_cap - 2] = next_chip_color;
     }
     else
     {
@@ -694,6 +699,53 @@ if (sprite_index == spr_char_player_walk)
 /* Facing */
 if (!airborn &amp;&amp; (in_left || in_right) &amp;&amp; !(in_left &amp;&amp; in_right)) image_xscale = in_right - in_left;
 else if (!in_left &amp;&amp; !in_right &amp;&amp; xvel != 0) image_xscale = sign(xvel);
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>605</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>View focus</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/* If in a focus area */
+if (place_meeting(x, y, obj_area_focus) &amp;&amp; view_object == id)
+    view_object[0] = instance_nearest(x, y, obj_area_focus);
+else if (!place_meeting(x, y, obj_area_focus) &amp;&amp; view_object != id)
+    view_object[0] = id;
+
 
 </string>
           </argument>
@@ -820,7 +872,7 @@ if (!debug_enabled)
                         
     /* Draw slots */
     for (i = 0; i &lt; 3; i++)
-        for (j = 0; j &lt; puzzlebar_cap; j++)
+        for (j = 0; j &lt; puzzlebar_cap - 1; j++)
         {
             if (puzzlebar[i, j] != noone)
                 draw_sprite_ext(spr_hud_puzzle_chip, 0,

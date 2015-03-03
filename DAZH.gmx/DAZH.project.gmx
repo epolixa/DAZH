@@ -7,11 +7,7 @@
   <sounds name="sound"/>
   <sprites name="sprites">
     <sprites name="Area">
-      <sprite>sprites\spr_area_1x1</sprite>
-      <sprite>sprites\spr_area_2x2</sprite>
-      <sprite>sprites\spr_area_4x4</sprite>
-      <sprite>sprites\spr_area_1x4</sprite>
-      <sprite>sprites\spr_area_4x1</sprite>
+      <sprite>sprites\spr_area_32x32</sprite>
     </sprites>
     <sprites name="Character">
       <sprites name="Player">
@@ -73,10 +69,6 @@
     <scripts name="Util">
       <script>scripts\string_split.gml</script>
     </scripts>
-    <scripts name="Area">
-      <script>scripts\area_wall_create.gml</script>
-      <script>scripts\area_wall_step.gml</script>
-    </scripts>
   </scripts>
   <fonts name="fonts">
     <font>fonts\font_debug</font>
@@ -84,15 +76,9 @@
   </fonts>
   <objects name="objects">
     <objects name="Area">
-      <objects name="Wall">
-        <object>objects\obj_area_wall_4x4</object>
-        <object>objects\obj_area_wall_1x4</object>
-        <object>objects\obj_area_wall_4x1</object>
-        <object>objects\obj_area_wall_2x2</object>
-        <object>objects\obj_area_wall_1x1</object>
-        <object>objects\obj_area_wall_par</object>
-      </objects>
       <object>objects\obj_area_par</object>
+      <object>objects\obj_area_wall</object>
+      <object>objects\obj_area_focus</object>
     </objects>
     <objects name="Character">
       <object>objects\obj_char_player</object>
@@ -123,6 +109,7 @@
     <objects name="Container">
       <object>objects\obj_cont_par</object>
       <object>objects\obj_cont_chest</object>
+      <object>objects\obj_container_ore</object>
     </objects>
   </objects>
   <rooms name="rooms">

@@ -114,7 +114,7 @@ do
     xtar = random(room_width);
     ytar = random(room_height);
 }
-until (!place_meeting(xtar, ytar, obj_area_wall_par));
+until (!place_meeting(xtar, ytar, obj_area_wall));
 
 /* Reset alarm */
 alarm[0] = 60 + random(60);
@@ -188,6 +188,76 @@ else if (y &gt; ytar &amp;&amp; -yvel &lt; TERMVEL) yvel -= ACCEL;
         <arguments>
           <argument>
             <kind>1</kind>
+            <string>Movement</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/* Movement */
+xprev = x;
+yprev = y;
+
+if (place_meeting(x + xvel, y, obj_area_wall)) /* Horz collision */
+{
+    while(!place_meeting(x + sign(xvel), y, obj_area_wall))
+        x += sign(xvel);
+    xvel = 0;
+    event_perform(ev_alarm, 0); 
+}
+
+if (place_meeting(x, y + yvel, obj_area_wall)) /* Vert collision */
+{
+    while (!place_meeting(x, y + sign(yvel), obj_area_wall))
+        y += sign(yvel);
+    yvel = 0;
+    event_perform(ev_alarm, 0);  
+}
+
+x += xvel; /* Translate */
+y += yvel;
+
+if (place_meeting(x, y, obj_area_wall)) 
+{
+    x = xprev; xvel = 0; 
+    y = yprev; yvel = 0; 
+    event_perform(ev_alarm, 0); 
+}
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>605</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
             <string>Sprite</string>
           </argument>
         </arguments>
@@ -213,76 +283,6 @@ if (image_xscale != sign(xvel)) image_xscale = sign(xvel);
 
 /* Speed */
 image_speed = 0.4*((abs(xvel) + abs(yvel))/2);
-</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>605</id>
-        <kind>0</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>0</useapplyto>
-        <exetype>0</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>Movement</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>/* Movement */
-xprev = x;
-yprev = y;
-
-if (place_meeting(x + xvel, y, obj_area_wall_par)) /* Horz collision */
-{
-    while(!place_meeting(x + sign(xvel), y, obj_area_wall_par))
-        x += sign(xvel);
-    xvel = 0;
-    event_perform(ev_alarm, 0); 
-}
-
-if (place_meeting(x, y + yvel, obj_area_wall_par)) /* Vert collision */
-{
-    while (!place_meeting(x, y + sign(yvel), obj_area_wall_par))
-        y += sign(yvel);
-    yvel = 0;
-    event_perform(ev_alarm, 0);  
-}
-
-x += xvel; /* Translate */
-y += yvel;
-
-if (place_meeting(x, y, obj_area_wall_par)) 
-{
-    x = xprev; xvel = 0; 
-    y = yprev; yvel = 0; 
-    event_perform(ev_alarm, 0); 
-}
-
 </string>
           </argument>
         </arguments>

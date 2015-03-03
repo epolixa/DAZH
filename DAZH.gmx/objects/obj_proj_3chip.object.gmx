@@ -264,17 +264,17 @@ part_type_colour1(chip_part_item, COLOR);
           <argument>
             <kind>1</kind>
             <string>/* Movement */
-if (place_meeting(x + xvel, y, obj_area_wall_par)) /* Horz collision */
+if (place_meeting(x + xvel, y, obj_area_wall)) /* Horz collision */
 {
-    while (!place_meeting(x + sign(xvel), y, obj_area_wall_par))
+    while (!place_meeting(x + sign(xvel), y, obj_area_wall))
         x += sign(xvel); /* Simulate collision */
     xvel = -xvel;  
     event_perform(ev_alarm, 1);  
 }
 
-if (place_meeting(x, y + yvel, obj_area_wall_par)) /* Vert collision */
+if (place_meeting(x, y + yvel, obj_area_wall)) /* Vert collision */
 {
-    while (!place_meeting(x, y + sign(yvel), obj_area_wall_par))
+    while (!place_meeting(x, y + sign(yvel), obj_area_wall))
         y += sign(yvel);
     yvel = -yvel;
     event_perform(ev_alarm, 1);      

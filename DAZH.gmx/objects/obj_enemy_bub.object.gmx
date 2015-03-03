@@ -164,7 +164,7 @@ alarm[0] = 60 + random(60);
           <argument>
             <kind>1</kind>
             <string>/* Instances */
-if (!airborn) WALL = instance_nearest(x, y + 1, obj_area_wall_par);
+if (!airborn) WALL = instance_nearest(x, y + 1, obj_area_wall);
 else WALL = noone;
 </string>
           </argument>
@@ -232,7 +232,7 @@ if (airborn) /* Gravity */
     yvel += WEIGHT*ENV.GRAVITY;     
     if (abs(yvel) &gt; TERMYVEL) yvel = sign(yvel)*TERMYVEL;
 }
-if (!airborn &amp;&amp; ytar &gt; y &amp;&amp; (place_meeting(x - sprite_width, y, obj_area_wall_par) || place_meeting(x + sprite_width, y, obj_area_wall_par))) /* Jumping */
+if (!airborn &amp;&amp; ytar &gt; y &amp;&amp; (place_meeting(x - sprite_width, y, obj_area_wall) || place_meeting(x + sprite_width, y, obj_area_wall))) /* Jumping */
 {
     yvel = -JUMPSTR;        
 }
@@ -280,16 +280,16 @@ if (!airborn &amp;&amp; ytar &gt; y &amp;&amp; (place_meeting(x - sprite_width, 
 xprev = x; /* Store last valid positions */
 yprev = y;
 
-if (place_meeting(x + xvel, y, obj_area_wall_par)) /* Horz collision */
+if (place_meeting(x + xvel, y, obj_area_wall)) /* Horz collision */
 {
-    while (!place_meeting(x + sign(xvel), y, obj_area_wall_par))
+    while (!place_meeting(x + sign(xvel), y, obj_area_wall))
         x += sign(xvel); /* Simulate collision */
     xvel = 0;            /* Halt velocity */      
 }
 
-if (place_meeting(x, y + yvel, obj_area_wall_par)) /* Vert collision */
+if (place_meeting(x, y + yvel, obj_area_wall)) /* Vert collision */
 {
-    while (!place_meeting(x, y + sign(yvel), obj_area_wall_par))
+    while (!place_meeting(x, y + sign(yvel), obj_area_wall))
         y += sign(yvel);
     if (sign(yvel) == 1 &amp;&amp; airborn) /* Landing */
     {
@@ -297,7 +297,7 @@ if (place_meeting(x, y + yvel, obj_area_wall_par)) /* Vert collision */
     }
     yvel = 0;      
 }
-else if (!place_meeting(x, y + 1, obj_area_wall_par) &amp;&amp; !airborn) /* Liftoff */
+else if (!place_meeting(x, y + 1, obj_area_wall) &amp;&amp; !airborn) /* Liftoff */
 {
     airborn = true;
 }
@@ -305,7 +305,7 @@ else if (!place_meeting(x, y + 1, obj_area_wall_par) &amp;&amp; !airborn) /* Lif
 x += xvel; /* Translate */
 y += yvel;
 
-if (place_meeting(x, y, obj_area_wall_par)) /* Fix if stuck in a wall */
+if (place_meeting(x, y, obj_area_wall)) /* Fix if stuck in a wall */
 {
     x = xprev; xvel = 0;
     y = yprev; yvel = 0;

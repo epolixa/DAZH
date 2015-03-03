@@ -250,7 +250,7 @@ part_type_colour1(chip_part_collect, COLOR);
             <kind>1</kind>
             <string>/* Instances */
 if (airborn) WALL = noone;
-else WALL = instance_nearest(x, y + 1, obj_area_wall_par);
+else WALL = instance_nearest(x, y + 1, obj_area_wall);
 </string>
           </argument>
         </arguments>
@@ -343,26 +343,26 @@ if (WALL != noone)               /* Surface friction */
 xprev = x; /* Store last valid positions */
 yprev = y;
 
-if (place_meeting(x + xvel, y, obj_area_wall_par)) /* Horz collision */
+if (place_meeting(x + xvel, y, obj_area_wall)) /* Horz collision */
 {
-    while (!place_meeting(x + sign(xvel), y, obj_area_wall_par))
+    while (!place_meeting(x + sign(xvel), y, obj_area_wall))
         x += sign(xvel); /* Simulate collision */
     xvel = -xvel;    
 }
 
-if (place_meeting(x, y + yvel, obj_area_wall_par)) /* Vert collision */
+if (place_meeting(x, y + yvel, obj_area_wall)) /* Vert collision */
 {
-    while (!place_meeting(x, y + sign(yvel), obj_area_wall_par))
+    while (!place_meeting(x, y + sign(yvel), obj_area_wall))
         y += sign(yvel);
     yvel = -0.8*yvel;      
 }
-if      (place_meeting(x, y + 1, obj_area_wall_par) &amp;&amp; airborn)   airborn = false; 
-else if (!place_meeting(x, y + 1, obj_area_wall_par) &amp;&amp; !airborn) airborn = true;
+if      (place_meeting(x, y + 1, obj_area_wall) &amp;&amp; airborn)   airborn = false; 
+else if (!place_meeting(x, y + 1, obj_area_wall) &amp;&amp; !airborn) airborn = true;
 
 x += xvel; /* Translate */
 y += yvel;
 
-if (place_meeting(x, y, obj_area_wall_par)) /* Fix if stuck in a wall */
+if (place_meeting(x, y, obj_area_wall)) /* Fix if stuck in a wall */
 {
     x = xprev; xvel = 0;
     y = yprev; yvel = 0;
