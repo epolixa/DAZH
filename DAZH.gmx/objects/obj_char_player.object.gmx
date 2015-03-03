@@ -412,7 +412,7 @@ if (in_jump &amp;&amp; !noclip) /* Jumping */
 {
     if (airborn &amp;&amp; WALL != noone) /* Wall jumping */
     {
-        yvel = -2*fric*JUMPSTR;
+        yvel = -2*fric*JUMPSTR; if (yvel &lt; -JUMPSTR) yvel = -JUMPSTR;
         xvel = -0.5*side*JUMPSTR; 
     }
     else if (airborn &amp;&amp; jumps[1] &gt; 0 &amp;&amp; puzzlebar[slot, 0] != noone &amp;&amp; puzzlebar[slot, 0] != c_purple) /* Chip-jumping */

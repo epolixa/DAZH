@@ -205,6 +205,7 @@ if (global.debug_entering_text)
             else if (command[0] == "friction")
             {
                 if (array_length_1d(command) &lt; 2) {global.command_output[0] = "No value specified."; global.command_output[1] = 600;}
+                else if (TARINST == noone) {global.command_output[0] = "No target selected."; global.command_output[1] = 600;}
                 else if (object_get_parent(TARINST.object_index) != obj_area_wall_par) {global.command_output[0] = "Target has no friction attribute."; global.command_output[1] = 600;}
                 else
                 {
@@ -237,15 +238,22 @@ if (global.debug_entering_text)
             }
             else if (command[0] == "destroy")
             {
-                global.command_output[0] = "Destroyed " + object_get_name(TARINST.object_index) + " (" + string(TARINST.id) + ")."; global.command_output[1] = 600;
-                with (TARINST)
-                    instance_destroy();
-                TARINST = noone;
+                if (TARINST == noone) {global.command_output[0] = "No target selected."; global.command_output[1] = 600;}
+                else
+                {
+                    global.command_output[0] = "Destroyed " + object_get_name(TARINST.object_index) + " (" + string(TARINST.id) + ")."; global.command_output[1] = 600;
+                    with (TARINST)
+                        instance_destroy();
+                    TARINST = noone;
+                }
             }    
-            else {global.command_output[0] = "Command '" + command[0] + "' not recognized."; global.command_output[1] = 600;}
+            else if (command[0] != "") {global.command_output[0] = "Command '" + command[0] + "' not recognized."; global.command_output[1] = 600;}
             
-            if (ds_list_find_index(global.command_list, keyboard_string) != -1) ds_list_delete(global.command_list, ds_list_find_index(global.command_list, keyboard_string));        
-            ds_list_add(global.command_list, keyboard_string);
+            if (command[0] != "")
+            {
+                if (ds_list_find_index(global.command_list, keyboard_string) != -1) ds_list_delete(global.command_list, ds_list_find_index(global.command_list, keyboard_string));        
+                ds_list_add(global.command_list, keyboard_string);
+            }
         }
         /* ### /COMMAND EXECUTION ### */
         
