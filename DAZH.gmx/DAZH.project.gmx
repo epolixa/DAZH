@@ -71,9 +71,11 @@
   <paths name="paths"/>
   <scripts name="scripts">
     <scripts name="Util">
-      <scripts name="String">
-        <script>scripts\string_split.gml</script>
-      </scripts>
+      <script>scripts\string_split.gml</script>
+    </scripts>
+    <scripts name="Area">
+      <script>scripts\area_wall_create.gml</script>
+      <script>scripts\area_wall_step.gml</script>
     </scripts>
   </scripts>
   <fonts name="fonts">
