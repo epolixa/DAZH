@@ -167,80 +167,88 @@ if (global.debug_entering_text)
 
     if (in_prompt) 
     {
-        command = keyboard_string; /* Store command */
+        command = string_split(string_lower(keyboard_string), ' '); /* Store command */
         
         /* ### COMMAND EXECUTION ### */
-        if (command == "exit") game_end();
-        else if (command == "restart") game_restart();   
-        else if (string_lower(string_copy(command, 0, 6)) == "noclip")
+        if (array_length_1d(command) &gt; 0)
         {
-            player = instance_nearest(x, y, obj_char_player);
-            player.noclip = !player.noclip;
-            global.command_output[0] = "Toggled player noclip."; global.command_output[1] = 600;
-        }
-        else if (command == "toggle areas")
-        {
-            global.showareas = !global.showareas; 
-            global.command_output[0] = "Toggled area visibility."; global.command_output[1] = 600;
-        }
-        else if (string_lower(string_copy(command, 0, 7)) == "gravity")
-        {
-            if (string_delete(command, 1, 8) == "") {global.command_output[0] = "No value specified."; global.command_output[1] = 600;}
-            else
+            if      (command[0] == "exit") game_end();
+            else if (command[0] == "restart") game_restart();   
+            else if (command[0] == "toggle")
             {
-                GRAVITY = real(string_delete(command, 1, 8)); 
-                {global.command_output[0] = "Gravity set to " + string(GRAVITY) + "."; global.command_output[1] = 600;}
-            }            
-        }
-        else if (string_lower(string_copy(command, 0, 8)) == "friction")
-        {
-            if (string_delete(command, 1, 9) == "") {global.command_output[0] = "No value specified."; global.command_output[1] = 600;}
-            else if (object_get_parent(TARINST.object_index) != obj_area_wall_par) {global.command_output[0] = "Target has no friction."; global.command_output[1] = 600;}
-            else
-            {
-                ds_map_replace(TARINST.attr, "friction", real(string_delete(command, 1, 9))); 
-                {global.command_output[0] = "Friction of " + object_get_name(TARINST.object_index) + " (" + string(TARINST.id) + ") set to " + string(ds_map_find_value(TARINST.attr, "friction")) + "."; global.command_output[1] = 600;}
-            }            
-        }
-        else if (string_lower(string_copy(command, 0, 6)) == "create") 
-        {
-            name = string_delete(command, 1, 7);
-            if (name == "") 
-            {
-                if (TARINST != noone)
+                if      (command[1] == "areas")
                 {
-                    inst = instance_create(mouse_x, mouse_y, TARINST.object_index);
-                    global.command_output[0] = "Created " + object_get_name(inst.object_index) + " (" + string(inst.id) + ") at " + string(inst.x) + ", " + string(inst.y) + "."; global.command_output[1] = 600;
+                    global.showareas = !global.showareas; 
+                    global.command_output[0] = "Toggled area visibility."; global.command_output[1] = 600;
                 }
-                else {global.command_output[0] = "No object specified."; global.command_output[1] = 600;}
-            }
-            else
-            {
-                obj = asset_get_index("obj_" + name);   
-                if (!object_exists(obj))
-                {global.command_output[0] = "Could not create 'obj_" + name + "', does not exist."; global.command_output[1] = 600;}
+                else if (command[1] == "noclip")
+                {
+                    player = instance_nearest(x, y, obj_char_player);
+                    player.noclip = !player.noclip;
+                    global.command_output[0] = "Toggled player noclip."; global.command_output[1] = 600;
+                }
                 else
                 {
-                    inst = instance_create(mouse_x, mouse_y, obj);
-                    global.command_output[0] = "Created " + object_get_name(inst.object_index) + " (" + string(inst.id) + ") at " + string(inst.x) + ", " + string(inst.y) + "."; global.command_output[1] = 600;
+                    global.command_output[0] = "Nothing to toggle specified."; global.command_output[1] = 600;
                 }
             }
+            else if (command[0] == "gravity")
+            {
+                if (array_length_1d(command) &gt;= 2) 
+                {
+                    GRAVITY = real(command[1]); 
+                    global.command_output[0] = "Gravity set to " + string(GRAVITY) + "."; global.command_output[1] = 600;                
+                }
+                else
+                {global.command_output[0] = "No value specified."; global.command_output[1] = 600;}            
+            }
+            else if (command[0] == "friction")
+            {
+                if (array_length_1d(command) &lt; 2) {global.command_output[0] = "No value specified."; global.command_output[1] = 600;}
+                else if (object_get_parent(TARINST.object_index) != obj_area_wall_par) {global.command_output[0] = "Target has no friction attribute."; global.command_output[1] = 600;}
+                else
+                {
+                    ds_map_replace(TARINST.attr, "friction", real(command[1])); 
+                    {global.command_output[0] = "Friction of " + object_get_name(TARINST.object_index) + " (" + string(TARINST.id) + ") set to " + string(ds_map_find_value(TARINST.attr, "friction")) + "."; global.command_output[1] = 600;}
+                }            
+            }
+            else if (command[0] == "create") 
+            {
+                if (array_length_1d(command) &lt; 2) 
+                {
+                    if (TARINST != noone)
+                    {
+                        inst = instance_create(mouse_x, mouse_y, TARINST.object_index);
+                        global.command_output[0] = "Created " + object_get_name(inst.object_index) + " (" + string(inst.id) + ") at " + string(inst.x) + ", " + string(inst.y) + "."; global.command_output[1] = 600;
+                    }
+                    else {global.command_output[0] = "No object specified."; global.command_output[1] = 600;}
+                }
+                else
+                {
+                    obj = asset_get_index("obj_" + command[1]);   
+                    if (!object_exists(obj))
+                    {global.command_output[0] = "Could not create 'obj_" + command[1] + "', does not exist."; global.command_output[1] = 600;}
+                    else
+                    {
+                        inst = instance_create(mouse_x, mouse_y, obj);
+                        global.command_output[0] = "Created " + object_get_name(inst.object_index) + " (" + string(inst.id) + ") at " + string(inst.x) + ", " + string(inst.y) + "."; global.command_output[1] = 600;
+                    }
+                }
+            }
+            else if (command[0] == "destroy")
+            {
+                global.command_output[0] = "Destroyed " + object_get_name(TARINST.object_index) + " (" + string(TARINST.id) + ")."; global.command_output[1] = 600;
+                with (TARINST)
+                    instance_destroy();
+                TARINST = noone;
+            }    
+            else {global.command_output[0] = "Command '" + command[0] + "' not recognized."; global.command_output[1] = 600;}
+            
+            if (ds_list_find_index(global.command_list, keyboard_string) != -1) ds_list_delete(global.command_list, ds_list_find_index(global.command_list, keyboard_string));        
+            ds_list_add(global.command_list, keyboard_string);
         }
-        else if (string_lower(string_copy(command, 0, 7)) == "destroy")
-        {
-            global.command_output[0] = "Destroyed " + object_get_name(TARINST.object_index) + " (" + string(TARINST.id) + ")."; global.command_output[1] = 600;
-            with (TARINST)
-                instance_destroy();
-            TARINST = noone;
-        }    
-        else if (string_length(command) &gt;= 1) {global.command_output[0] = "Command '" + command + "' not recognized."; /*global.command_output[0] = string_split(command, " ");*/ global.command_output[1] = 600;}
         /* ### /COMMAND EXECUTION ### */
         
-        if (string_length(command) &gt;= 1) 
-        {
-            if (ds_list_find_index(global.command_list, command) != -1) ds_list_delete(global.command_list, ds_list_find_index(global.command_list, command));        
-            ds_list_add(global.command_list, command);
-        }
         global.debug_entering_text = false; /* Close prompt */
     }
     
