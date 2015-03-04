@@ -4,7 +4,7 @@
   <solid>0</solid>
   <visible>-1</visible>
   <depth>0</depth>
-  <persistent>0</persistent>
+  <persistent>-1</persistent>
   <parentName>obj_char_par</parentName>
   <maskName>spr_char_player_mask</maskName>
   <events>
@@ -45,10 +45,7 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>/* env */
-ENV = instance_nearest(x, y, obj_env); /* Update on room change... */
-
-/* Constants */
+            <string>/* Constants */
 WEIGHT = 1;   /* Effect of gravity */
 XACCEL = 0.6; /* Horizontal acceleration */
 JUMPSTR = 6;  /* Jump strength */
@@ -63,6 +60,7 @@ yvel = 0;           /* Vertical velocity */
 jumps[0] = 1; /* [max jumps, jumps remaining] */ 
 jumps[1] = jumps[0];
 airborn = true;    /* Is the object off the ground? */
+wet = false;       /* Is the object in water? */
 noclip = false;    /* noclip mode enabled? */
 
 /* Puzzle chips &amp; bar */
@@ -328,9 +326,12 @@ in_loadslot =   (keyboard_check_pressed(ord("D")) || gamepad_button_check_presse
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>/* Instances */
+            <string>/* env */
+ENV = instance_nearest(x, y, obj_env); /* Update on room change... */
+
+/* Instances */
 if (airborn &amp;&amp; ((place_meeting(x + 1, y, obj_area_wall) &amp;&amp; in_right &amp;&amp; !in_left) || (place_meeting(x - 1, y, obj_area_wall) &amp;&amp; in_left &amp;&amp; !in_right))) 
-    WALL = instance_place(x + sprite_width/2, y, obj_area_wall);
+    WALL = instance_place(x + sprite_width/2, y + sprite_height/4, obj_area_wall);
 else if (!airborn) WALL = instance_place(x, y + sprite_height/2 + 4, obj_area_wall);
 else WALL = noone;
 </string>
@@ -381,6 +382,8 @@ if (airborn || noclip)
     if (in_right) xvel += (0.4*XACCEL); /* Right */
     if (in_left) xvel -= (0.4*XACCEL); /* Left */
 }
+else if (wet)
+{}
 else if (WALL != noone)
 {
     if (in_right) xvel += fric*XACCEL;
@@ -402,7 +405,7 @@ if (airborn &amp;&amp; !noclip) /* Gravity */
     {
         yvel -= sign(yvel)*0.5*fric;
         if (abs(yvel) &gt; XACCEL)
-            part_particles_create(global.part_sys, x - sprite_width/2, y + sprite_height/3, player_part_slide, 1);
+            part_particles_create(global.part_sys, x + sprite_width/2, y + sprite_height/3, player_part_slide, 1);
     }
     
     if (abs(yvel) &gt; TERMYVEL) yvel = sign(yvel)*TERMYVEL;
@@ -412,7 +415,8 @@ if (in_jump &amp;&amp; !noclip) /* Jumping */
     if (airborn &amp;&amp; WALL != noone) /* Wall jumping */
     {
         yvel = -2*fric*JUMPSTR; if (yvel &lt; -JUMPSTR) yvel = -JUMPSTR;
-        xvel = -0.5*side*JUMPSTR; 
+        xvel = -0.5*side*JUMPSTR;
+        image_xscale = -image_xscale; 
     }
     else if (airborn &amp;&amp; jumps[1] &gt; 0 &amp;&amp; puzzlebar[slot, 0] != noone &amp;&amp; puzzlebar[slot, 0] != c_purple) /* Chip-jumping */
     {
@@ -459,7 +463,7 @@ else if (noclip)
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>Movement</string>
+            <string>Collision</string>
           </argument>
         </arguments>
       </action>
@@ -479,35 +483,50 @@ else if (noclip)
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>/* Movement */
+            <string>/* WALL COLLISION AND MOVEMENT */
 xprev = x; /* Store last valid positions */
 yprev = y;
 
-if (!noclip &amp;&amp; place_meeting(x + xvel, y, obj_area_wall)) /* Horz collision */
+if (!noclip)
 {
-    while (!place_meeting(x + sign(xvel), y, obj_area_wall))
-        x += sign(xvel); /* Simulate collision */
-    xvel = 0;            /* Halt velocity */      
-}
-
-if (!noclip &amp;&amp; place_meeting(x, y + yvel, obj_area_wall)) /* Vert collision */
-{
-    while (!place_meeting(x, y + sign(yvel), obj_area_wall))
-        y += sign(yvel);
-    if (sign(yvel) == 1 &amp;&amp; airborn) /* Landing */
+    if (place_meeting(x + xvel, y, obj_area_wall)) /* Horz collision */
     {
-        airborn = false; 
-        jumps[1] = jumps[0];
-        part_particles_create(global.part_sys, x, y + sprite_height/2, player_part_land, 2);
+        while (!place_meeting(x + sign(xvel), y, obj_area_wall))
+            x += sign(xvel); /* Simulate collision */
+        xvel = 0;            /* Halt velocity */      
     }
-    yvel = 0;      
-}
-else if (!noclip &amp;&amp; !place_meeting(x, y + 1, obj_area_wall) &amp;&amp; !airborn) /* Liftoff */
-{
-    airborn = true;
+    
+    if (place_meeting(x, y + yvel, obj_area_wall)) /* Vert collision */
+    {
+        while (!place_meeting(x, y + sign(yvel), obj_area_wall))
+            y += sign(yvel);
+        if (sign(yvel) == 1 &amp;&amp; airborn) /* Landing */
+        {
+            airborn = false; 
+            jumps[1] = jumps[0];
+            part_particles_create(global.part_sys, x, y + sprite_height/2, player_part_land, 2);
+        }
+        yvel = 0;      
+    }
+    else if (!place_meeting(x, y + 1, obj_area_wall) &amp;&amp; !airborn &amp;&amp; !wet) /* Liftoff */
+    {
+        airborn = true;
+    }
+    
+    /* WATER */
+    if (place_meeting(x, y, obj_area_water) &amp;&amp; !wet) /* Into water */
+    {
+        if (airborn) airborn = false;
+        wet = true;
+    }
+    else if (!place_meeting(x, y, obj_area_water) &amp;&amp; wet) /* Outof water */
+    {
+        wet = false;
+    }
 }
 
-x += xvel; /* Translate */
+/* Translate */
+x += xvel; 
 y += yvel;
 
 if (!noclip &amp;&amp; place_meeting(x, y, obj_area_wall)) /* Fix if stuck in a wall */
@@ -788,7 +807,7 @@ else if (!place_meeting(x, y, obj_area_focus) &amp;&amp; view_object != id)
             <kind>1</kind>
             <string>if (x &lt; 0 || x &gt; room_width || y &lt; 0 || y &gt; room_height)
 {
-    room_restart();
+    game_restart();
 }
 </string>
           </argument>

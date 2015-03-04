@@ -9,6 +9,8 @@
     <sprites name="Area">
       <sprite>sprites\spr_area_wall</sprite>
       <sprite>sprites\spr_area_focus</sprite>
+      <sprite>sprites\spr_area_water</sprite>
+      <sprite>sprites\spr_area_door</sprite>
     </sprites>
     <sprites name="Character">
       <sprites name="Player">
@@ -70,7 +72,10 @@
     <scripts name="Util">
       <script>scripts\string_split.gml</script>
     </scripts>
-    <script>scripts\show_area.gml</script>
+    <scripts name="Area">
+      <script>scripts\show_area.gml</script>
+      <script>scripts\door_travel.gml</script>
+    </scripts>
   </scripts>
   <fonts name="fonts">
     <font>fonts\font_debug</font>
@@ -81,6 +86,8 @@
       <object>objects\obj_area_par</object>
       <object>objects\obj_area_wall</object>
       <object>objects\obj_area_focus</object>
+      <object>objects\obj_area_water</object>
+      <object>objects\obj_area_door</object>
     </objects>
     <objects name="Character">
       <object>objects\obj_char_player</object>
@@ -116,6 +123,7 @@
   <rooms name="rooms">
     <room>rooms\rm_load</room>
     <room>rooms\rm_test</room>
+    <room>rooms\rm_test_2</room>
     <room>rooms\rm_title</room>
   </rooms>
   <constants number="2">
