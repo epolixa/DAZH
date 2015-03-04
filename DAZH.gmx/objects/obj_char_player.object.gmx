@@ -393,7 +393,7 @@ else if (wet) /* UNDERWATER */
         if (in_right) xvel += (0.2*XACCEL);  /* Right */
         if (in_left)  xvel -= (0.2*XACCEL);  /* Left */
         
-        yvel += 0.5*WEIGHT*ENV.GRAVITY;    
+        yvel += 0.1*WEIGHT*ENV.GRAVITY;     
     }
     else
     {
@@ -406,11 +406,11 @@ else if (wet) /* UNDERWATER */
         }
     }
     
-    if (in_jump) yvel = -0.5*JUMPSTR;
+    if (in_jump) yvel = -0.2*JUMPSTR;
     
     /* Not so fast!! */
-    if (abs(xvel) &gt; TERMXVEL) xvel = sign(xvel)*0.5*TERMXVEL;
-    if (abs(yvel) &gt; TERMYVEL) yvel = sign(yvel)*0.5*TERMYVEL;
+    if (abs(xvel) &gt; 0.4*TERMXVEL) xvel = sign(xvel)*0.4*TERMXVEL;
+    if (abs(yvel) &gt; 0.4*TERMYVEL) yvel = sign(yvel)*0.4*TERMYVEL;
 }
 else 
 {
