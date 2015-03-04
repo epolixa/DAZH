@@ -158,8 +158,8 @@ alarm[0] = 60 + random(60);
           <argument>
             <kind>1</kind>
             <string>/* Instances */
-if (airborn) WALL = noone;
-else WALL = instance_nearest(x, y + 1, obj_area_wall);
+if (!airborn) WALL = instance_place(x, y + sprite_height/2 + 1, obj_area_wall);
+else WALL = noone;
 </string>
           </argument>
         </arguments>

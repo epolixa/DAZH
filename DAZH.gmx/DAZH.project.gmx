@@ -7,7 +7,8 @@
   <sounds name="sound"/>
   <sprites name="sprites">
     <sprites name="Area">
-      <sprite>sprites\spr_area_32x32</sprite>
+      <sprite>sprites\spr_area_wall</sprite>
+      <sprite>sprites\spr_area_focus</sprite>
     </sprites>
     <sprites name="Character">
       <sprites name="Player">
@@ -69,6 +70,7 @@
     <scripts name="Util">
       <script>scripts\string_split.gml</script>
     </scripts>
+    <script>scripts\show_area.gml</script>
   </scripts>
   <fonts name="fonts">
     <font>fonts\font_debug</font>
@@ -103,7 +105,6 @@
       <object>objects\obj_proj_par</object>
     </objects>
     <objects name="Enemy">
-      <object>objects\obj_enemy_bub</object>
       <object>objects\obj_enemy_par</object>
     </objects>
     <objects name="Container">

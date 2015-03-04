@@ -329,8 +329,9 @@ in_loadslot =   (keyboard_check_pressed(ord("D")) || gamepad_button_check_presse
           <argument>
             <kind>1</kind>
             <string>/* Instances */
-if (airborn &amp;&amp; ((place_meeting(x + 1, y, obj_area_wall) &amp;&amp; in_right) || (place_meeting(x - 1, y, obj_area_wall) &amp;&amp; in_left))) WALL = instance_nearest(x, y, obj_area_wall);
-else if (!airborn) WALL = instance_nearest(x, y + 1, obj_area_wall);
+if (airborn &amp;&amp; ((place_meeting(x + 1, y, obj_area_wall) &amp;&amp; in_right &amp;&amp; !in_left) || (place_meeting(x - 1, y, obj_area_wall) &amp;&amp; in_left &amp;&amp; !in_right))) 
+    WALL = instance_place(x + (in_right-in_left)*(sprite_width/2 + 1), y, obj_area_wall);
+else if (!airborn) WALL = instance_place(x, y + sprite_height/2 + 1, obj_area_wall);
 else WALL = noone;
 </string>
           </argument>
