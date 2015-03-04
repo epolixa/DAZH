@@ -58,6 +58,7 @@
     <instance objName="obj_area_wall" x="368" y="352" name="inst_05C08314" locked="0" code="" scaleX="4" scaleY="0.5" colour="4294967295" rotation="0"/>
     <instance objName="obj_area_wall" x="368" y="368" name="inst_0A1C9E86" locked="0" code="" scaleX="2" scaleY="0.5" colour="4294967295" rotation="0"/>
     <instance objName="obj_area_door" x="192" y="264" name="inst_65F5E6D6" locked="0" code="ROOM = rm_test;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_area_water" x="408" y="168" name="inst_80EE9AAD" locked="0" code="" scaleX="11.6129035949707" scaleY="7.90999984741211" colour="4294967295" rotation="0"/>
   </instances>
   <tiles>
     <tile bgName="bg_tile_gardens" x="144" y="296" w="8" h="8" xo="0" yo="8" id="10000866" name="inst_F38CB76E" depth="1000000" locked="0" colour="4294967295" scaleX="1" scaleY="1"/>
