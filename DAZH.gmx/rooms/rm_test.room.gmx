@@ -112,6 +112,7 @@
     <instance objName="obj_area_wall" x="368" y="320" name="inst_7164FD3C" locked="0" code="" scaleX="7" scaleY="0.5" colour="4294967295" rotation="0"/>
     <instance objName="obj_area_wall" x="40" y="168" name="inst_604EDD0D" locked="0" code="ds_map_replace(attr, &quot;friction&quot;, 0.1);&#xA;" scaleX="0.5" scaleY="4" colour="4294967295" rotation="0"/>
     <instance objName="obj_area_wall" x="456" y="136" name="inst_CBD28E39" locked="0" code="ds_map_replace(attr, &quot;friction&quot;, 0.1);&#xA;" scaleX="6" scaleY="0.5" colour="4294967295" rotation="0"/>
+    <instance objName="obj_area_wall" x="656" y="256" name="inst_71F046DD" locked="0" code="" scaleX="0.5" scaleY="4" colour="4294967295" rotation="0"/>
   </instances>
   <tiles>
     <tile bgName="bg_tile_gardens" x="144" y="296" w="8" h="8" xo="0" yo="8" id="10000866" name="inst_F38CB76E" depth="1000000" locked="0" colour="4294967295" scaleX="1" scaleY="1"/>

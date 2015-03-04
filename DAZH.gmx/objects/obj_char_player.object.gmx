@@ -330,8 +330,8 @@ in_loadslot =   (keyboard_check_pressed(ord("D")) || gamepad_button_check_presse
             <kind>1</kind>
             <string>/* Instances */
 if (airborn &amp;&amp; ((place_meeting(x + 1, y, obj_area_wall) &amp;&amp; in_right &amp;&amp; !in_left) || (place_meeting(x - 1, y, obj_area_wall) &amp;&amp; in_left &amp;&amp; !in_right))) 
-    WALL = instance_place(x + (in_right-in_left)*(sprite_width/2 + 1), y, obj_area_wall);
-else if (!airborn) WALL = instance_place(x, y + sprite_height/2 + 1, obj_area_wall);
+    WALL = instance_place(x + sprite_width/2, y, obj_area_wall);
+else if (!airborn) WALL = instance_place(x, y + sprite_height/2 + 4, obj_area_wall);
 else WALL = noone;
 </string>
           </argument>
@@ -400,11 +400,9 @@ if (airborn &amp;&amp; !noclip) /* Gravity */
     yvel += WEIGHT*ENV.GRAVITY; 
     if (WALL != noone) /* Wall sliding */
     {
-        if ((yvel - sign(yvel)*0.5*fric) &gt; 0)
-            yvel -= sign(yvel)*0.5*fric;
+        yvel -= sign(yvel)*0.5*fric;
         if (abs(yvel) &gt; XACCEL)
             part_particles_create(global.part_sys, x - sprite_width/2, y + sprite_height/3, player_part_slide, 1);
-        if (image_xscale != -side) image_xscale = -side;
     }
     
     if (abs(yvel) &gt; TERMYVEL) yvel = sign(yvel)*TERMYVEL;
