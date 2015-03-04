@@ -66,6 +66,7 @@
   <backgrounds name="background">
     <background>background\bg_tile_gardens</background>
     <background>background\bg_test</background>
+    <background>background\bg_tile_water</background>
   </backgrounds>
   <paths name="paths"/>
   <scripts name="scripts">
