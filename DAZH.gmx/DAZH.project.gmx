@@ -11,7 +11,7 @@
       <sprite>sprites\spr_area_focus</sprite>
       <sprite>sprites\spr_area_water</sprite>
       <sprite>sprites\spr_area_door</sprite>
-      <sprite>sprites\spr_area_door_enterup</sprite>
+      <sprite>sprites\spr_area_door_arrow_up</sprite>
     </sprites>
     <sprites name="Character">
       <sprites name="Player">
@@ -90,6 +90,7 @@
       <object>objects\obj_area_focus</object>
       <object>objects\obj_area_water</object>
       <object>objects\obj_area_door</object>
+      <object>objects\obj_area_door_arrow</object>
     </objects>
     <objects name="Character">
       <object>objects\obj_char_player</object>

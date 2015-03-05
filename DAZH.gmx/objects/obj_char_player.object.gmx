@@ -904,8 +904,8 @@ if (!debug_enabled)
     frame_color = c_fuchsia;
     
     /* Draw BG */
-    //draw_set_color(c_black);
-    //draw_rectangle(view_xview[0], hud_y, hud_x + view_wview[0], hud_y + view_hview[0], false);    
+    draw_set_color(c_black);
+    draw_rectangle(view_xview[0], hud_y, hud_x + view_wview[0], hud_y + view_hview[0], false);    
     
     /* Draw end cap */
     
