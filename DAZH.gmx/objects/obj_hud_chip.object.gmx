@@ -59,7 +59,7 @@ xhud = x - (view_xview[0] + sprite_get_width(spr_hud_puzzle_frame_endcap) + spri
 yhud = y - ((view_yview[0] + view_hview[0]) - sprite_get_height(spr_hud_puzzle_frame_endcap));
 
 image_alpha = 0;
-image_speed = 0.2;
+image_speed = 0;
 image_angle = floor(random(360));
 
 
@@ -162,8 +162,8 @@ if (xhud + xvel &lt; xpos*sprite_width) /* Collision */
 {
     while (xhud - 1 &gt; xpos*sprite_width)
         xhud--;
-    if (xvel - 1) xvel = 0;
-    else xvel = -xvel - 0.4;    
+    if (xvel &gt;= -1) xvel = 0;
+    else xvel = -xvel - 0.8;    
 }
 
 xhud += xvel; /* Translate */

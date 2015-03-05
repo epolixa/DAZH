@@ -944,20 +944,20 @@ if (!debug_enabled)
     }
 
     /* Draw chip reserve */
-    draw_set_font(font_reserve); draw_set_alpha(1);
+    draw_set_font(font_reserve); draw_set_alpha(1); draw_set_halign(fa_right);
     line = 0; lineheight = 10;
     
-    draw_set_colour(c_red);
-    draw_sprite_ext(spr_item_chip, 0, view_xview[0] + 6, view_yview[0] + (line*lineheight) + 8, 1, 1, 0, c_red, 1);
-    draw_text(view_xview[0] + 12, view_yview[0] + (line*lineheight), string(chip_reserve[0])); line++;
+    draw_set_colour(c_yellow);
+    draw_text((view_xview[0] + view_wview[0]) - 12, hud_y + (line*lineheight), string(chip_reserve[2]));
+    draw_sprite_ext(spr_item_chip, 0, (view_xview + view_wview[0]) - 6, hud_y + (line*lineheight) + 8, 1, 1, 0, c_yellow, 1); line++;
     
     draw_set_colour(c_aqua);
-    draw_sprite_ext(spr_item_chip, 0, view_xview[0] + 6, view_yview[0] + (line*lineheight) + 8, 1, 1, 0, c_aqua, 1);
-    draw_text(view_xview[0] + 12, view_yview[0] + (line*lineheight), string(chip_reserve[1])); line++;
+    draw_text((view_xview[0] + view_wview[0]) - 12, hud_y + (line*lineheight), string(chip_reserve[1]));
+    draw_sprite_ext(spr_item_chip, 0, (view_xview + view_wview[0]) - 6, hud_y + (line*lineheight) + 8, 1, 1, 0, c_aqua, 1); line++;
     
-    draw_set_colour(c_yellow);
-    draw_sprite_ext(spr_item_chip, 0, view_xview[0] + 6, view_yview[0] + (line*lineheight) + 8, 1, 1, 0, c_yellow, 1); 
-    draw_text(view_xview[0] + 12, view_yview[0] + (line*lineheight), string(chip_reserve[2])); line++;
+    draw_set_colour(c_red);
+    draw_text((view_xview[0] + view_wview[0]) - 12, hud_y + (line*lineheight), string(chip_reserve[0]));
+    draw_sprite_ext(spr_item_chip, 0, (view_xview + view_wview[0]) - 6, hud_y + (line*lineheight) + 8, 1, 1, 0, c_red, 1); line++;    
 }
 </string>
           </argument>
