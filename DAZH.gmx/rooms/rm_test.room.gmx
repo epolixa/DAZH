@@ -79,9 +79,6 @@
     <instance objName="obj_item_chip" x="656" y="216" name="inst_10BC5325" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_amb_frog" x="280" y="288" name="inst_2F227C65" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_amb_frog" x="520" y="120" name="inst_D44B8372" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_amb_butterfly" x="464" y="208" name="inst_D60AD231" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_amb_butterfly" x="88" y="208" name="inst_558ABBB3" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_amb_butterfly" x="568" y="208" name="inst_66CB8E0C" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_area_wall" x="368" y="304" name="inst_B085BA89" locked="0" code="" scaleX="14" scaleY="0.5" colour="4294967295" rotation="0"/>
     <instance objName="obj_area_wall" x="368" y="320" name="inst_7164FD3C" locked="0" code="" scaleX="7" scaleY="0.5" colour="4294967295" rotation="0"/>
     <instance objName="obj_area_wall" x="40" y="168" name="inst_604EDD0D" locked="0" code="ds_map_replace(attr, &quot;friction&quot;, 0.1);&#xA;" scaleX="0.5" scaleY="4" colour="4294967295" rotation="0"/>

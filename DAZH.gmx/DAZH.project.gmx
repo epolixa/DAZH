@@ -121,6 +121,9 @@
       <object>objects\obj_cont_chest</object>
       <object>objects\obj_container_ore</object>
     </objects>
+    <objects name="HUD">
+      <object>objects\obj_hud_chip</object>
+    </objects>
   </objects>
   <rooms name="rooms">
     <room>rooms\rm_load</room>
