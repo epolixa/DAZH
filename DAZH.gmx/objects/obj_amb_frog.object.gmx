@@ -58,7 +58,7 @@ yprev = y;          /* Last valid vertical position */
 xvel = 0;           /* Horizontal velocity */
 yvel = 0;           /* Vertical velocity */
 airborn = false;    /* Is the object off the ground? */
-wet = false;        /* Is the object in water */
+wet = false;        /* Is the object in water? */
 
 image_speed = 0.2;
 
@@ -107,6 +107,11 @@ alarm[0] = 60 + random(60);
           <argument>
             <kind>1</kind>
             <string>/* Jump */
+if (wet)
+{
+    yvel = -0.5*JUMPSTR;
+    xvel = sign(random(2) - 1)*(random(4)*0.2)*JUMPSTR;
+}
 if (!airborn)
 {
     yvel = -JUMPSTR;
@@ -114,7 +119,8 @@ if (!airborn)
 }
 
 /* Reset alarm */
-alarm[0] = 60 + random(60);
+if (wet) alarm[0] = 30 + random(30);
+else alarm[0] = 60 + random(60);
 </string>
           </argument>
         </arguments>
@@ -200,7 +206,15 @@ else WALL = noone;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (airborn)
+            <string>if (wet)
+{
+    yvel += 0.1*WEIGHT*ENV.GRAVITY;
+    if (sign(xvel) != 0 &amp;&amp; image_xscale != sign(xvel)) image_xscale = sign(xvel);
+    
+    if (abs(xvel) &gt; 2) xvel = sign(xvel)*2; 
+    if (abs(yvel) &gt; 2) yvel = sign(yvel)*2;  
+}
+else if (airborn)
 {
     yvel += WEIGHT*ENV.GRAVITY;
     if (sign(xvel) != 0 &amp;&amp; image_xscale != sign(xvel)) image_xscale = sign(xvel);
@@ -232,7 +246,7 @@ if (WALL != noone)               /* Surface friction */
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>Movement</string>
+            <string>Collision</string>
           </argument>
         </arguments>
       </action>
@@ -269,6 +283,7 @@ if (place_meeting(x, y + yvel, obj_area_wall)) /* Vert collision */
         y += sign(yvel);
     yvel = 0;      
 }
+
 if (place_meeting(x, y + 1, obj_area_wall) &amp;&amp; airborn) /* Landing */
 {
     airborn = false; 
@@ -278,6 +293,18 @@ else if (!place_meeting(x, y + 1, obj_area_wall) &amp;&amp; !airborn) /* Liftoff
 {
     airborn = true;
     sprite_index = spr_amb_frog_jump;
+}
+
+/* WATER */
+if (place_meeting(x, y, obj_area_water) &amp;&amp; !wet) /* Into water */
+{
+    if (airborn) airborn = false;
+    splash();
+    wet = true;
+}
+else if (!place_meeting(x, y, obj_area_water) &amp;&amp; wet) /* Outof water */
+{
+    wet = false;
 }
 
 x += xvel; /* Translate */

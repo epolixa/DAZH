@@ -142,6 +142,9 @@ part_type_size(player_part_land, 1, 1, 0, 0);
 part_type_speed(player_part_land, 0.8, 0.8, 0, 0);
 part_type_direction(player_part_land, 0, 180, 0, 0);
 part_type_life(player_part_land, 15, 25);
+
+/* Bubble particles */
+player_part_bubble = part_type_create();
 </string>
           </argument>
         </arguments>
@@ -551,7 +554,8 @@ if (!noclip)
     /* WATER */
     if (place_meeting(x, y, obj_area_water) &amp;&amp; !wet) /* Into water */
     {
-        if (airborn) airborn = false;
+        if (airborn) airborn = false; jumps[1] = jumps[0];
+        splash();
         wet = true;
     }
     else if (!place_meeting(x, y, obj_area_water) &amp;&amp; wet) /* Outof water */

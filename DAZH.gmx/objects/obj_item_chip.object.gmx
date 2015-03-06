@@ -62,6 +62,7 @@ yprev = y;          /* Last valid vertical position */
 xvel = 0;           /* Horizontal velocity */
 yvel = 0;           /* Vertical velocity */
 airborn = false;    /* Is the object off the ground? */
+wet = false;        /* Is the object submerged? */
 collected = false; /* trigger collection when true */
 
 image_speed = 0.2;
@@ -319,7 +320,7 @@ if (WALL != noone)               /* Surface friction */
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>Movement</string>
+            <string>Collision</string>
           </argument>
         </arguments>
       </action>
@@ -358,6 +359,18 @@ if (place_meeting(x, y + yvel, obj_area_wall)) /* Vert collision */
 }
 if      (place_meeting(x, y + 1, obj_area_wall) &amp;&amp; airborn)   airborn = false; 
 else if (!place_meeting(x, y + 1, obj_area_wall) &amp;&amp; !airborn) airborn = true;
+
+/* WATER */
+if (place_meeting(x, y, obj_area_water) &amp;&amp; !wet) /* Into water */
+{
+    if (airborn) airborn = false;
+    splash();
+    wet = true;
+}
+else if (!place_meeting(x, y, obj_area_water) &amp;&amp; wet) /* Outof water */
+{
+    wet = false;
+}
 
 x += xvel; /* Translate */
 y += yvel;

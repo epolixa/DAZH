@@ -53,6 +53,9 @@ ROOM_Y = y;
 
 /* Player */
 player = instance_nearest(x, y, obj_char_player);
+
+/* Vars */
+in_transition = false; /* True while traveling through a door */
 </string>
           </argument>
         </arguments>

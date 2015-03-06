@@ -97,8 +97,17 @@ showareas = false;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>/* Particle System */
+            <string>/* Global particle system */
 globalvar part_sys; part_sys = part_system_create();
+
+/* Global particles... */
+globalvar part_splash; part_splash = part_type_create(); /* Splash particles */
+part_type_sprite(part_splash, spr_particle_puff, false, false, true);
+part_type_colour1(part_splash, c_aqua);
+part_type_size(part_splash, 1, 1, 0, 0);
+part_type_speed(part_splash, 2, 4, 0, 0);
+part_type_gravity(part_splash, 0.2, 270);
+part_type_life(part_splash, 20, 30); 
 </string>
           </argument>
         </arguments>
