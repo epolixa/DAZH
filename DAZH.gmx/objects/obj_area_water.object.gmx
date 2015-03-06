@@ -70,6 +70,42 @@ CURRENT[0] = 0; CURRENT[1] = 0; /* [xvel, yvel] Water current force/direction */
           <argument>
             <kind>1</kind>
             <string>show_area();
+
+if (CURRENT[0] != 0 || CURRENT[1] != 0)
+{
+    var inst, i;
+
+    if (place_meeting(x, y, obj_char_player))
+    {
+        inst = instance_nearest(x, y, obj_char_player);
+        inst.xvel += CURRENT[0];
+        inst.yvel += CURRENT[1];
+    }
+    if (place_meeting(x, y, obj_amb_par))
+    {
+        for (i = 0; i &lt; instance_number(obj_amb_par); i++)
+        {
+            inst = instance_find(obj_amb_par, i);
+            if (place_meeting(x, y, inst))
+            {
+                inst.xvel += CURRENT[0];
+                inst.yvel += CURRENT[1];  
+            }
+        }   
+    }
+    if (place_meeting(x, y, obj_item_par))
+    {
+        for (i = 0; i &lt; instance_number(obj_item_par); i++)
+        {
+            inst = instance_find(obj_item_par, i);
+            if (place_meeting(x, y, inst))
+            {
+                inst.xvel += CURRENT[0];
+                inst.yvel += CURRENT[1];  
+            }
+        }   
+    }
+}
 </string>
           </argument>
         </arguments>

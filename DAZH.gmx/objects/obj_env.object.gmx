@@ -192,6 +192,15 @@ if (global.debug_entering_text)
                     global.command_output[0] = "Nothing to toggle specified."; global.command_output[1] = 600;
                 }
             }
+            else if (command[0] == "rosebud")
+            {
+                player = instance_nearest(x, y, obj_char_player);
+                player.chip_reserve[0] += 100;
+                player.chip_reserve[1] += 100;
+                player.chip_reserve[2] += 100;
+                player.chip_total += 300;
+                global.command_output[0] = "Gave 100 chips of each color."; global.command_output[1] = 600;
+            }
             else if (command[0] == "gravity")
             {
                 if (array_length_1d(command) &gt;= 2) 

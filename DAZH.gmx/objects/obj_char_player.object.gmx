@@ -57,8 +57,7 @@ xprev = x;          /* Last valid horizontal position */
 yprev = y;          /* Last valid vertical position */
 xvel = 0;           /* Horizontal velocity */
 yvel = 0;           /* Vertical velocity */
-jumps[0] = 1; /* [max jumps, jumps remaining] */ 
-jumps[1] = jumps[0];
+cjumpstr = 0.8;       /* Chip-jump strength */
 airborn = true;    /* Is the object off the ground? */
 wet = false;       /* Is the object in water? */
 noclip = false;    /* noclip mode enabled? */
@@ -453,17 +452,15 @@ else
             xvel = 0.5*sign(x - WALL.x)*JUMPSTR;
             image_xscale = -image_xscale; 
         }
-        else if (airborn &amp;&amp; jumps[1] &gt; 0 &amp;&amp; puzzlebar[slot, 0] != noone &amp;&amp; puzzlebar[slot, 0] != c_purple) /* Chip-jumping */
-        {
-            jumps[1]--;
-        
+        else if (airborn &amp;&amp; puzzlebar[slot, 0] != noone &amp;&amp; puzzlebar[slot, 0] != c_purple) /* Chip-jumping */
+        {        
             shot = instance_create(x, y, obj_proj_chip);
             shot.yvel = 8;
             shot.COLOR = puzzlebar[slot, 0].COLOR;
             with(puzzlebar[slot, 0]) instance_destroy();
             puzzlebar[slot, 0] = noone;  
         
-            yvel = -0.8*JUMPSTR;
+            if (cjumpstr &gt; 0) {yvel = -cjumpstr*JUMPSTR; if (cjumpstr &gt; 0.1) cjumpstr -= 0.1;}
         }
         else if (!airborn) /* A regular jump */
         {
@@ -538,8 +535,7 @@ if (!noclip)
             y += sign(yvel);
         if (sign(yvel) == 1 &amp;&amp; airborn) /* Landing */
         {
-            airborn = false; 
-            jumps[1] = jumps[0];
+            airborn = false; cjumpstr = 0.8;
             part_particles_create(global.part_sys, x, y + sprite_height/2, player_part_land, 2);
         }
         yvel = 0;      
@@ -552,7 +548,7 @@ if (!noclip)
     /* WATER */
     if (place_meeting(x, y, obj_area_water) &amp;&amp; !wet) /* Into water */
     {
-        if (airborn) airborn = false; jumps[1] = jumps[0];
+        if (airborn) airborn = false; cjumpstr = 0.8;
         splash();
         wet = true;
     }

@@ -96,7 +96,7 @@
     <instance objName="obj_area_focus" x="496" y="264" name="inst_17B83941" locked="0" code="" scaleX="0.75" scaleY="1.5" colour="4294967295" rotation="0"/>
     <instance objName="obj_area_wall" x="152" y="368" name="inst_D86F64F8" locked="0" code="" scaleX="0.5" scaleY="3.5" colour="4294967295" rotation="0"/>
     <instance objName="obj_area_wall" x="96" y="432" name="inst_1667FA31" locked="0" code="" scaleX="4" scaleY="0.5" colour="4294967295" rotation="0"/>
-    <instance objName="obj_area_water" x="96" y="368" name="inst_347425F3" locked="0" code="" scaleX="3" scaleY="3.5" colour="4294967295" rotation="0"/>
+    <instance objName="obj_area_water" x="96" y="368" name="inst_347425F3" locked="0" code="CURRENT[0] = 0.1;&#xA;" scaleX="3" scaleY="3.5" colour="4294967295" rotation="0"/>
     <instance objName="obj_item_chip" x="72" y="176" name="inst_42F261B9" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_item_chip" x="96" y="160" name="inst_8C23E371" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_item_chip" x="104" y="152" name="inst_9B729496" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
