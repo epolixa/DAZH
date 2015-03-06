@@ -358,7 +358,7 @@ part_system_destroy(global.part_sys);
     draw_rectangle(view_xview[0], view_yview[0], view_xview[0]+view_wview[0], view_yview[0]+view_hview[0], false);
 
     line = 0; lineheight = 7;
-    draw_set_font(font_debug); draw_set_colour(c_lime); draw_set_alpha(1);
+    draw_set_font(font_debug); draw_set_colour(c_lime); draw_set_alpha(1); draw_set_halign(fa_left);
     
     /* Room conditions */
     draw_text(view_xview[0], view_yview[0] + (line*lineheight), "ROOM"); line++;

@@ -75,7 +75,7 @@
     <instance objName="obj_item_chip" x="704" y="152" name="inst_F90A4C01" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_item_chip" x="720" y="152" name="inst_801FE40C" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_item_chip" x="552" y="264" name="inst_4B1D1653" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_item_chip" x="528" y="264" name="inst_2A52EBA9" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_item_chip" x="568" y="224" name="inst_2A52EBA9" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_item_chip" x="656" y="216" name="inst_10BC5325" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_amb_frog" x="280" y="288" name="inst_2F227C65" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_amb_frog" x="520" y="120" name="inst_D44B8372" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
@@ -93,7 +93,7 @@
     <instance objName="obj_area_wall" x="704" y="264" name="inst_14E2FCB8" locked="0" code="" scaleX="0.5" scaleY="0.5" colour="4294967295" rotation="0"/>
     <instance objName="obj_area_wall" x="688" y="288" name="inst_B0EA6DF0" locked="0" code="" scaleX="0.5" scaleY="2" colour="4294967295" rotation="0"/>
     <instance objName="obj_area_door" x="496" y="264" name="inst_36CB0268" locked="0" code="ROOM = rm_test_2;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_area_focus" x="368" y="232" name="inst_17B83941" locked="0" code="" scaleX="1.75" scaleY="2.25" colour="4294967295" rotation="0"/>
+    <instance objName="obj_area_focus" x="496" y="264" name="inst_17B83941" locked="0" code="" scaleX="0.75" scaleY="1.5" colour="4294967295" rotation="0"/>
   </instances>
   <tiles>
     <tile bgName="bg_tile_gardens" x="144" y="296" w="8" h="8" xo="0" yo="8" id="10000866" name="inst_F38CB76E" depth="1000000" locked="0" colour="4294967295" scaleX="1" scaleY="1"/>
