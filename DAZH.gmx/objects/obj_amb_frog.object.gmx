@@ -222,8 +222,8 @@ else if (airborn)
 
 if (WALL != noone)               /* Surface friction */ 
 {
-    if (xvel*sign(xvel) &lt; ds_map_find_value(WALL.attr, "friction")) xvel = 0;
-    else xvel -= (sign(xvel)*(ds_map_find_value(WALL.attr, "friction"))); 
+    if (xvel*sign(xvel) &lt; WALL.FRICTION) xvel = 0;
+    else xvel -= (sign(xvel)*(WALL.FRICTION)); 
 }
 
 </string>

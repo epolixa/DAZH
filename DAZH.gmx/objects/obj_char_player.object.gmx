@@ -377,9 +377,7 @@ else WALL = noone;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (WALL != noone) {fric = ds_map_find_value(WALL.attr, "friction"); if (fric &gt; 1) fric = 1; side = sign(WALL.x - x);}
-
-if (noclip)   /* NOCLIP */
+            <string>if (noclip)   /* NOCLIP */
 {
     if (in_right) xvel += (0.4*XACCEL); /* Right */
     if (in_left)  xvel -= (0.4*XACCEL); /* Left */
@@ -400,12 +398,12 @@ else if (wet) /* UNDERWATER */
     }
     else
     {
-        if (in_right) xvel += 0.5*fric*XACCEL;
-        if (in_left)  xvel -= 0.5*fric*XACCEL;
+        if (in_right) xvel += 0.5*WALL.FRICTION*XACCEL;
+        if (in_left)  xvel -= 0.5*WALL.FRICTION*XACCEL;
         if (!in_left &amp;&amp; !in_right &amp;&amp; xvel != 0) 
         {
-            if (abs(xvel) &lt; 0.5*fric*XACCEL) xvel = 0;
-            else xvel -= (sign(xvel)*0.5*fric*XACCEL); 
+            if (abs(xvel) &lt; 0.5*WALL.FRICTION*XACCEL) xvel = 0;
+            else xvel -= (sign(xvel)*0.5*WALL.FRICTION*XACCEL); 
         }
     }
     
@@ -425,13 +423,13 @@ else
     }
     else if (WALL != noone)
     {
-        if (in_right) xvel += fric*XACCEL;
-        if (in_left) xvel -= fric*XACCEL;
+        if (in_right) xvel += WALL.FRICTION*XACCEL;
+        if (in_left) xvel -= WALL.FRICTION*XACCEL;
         if (!in_left &amp;&amp; !in_right &amp;&amp; xvel != 0) 
         {
             part_particles_create(global.part_sys, x - sprite_width/3, y + sprite_height/2, player_part_slide, 1);
-            if (abs(xvel) &lt; fric*XACCEL) xvel = 0;
-            else xvel -= (sign(xvel)*fric*XACCEL); 
+            if (abs(xvel) &lt; WALL.FRICTION*XACCEL) xvel = 0;
+            else xvel -= (sign(xvel)*WALL.FRICTION*XACCEL); 
         }
     }
     if (abs(xvel) &gt; TERMXVEL) xvel = sign(xvel)*TERMXVEL;
@@ -442,7 +440,7 @@ else
         yvel += WEIGHT*ENV.GRAVITY; 
         if (WALL != noone) /* Wall sliding */
         {
-            yvel -= sign(yvel)*0.5*fric;
+            yvel -= sign(yvel)*0.5*WALL.FRICTION;
             if (abs(yvel) &gt; XACCEL)
                 part_particles_create(global.part_sys, x + sprite_width/2, y + sprite_height/3, player_part_slide, 1);
         }
@@ -451,8 +449,8 @@ else
     {
         if (airborn &amp;&amp; WALL != noone) /* Wall jumping */
         {
-            yvel = -2*fric*JUMPSTR; if (yvel &lt; -JUMPSTR) yvel = -JUMPSTR;
-            xvel = -0.5*side*JUMPSTR;
+            yvel = -2*WALL.FRICTION*JUMPSTR; if (yvel &lt; -JUMPSTR) yvel = -JUMPSTR;
+            xvel = 0.5*sign(x - WALL.x)*JUMPSTR;
             image_xscale = -image_xscale; 
         }
         else if (airborn &amp;&amp; jumps[1] &gt; 0 &amp;&amp; puzzlebar[slot, 0] != noone &amp;&amp; puzzlebar[slot, 0] != c_purple) /* Chip-jumping */

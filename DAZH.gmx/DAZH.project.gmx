@@ -28,6 +28,7 @@
     <sprites name="Particle">
       <sprite>sprites\spr_particle_collect</sprite>
       <sprite>sprites\spr_particle_puff</sprite>
+      <sprite>sprites\spr_particle_bubble</sprite>
     </sprites>
     <sprites name="Item">
       <sprites name="Chip">

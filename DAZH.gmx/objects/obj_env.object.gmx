@@ -209,8 +209,8 @@ if (global.debug_entering_text)
                 else if (TARINST.object_index != obj_area_wall) {global.command_output[0] = "Target has no friction attribute."; global.command_output[1] = 600;}
                 else
                 {
-                    ds_map_replace(TARINST.attr, "friction", real(command[1])); 
-                    {global.command_output[0] = "Friction of " + object_get_name(TARINST.object_index) + " (" + string(TARINST.id) + ") set to " + string(ds_map_find_value(TARINST.attr, "friction")) + "."; global.command_output[1] = 600;}
+                    TARINST.FRICTION = real(command[1]); 
+                    {global.command_output[0] = "Friction of " + object_get_name(TARINST.object_index) + " (" + string(TARINST.id) + ") set to " + string(TARINST.FRICTION) + "."; global.command_output[1] = 600;}
                 }            
             }
             else if (command[0] == "create") 
@@ -309,6 +309,9 @@ else if (global.debug_enabled &amp;&amp; in_prompt)
             <kind>1</kind>
             <string>/* Particle system */
 part_system_destroy(global.part_sys);
+
+/* Global particles */
+part_type_destroy(global.part_splash);
 </string>
           </argument>
         </arguments>
@@ -382,7 +385,7 @@ part_system_destroy(global.part_sys);
         /* Special attributes */
         if (TARINST.object_index == obj_area_wall)
         {
-            if (ds_map_exists(TARINST.attr, "friction")) draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "FRICTION: " + string(ds_map_find_value(TARINST.attr, "friction"))); 
+            draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), "FRICTION: " + string(TARINST.FRICTION)); 
             line+=2;
         }
         else if (TARINST.object_index == obj_amb_butterfly)

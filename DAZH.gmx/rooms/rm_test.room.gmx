@@ -69,7 +69,7 @@
     <instance objName="obj_item_chip" x="416" y="96" name="inst_E250F1A2" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_item_chip" x="440" y="96" name="inst_43C5CE87" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_item_chip" x="576" y="264" name="inst_D2EA473C" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_item_chip" x="240" y="168" name="inst_F87ED2FE" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_item_chip" x="64" y="168" name="inst_F87ED2FE" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_item_chip" x="688" y="152" name="inst_0A4AE64E" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_item_chip" x="672" y="152" name="inst_87877E6C" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_item_chip" x="704" y="152" name="inst_F90A4C01" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
@@ -81,13 +81,13 @@
     <instance objName="obj_amb_frog" x="520" y="120" name="inst_D44B8372" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_area_wall" x="368" y="304" name="inst_B085BA89" locked="0" code="" scaleX="14" scaleY="0.5" colour="4294967295" rotation="0"/>
     <instance objName="obj_area_wall" x="368" y="320" name="inst_7164FD3C" locked="0" code="" scaleX="7" scaleY="0.5" colour="4294967295" rotation="0"/>
-    <instance objName="obj_area_wall" x="40" y="168" name="inst_604EDD0D" locked="0" code="ds_map_replace(attr, &quot;friction&quot;, 0.1);&#xA;" scaleX="0.5" scaleY="4" colour="4294967295" rotation="0"/>
-    <instance objName="obj_area_wall" x="456" y="136" name="inst_CBD28E39" locked="0" code="ds_map_replace(attr, &quot;friction&quot;, 0.1);&#xA;" scaleX="6" scaleY="0.5" colour="4294967295" rotation="0"/>
+    <instance objName="obj_area_wall" x="40" y="168" name="inst_604EDD0D" locked="0" code="FRICTION = 0.1;&#xA;" scaleX="0.5" scaleY="4" colour="4294967295" rotation="0"/>
+    <instance objName="obj_area_wall" x="456" y="136" name="inst_CBD28E39" locked="0" code="FRICTION = 0.1;&#xA;" scaleX="6" scaleY="0.5" colour="4294967295" rotation="0"/>
     <instance objName="obj_area_wall" x="40" y="328" name="inst_71F046DD" locked="0" code="" scaleX="0.5" scaleY="6" colour="4294967295" rotation="0"/>
     <instance objName="obj_area_wall" x="368" y="336" name="inst_1EDBCD0A" locked="0" code="" scaleX="5" scaleY="0.5" colour="4294967295" rotation="0"/>
     <instance objName="obj_area_wall" x="368" y="352" name="inst_05C08314" locked="0" code="" scaleX="4" scaleY="0.5" colour="4294967295" rotation="0"/>
     <instance objName="obj_area_wall" x="368" y="368" name="inst_0A1C9E86" locked="0" code="" scaleX="2" scaleY="0.5" colour="4294967295" rotation="0"/>
-    <instance objName="obj_area_wall" x="416" y="152" name="inst_D7A73F25" locked="0" code="ds_map_replace(attr, &quot;friction&quot;, 0.1);&#xA;" scaleX="2" scaleY="0.5" colour="4294967295" rotation="0"/>
+    <instance objName="obj_area_wall" x="416" y="152" name="inst_D7A73F25" locked="0" code="FRICTION = 0.1;&#xA;" scaleX="2" scaleY="0.5" colour="4294967295" rotation="0"/>
     <instance objName="obj_area_wall" x="696" y="224" name="inst_7086DBDF" locked="0" code="" scaleX="2" scaleY="2" colour="4294967295" rotation="0"/>
     <instance objName="obj_area_wall" x="656" y="240" name="inst_F1CB090B" locked="0" code="" scaleX="0.5" scaleY="0.5" colour="4294967295" rotation="0"/>
     <instance objName="obj_area_wall" x="704" y="264" name="inst_14E2FCB8" locked="0" code="" scaleX="0.5" scaleY="0.5" colour="4294967295" rotation="0"/>
@@ -97,6 +97,11 @@
     <instance objName="obj_area_wall" x="152" y="368" name="inst_D86F64F8" locked="0" code="" scaleX="0.5" scaleY="3.5" colour="4294967295" rotation="0"/>
     <instance objName="obj_area_wall" x="96" y="432" name="inst_1667FA31" locked="0" code="" scaleX="4" scaleY="0.5" colour="4294967295" rotation="0"/>
     <instance objName="obj_area_water" x="96" y="368" name="inst_347425F3" locked="0" code="" scaleX="3" scaleY="3.5" colour="4294967295" rotation="0"/>
+    <instance objName="obj_item_chip" x="72" y="176" name="inst_42F261B9" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_item_chip" x="96" y="160" name="inst_8C23E371" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_item_chip" x="104" y="152" name="inst_9B729496" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_item_chip" x="80" y="184" name="inst_3757037C" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_item_chip" x="88" y="192" name="inst_38C71402" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
   </instances>
   <tiles>
     <tile bgName="bg_tile_gardens" x="144" y="296" w="8" h="8" xo="0" yo="8" id="10000866" name="inst_F38CB76E" depth="1000000" locked="0" colour="4294967295" scaleX="1" scaleY="1"/>
