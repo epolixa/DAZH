@@ -12,6 +12,7 @@
       <sprite>sprites\spr_area_water</sprite>
       <sprite>sprites\spr_area_door</sprite>
       <sprite>sprites\spr_area_door_arrow_up</sprite>
+      <sprite>sprites\spr_area_breakable</sprite>
     </sprites>
     <sprites name="Character">
       <sprites name="Player">
@@ -95,6 +96,7 @@
       <object>objects\obj_area_water</object>
       <object>objects\obj_area_door</object>
       <object>objects\obj_area_door_arrow</object>
+      <object>objects\obj_area_breakable</object>
     </objects>
     <objects name="Character">
       <object>objects\obj_char_player</object>
@@ -130,9 +132,7 @@
       <object>objects\obj_hud_chip</object>
     </objects>
   </objects>
-  <timelines name="timelines">
-    <timeline>timelines\tml_char_player</timeline>
-  </timelines>
+  <timelines name="timelines"/>
   <rooms name="rooms">
     <room>rooms\rm_load</room>
     <room>rooms\rm_test</room>
