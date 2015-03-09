@@ -74,7 +74,7 @@ for (i = 0; i &lt; puzzlebar_cap; i++) /* The puzzle bar [row, column] */
 {puzzlebar[0, i] = noone; puzzlebar[1, i] = noone; puzzlebar[2, i] = noone;}
 
 /* Set alarms */
-image_speed = 0; /* Blink */
+image_speed = 0.4;
 alarm[0] = 120 + random(120);
 </string>
           </argument>
@@ -187,8 +187,11 @@ player_part_bubble = part_type_create();
           <argument>
             <kind>1</kind>
             <string>/* Trigger idle animation */
-sprite_index = spr_char_player_idle;
-image_speed = 0.1;
+if (sprite_index != spr_char_player_idle)
+{
+    sprite_index = spr_char_player_idle;
+    image_speed = 0.05;
+}
 </string>
           </argument>
         </arguments>
@@ -232,10 +235,11 @@ image_speed = 0.1;
           <argument>
             <kind>1</kind>
             <string>/* Trigger a blink */
-image_index = 1;
-
-/* Reset alarm */
-alarm[0] = 120 + random(120);
+if (sprite_index == spr_char_player)
+{
+    image_index = 5;
+    alarm[0] = 600 + random(600);
+}
 </string>
           </argument>
         </arguments>
@@ -728,7 +732,7 @@ for (i = 0; i &lt; 3; i++)
           <argument>
             <kind>1</kind>
             <string>/* Base checks */
-if      (!airborn &amp;&amp; xvel == 0 &amp;&amp; sprite_index != spr_char_player &amp;&amp; sprite_index != spr_char_player_idle) {sprite_index = spr_char_player; image_index = 0; image_speed = 0;} /* Standing */
+if      (!airborn &amp;&amp; xvel == 0 &amp;&amp; sprite_index != spr_char_player &amp;&amp; sprite_index != spr_char_player_idle) {sprite_index = spr_char_player; image_index = 0; image_speed = 0.16;} /* Standing */
 else if (!airborn &amp;&amp; !in_left &amp;&amp; !in_right &amp;&amp; xvel != 0 &amp;&amp; sprite_index != spr_char_player_slide)          {sprite_index = spr_char_player_slide; image_speed = 0;}          /* Slide (Skid)? */
 else if (!airborn &amp;&amp; (in_left || in_right) &amp;&amp; xvel != 0 &amp;&amp; sprite_index != spr_char_player_walk)           {sprite_index = spr_char_player_walk;}                               /* Walking */
 else if (airborn &amp;&amp; WALL != noone &amp;&amp; sprite_index != spr_char_player_wslide)                               {sprite_index = spr_char_player_wslide; image_speed = 0;}         /* Wallsliding */
@@ -738,12 +742,10 @@ else if (airborn &amp;&amp; WALL == noone &amp;&amp; yvel &gt; 0 &amp;&amp; spri
 /* While standing */
 if (sprite_index == spr_char_player)
 {
-    /* Blinking, triggered by alarm 1 */
-    if      (image_index = 0 &amp;&amp; image_speed != 0) image_speed = 0;
-    else if (image_index != 0 &amp;&amp; image_speed = 0) image_speed = 0.2;
+    if (image_index == 4) image_index = 0;
     
     /* Set idle animation alarm */
-    if (alarm[1] &lt;= -1) alarm[1] = 600;
+    if (alarm[1] &lt;= -1) alarm[1] = 1200;
 }
 
 /* While walking */
