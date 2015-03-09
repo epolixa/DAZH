@@ -132,7 +132,6 @@
       <object>objects\obj_hud_chip</object>
     </objects>
   </objects>
-  <timelines name="timelines"/>
   <rooms name="rooms">
     <room>rooms\rm_load</room>
     <room>rooms\rm_test</room>
