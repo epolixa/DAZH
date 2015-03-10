@@ -83,6 +83,10 @@
     <scripts name="Particle">
       <script>scripts\splash.gml</script>
     </scripts>
+    <scripts name="Item">
+      <script>scripts\random_rby_array.gml</script>
+      <script>scripts\drop_chips.gml</script>
+    </scripts>
   </scripts>
   <fonts name="fonts">
     <font>fonts\font_debug</font>

@@ -173,15 +173,15 @@ if (global.debug_entering_text)
         if (array_length_1d(command) &gt; 0)
         {
             if      (command[0] == "exit") game_end();
-            else if (command[0] == "restart") game_restart();   
+            else if (command[0] == "restart") game_restart();  
             else if (command[0] == "toggle")
             {
-                if      (command[1] == "areas")
+                if      (command[1] == "areas") /* USAGE: toggle areas */
                 {
                     global.showareas = !global.showareas; 
                     global.command_output[0] = "Toggled area visibility."; global.command_output[1] = 600;
                 }
-                else if (command[1] == "noclip")
+                else if (command[1] == "noclip") /* USAGE: toggle noclip */
                 {
                     player = instance_nearest(x, y, obj_char_player);
                     player.noclip = !player.noclip;
@@ -189,10 +189,10 @@ if (global.debug_entering_text)
                 }
                 else
                 {
-                    global.command_output[0] = "Nothing to toggle specified."; global.command_output[1] = 600;
+                    global.command_output[0] = "USAGE: toggle &lt;mode&gt;"; global.command_output[1] = 600;
                 }
             }
-            else if (command[0] == "rosebud")
+            else if (command[0] == "rosebud") /* USAGE: rosebud */
             {
                 player = instance_nearest(x, y, obj_char_player);
                 player.chip_reserve[0] += 100;
@@ -201,7 +201,7 @@ if (global.debug_entering_text)
                 player.chip_total += 300;
                 global.command_output[0] = "Gave 100 chips of each color."; global.command_output[1] = 600;
             }
-            else if (command[0] == "gravity")
+            else if (command[0] == "gravity") /* USAGE: gravity &lt;val&gt; */
             {
                 if (array_length_1d(command) &gt;= 2) 
                 {
@@ -209,12 +209,11 @@ if (global.debug_entering_text)
                     global.command_output[0] = "Gravity set to " + string(GRAVITY) + "."; global.command_output[1] = 600;                
                 }
                 else
-                {global.command_output[0] = "No value specified."; global.command_output[1] = 600;}            
+                {global.command_output[0] = "USAGE: gravity &lt;val&gt;"; global.command_output[1] = 600;}            
             }
-            else if (command[0] == "friction")
+            else if (command[0] == "friction") /* USAGE: friction &lt;val&gt; (with TARGET) */
             {
-                if (array_length_1d(command) &lt; 2) {global.command_output[0] = "No value specified."; global.command_output[1] = 600;}
-                else if (TARINST == noone) {global.command_output[0] = "No target selected."; global.command_output[1] = 600;}
+                if (TARINST == noone || array_length_1d(command) &lt; 2) {global.command_output[0] = "USAGE: friction &lt;val&gt; (with TARGET)"; global.command_output[1] = 600;}
                 else if (TARINST.object_index != obj_area_wall) {global.command_output[0] = "Target has no friction attribute."; global.command_output[1] = 600;}
                 else
                 {
@@ -222,7 +221,7 @@ if (global.debug_entering_text)
                     {global.command_output[0] = "Friction of " + object_get_name(TARINST.object_index) + " (" + string(TARINST.id) + ") set to " + string(TARINST.FRICTION) + "."; global.command_output[1] = 600;}
                 }            
             }
-            else if (command[0] == "create") 
+            else if (command[0] == "create") /* USAGE: create &lt;obj&gt; OR create (with TARGET) */
             {
                 if (array_length_1d(command) &lt; 2) 
                 {
@@ -231,7 +230,7 @@ if (global.debug_entering_text)
                         inst = instance_create(mouse_x, mouse_y, TARINST.object_index);
                         global.command_output[0] = "Created " + object_get_name(inst.object_index) + " (" + string(inst.id) + ") at " + string(inst.x) + ", " + string(inst.y) + "."; global.command_output[1] = 600;
                     }
-                    else {global.command_output[0] = "No object specified."; global.command_output[1] = 600;}
+                    else {global.command_output[0] = "USAGE: create &lt;obj&gt; OR create (with TARGET)"; global.command_output[1] = 600;}
                 }
                 else
                 {
@@ -245,9 +244,9 @@ if (global.debug_entering_text)
                     }
                 }
             }
-            else if (command[0] == "destroy")
+            else if (command[0] == "destroy") /* USAGE: destroy (with TARGET) */
             {
-                if (TARINST == noone) {global.command_output[0] = "No target selected."; global.command_output[1] = 600;}
+                if (TARINST == noone) {global.command_output[0] = "USAGE: destroy (with TARGET)"; global.command_output[1] = 600;}
                 else
                 {
                     global.command_output[0] = "Destroyed " + object_get_name(TARINST.object_index) + " (" + string(TARINST.id) + ")."; global.command_output[1] = 600;
