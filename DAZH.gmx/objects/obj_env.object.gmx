@@ -97,7 +97,7 @@ freezer = 0;
             <kind>1</kind>
             <string>/* Get user input */
 in_debug = keyboard_check_pressed(vk_f3) &amp;&amp; !debug_entering_text;
-in_prompt = keyboard_check_pressed(vk_enter);
+in_enter = keyboard_check_pressed(vk_enter);
 in_leftclick = mouse_check_button_pressed(mb_left);
 in_up = keyboard_check_pressed(vk_up);
 in_down = keyboard_check_pressed(vk_down);
@@ -165,7 +165,7 @@ if (global.debug_entering_text)
     }
     if (in_down &amp;&amp; ds_list_find_index(global.command_list, keyboard_string) != -1) keyboard_string = ds_list_find_value(global.command_list, ds_list_find_index(global.command_list, keyboard_string) + 1);
 
-    if (in_prompt) 
+    if (in_enter) 
     {
         command = string_split(string_lower(keyboard_string), ' '); /* Store command */
         
@@ -271,7 +271,7 @@ if (global.debug_entering_text)
     if (in_esc)
     {global.debug_entering_text = false;}
 }
-else if (global.debug_enabled &amp;&amp; in_prompt)
+else if (global.debug_enabled &amp;&amp; in_enter)
 {keyboard_string = ""; global.debug_entering_text = true;}
 </string>
           </argument>
@@ -384,7 +384,7 @@ part_type_destroy(global.part_splash);
     /* Selected instance */
     if (TARINST != noone)
     {    
-        draw_text(view_xview[0], view_yview[0] + (line*lineheight), "SELECTED"); line++;
+        draw_text(view_xview[0], view_yview[0] + (line*lineheight), "TARGET"); line++;
     
         /* Name &amp; universal properties */
         draw_text(view_xview[0] + 8, view_yview[0] + (line*lineheight), object_get_name(TARINST.object_index) + " (" + string(TARINST.id) + ")"); line++;

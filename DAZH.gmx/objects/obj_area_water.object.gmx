@@ -5,7 +5,7 @@
   <visible>-1</visible>
   <depth>0</depth>
   <persistent>0</persistent>
-  <parentName>obj_area_par</parentName>
+  <parentName>obj_area</parentName>
   <maskName>&lt;undefined&gt;</maskName>
   <events>
     <event eventtype="0" enumb="0">
@@ -55,6 +55,26 @@ CURRENT[0] = 0; CURRENT[1] = 0; /* [xvel, yvel] Water current force/direction */
     <event eventtype="3" enumb="0">
       <action>
         <libid>1</libid>
+        <id>605</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>Splash effect</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
         <id>603</id>
         <kind>7</kind>
         <userelative>0</userelative>
@@ -81,11 +101,11 @@ if (CURRENT[0] != 0 || CURRENT[1] != 0)
         inst.xvel += CURRENT[0];
         inst.yvel += CURRENT[1];
     }
-    if (place_meeting(x, y, obj_amb_par))
+    if (place_meeting(x, y, obj_amb))
     {
-        for (i = 0; i &lt; instance_number(obj_amb_par); i++)
+        for (i = 0; i &lt; instance_number(obj_amb); i++)
         {
-            inst = instance_find(obj_amb_par, i);
+            inst = instance_find(obj_amb, i);
             if (place_meeting(x, y, inst))
             {
                 inst.xvel += CURRENT[0];
@@ -93,11 +113,11 @@ if (CURRENT[0] != 0 || CURRENT[1] != 0)
             }
         }   
     }
-    if (place_meeting(x, y, obj_item_par))
+    if (place_meeting(x, y, obj_item))
     {
-        for (i = 0; i &lt; instance_number(obj_item_par); i++)
+        for (i = 0; i &lt; instance_number(obj_item); i++)
         {
-            inst = instance_find(obj_item_par, i);
+            inst = instance_find(obj_item, i);
             if (place_meeting(x, y, inst))
             {
                 inst.xvel += CURRENT[0];

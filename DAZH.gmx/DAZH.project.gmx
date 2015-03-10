@@ -11,19 +11,18 @@
       <sprite>sprites\spr_area_focus</sprite>
       <sprite>sprites\spr_area_water</sprite>
       <sprite>sprites\spr_area_door</sprite>
-      <sprite>sprites\spr_area_door_arrow_up</sprite>
       <sprite>sprites\spr_area_breakable</sprite>
     </sprites>
     <sprites name="Character">
-      <sprites name="Player">
-        <sprite>sprites\spr_char_player</sprite>
-        <sprite>sprites\spr_char_player_walk</sprite>
-        <sprite>sprites\spr_char_player_rising</sprite>
-        <sprite>sprites\spr_char_player_falling</sprite>
-        <sprite>sprites\spr_char_player_slide</sprite>
-        <sprite>sprites\spr_char_player_wslide</sprite>
-        <sprite>sprites\spr_char_player_idle</sprite>
-        <sprite>sprites\spr_char_player_mask</sprite>
+      <sprites name="Dazh">
+        <sprite>sprites\spr_char_dazh_stand</sprite>
+        <sprite>sprites\spr_char_dazh_walk</sprite>
+        <sprite>sprites\spr_char_dazh_rising</sprite>
+        <sprite>sprites\spr_char_dazh_falling</sprite>
+        <sprite>sprites\spr_char_dazh_slide</sprite>
+        <sprite>sprites\spr_char_dazh_wslide</sprite>
+        <sprite>sprites\spr_char_dazh_idle</sprite>
+        <sprite>sprites\spr_char_dazh_mask</sprite>
       </sprites>
     </sprites>
     <sprites name="Particle">
@@ -47,6 +46,7 @@
         <sprite>sprites\spr_amb_frog_jump</sprite>
         <sprite>sprites\spr_frog_mask</sprite>
       </sprites>
+      <sprite>sprites\spr_amb_doorarrow_up</sprite>
     </sprites>
     <sprites name="HUD">
       <sprites name="Puzzle Bar">
@@ -64,6 +64,9 @@
     <sprites name="Enemy">
       <sprite>sprites\spr_enemy_bub</sprite>
       <sprite>sprites\spr_enemy_bub_mask</sprite>
+    </sprites>
+    <sprites name="Container">
+      <sprite>sprites\spr_cont_chest</sprite>
     </sprites>
   </sprites>
   <backgrounds name="background">
@@ -94,27 +97,34 @@
   </fonts>
   <objects name="objects">
     <objects name="Area">
-      <object>objects\obj_area_par</object>
+      <object>objects\obj_area</object>
       <object>objects\obj_area_wall</object>
       <object>objects\obj_area_focus</object>
       <object>objects\obj_area_water</object>
       <object>objects\obj_area_door</object>
-      <object>objects\obj_area_door_arrow</object>
       <object>objects\obj_area_breakable</object>
     </objects>
     <objects name="Character">
-      <object>objects\obj_char_player</object>
-      <object>objects\obj_char_par</object>
+      <object>objects\obj_char</object>
+      <objects name="Player">
+        <object>objects\obj_char_player_dazh</object>
+        <object>objects\obj_char_player</object>
+      </objects>
+      <objects name="NPC">
+        <object>objects\obj_char_npc_savepoint</object>
+        <object>objects\obj_char_npc</object>
+      </objects>
     </objects>
     <object>objects\obj_env</object>
     <object>objects\obj_par</object>
     <objects name="Ambient">
-      <object>objects\obj_amb_par</object>
+      <object>objects\obj_amb</object>
       <object>objects\obj_amb_butterfly</object>
       <object>objects\obj_amb_frog</object>
+      <object>objects\obj_amb_doorarrow</object>
     </objects>
     <objects name="Item">
-      <object>objects\obj_item_par</object>
+      <object>objects\obj_item</object>
       <object>objects\obj_item_chip</object>
     </objects>
     <object>objects\obj_load</object>
@@ -122,18 +132,18 @@
       <object>objects\obj_proj_chip</object>
       <object>objects\obj_proj_2chip</object>
       <object>objects\obj_proj_3chip</object>
-      <object>objects\obj_proj_par</object>
+      <object>objects\obj_proj</object>
     </objects>
     <objects name="Enemy">
-      <object>objects\obj_enemy_par</object>
+      <object>objects\obj_enemy</object>
     </objects>
     <objects name="Container">
-      <object>objects\obj_cont_par</object>
+      <object>objects\obj_cont</object>
       <object>objects\obj_cont_chest</object>
-      <object>objects\obj_container_ore</object>
     </objects>
     <objects name="HUD">
       <object>objects\obj_hud_chip</object>
+      <object>objects\obj_hud</object>
     </objects>
   </objects>
   <rooms name="rooms">
