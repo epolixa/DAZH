@@ -144,6 +144,12 @@ part_type_life(player_part_land, 15, 25);
 
 /* Bubble particles */
 player_part_bubble = part_type_create();
+part_type_sprite(player_part_bubble, spr_particle_bubble, false, false, true);
+part_type_size(player_part_bubble, 1, 1, 0, 0);
+part_type_speed(player_part_bubble, 0.5, 0.5, 0, 0);
+part_type_direction(player_part_bubble, 0, 359, 0, 0);
+part_type_gravity(player_part_bubble, 0.2, 90);
+part_type_life(player_part_bubble, 10, 20);
 </string>
           </argument>
         </arguments>
@@ -562,6 +568,7 @@ if (!noclip)
     {
         wet = false;
     }
+    if (wet &amp;&amp; !floor(random(20))) part_particles_create(global.part_sys, x, y - sprite_height/2, player_part_bubble, 1);
 }
 
 /* Translate */
