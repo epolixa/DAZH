@@ -1,0 +1,39 @@
+=============
+CORE CONCEPTS
+=============
+
+# World is governed by magical energy
+# Multi-colored gems scattered throughout the world are the source of magic
+# Gems believed to have fallen from an enormous cosmic asteroid that crashed into the world long ago
+# Different colors govern different magical aspects
+# Only few individuals are capable of harnessing magic
+# Each individual can only harness one magical aspect
+# Gems are harvested and cut into "chips"
+# Chips become a currency as well as a power source, symbol of both wealth and magical potential
+# Gem aspects have unique names/uses
+	- Red:	  Artiz
+	- Blue:   Aquiz
+	- Yellow: Ambiz
+# Gem magic can be combined to produce mysterious and miraculous results
+
+=============
+
+
+
+==========
+Characters
+==========
+
+# Dazh
+	- The main protagonist and playable character
+	- Gender-neutral/genderless/agender, them/they pronouns, or just Dazh
+	- Does not speak
+	- No sense of evil or justice, a simple moral code
+	- The only individual capable of harnessing all aspects of gem magic
+
+# [Researcher]
+	- Cannot harness gem magic
+	- Seeks to understand more about gem magic
+	- Stumbles upon ancient crater of the gem asteroid
+	- Finds Dazh asleep in the center of the crater
+	- Awakens Dazh by touching them

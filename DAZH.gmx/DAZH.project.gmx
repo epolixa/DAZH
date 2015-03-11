@@ -113,6 +113,7 @@
       <objects name="NPC">
         <object>objects\obj_char_npc_savepoint</object>
         <object>objects\obj_char_npc</object>
+        <object>objects\obj_char_npc_dialogger</object>
       </objects>
     </objects>
     <object>objects\obj_env</object>
@@ -140,6 +141,7 @@
     <objects name="Container">
       <object>objects\obj_cont</object>
       <object>objects\obj_cont_chest</object>
+      <object>objects\obj_cont_dropper</object>
     </objects>
     <objects name="HUD">
       <object>objects\obj_hud_chip</object>
