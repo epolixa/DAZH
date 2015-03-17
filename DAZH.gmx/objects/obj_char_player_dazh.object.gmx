@@ -61,6 +61,7 @@ cjumpstr = 0.8;       /* Chip-jump strength */
 airborn = true;    /* Is the object off the ground? */
 wet = false;       /* Is the object in water? */
 noclip = false;    /* noclip mode enabled? */
+can_control = true; /* Player affected by input? */
 
 /* Puzzle chips &amp; bar */
 chip_reserve[0] = 0; /* Red chips in reserve */
@@ -291,15 +292,18 @@ alarm[0] = 300 + random(300);
           <argument>
             <kind>1</kind>
             <string>/* Get user input */
-in_up =         (keyboard_check(vk_up)      || -gamepad_axis_value(0, gp_axislv))         &amp;&amp; !debug_entering_text;
-in_down =       (keyboard_check(vk_down)    || gamepad_axis_value(0, gp_axislv))          &amp;&amp; !debug_entering_text;
-in_left =       (keyboard_check(vk_left)    || -gamepad_axis_value(0, gp_axislh))         &amp;&amp; !debug_entering_text;
-in_right =      (keyboard_check(vk_right)   || gamepad_axis_value(0, gp_axislh))          &amp;&amp; !debug_entering_text;
-in_jump =       (keyboard_check_pressed(32) || gamepad_button_check_pressed(0, gp_face1)) &amp;&amp; !debug_entering_text;
-in_shoot =      (keyboard_check_pressed(ord("F")) || gamepad_button_check_pressed(0, gp_shoulderrb)) &amp;&amp; !debug_entering_text;
-in_slotup =     (keyboard_check_pressed(ord("W")) || gamepad_button_check_pressed(0, gp_padu) || gamepad_button_check_pressed(0, gp_shoulderl)) &amp;&amp; !debug_enabled;
-in_slotdown =   (keyboard_check_pressed(ord("S")) || gamepad_button_check_pressed(0, gp_padd) || gamepad_button_check_pressed(0, gp_shoulderr)) &amp;&amp; !debug_enabled;
-in_loadslot =   (keyboard_check_pressed(ord("D")) || gamepad_button_check_pressed(0, gp_shoulderlb)) &amp;&amp; !debug_enabled;
+if (can_control)
+{
+    in_up =         (keyboard_check(vk_up)      || -gamepad_axis_value(0, gp_axislv))         &amp;&amp; !debug_entering_text;
+    in_down =       (keyboard_check(vk_down)    || gamepad_axis_value(0, gp_axislv))          &amp;&amp; !debug_entering_text;
+    in_left =       (keyboard_check(vk_left)    || -gamepad_axis_value(0, gp_axislh))         &amp;&amp; !debug_entering_text;
+    in_right =      (keyboard_check(vk_right)   || gamepad_axis_value(0, gp_axislh))          &amp;&amp; !debug_entering_text;
+    in_jump =       (keyboard_check_pressed(32) || gamepad_button_check_pressed(0, gp_face1)) &amp;&amp; !debug_entering_text;
+    in_shoot =      (keyboard_check_pressed(ord("F")) || gamepad_button_check_pressed(0, gp_shoulderrb)) &amp;&amp; !debug_entering_text;
+    in_slotup =     (keyboard_check_pressed(ord("W")) || gamepad_button_check_pressed(0, gp_padu) || gamepad_button_check_pressed(0, gp_shoulderl)) &amp;&amp; !debug_enabled;
+    in_slotdown =   (keyboard_check_pressed(ord("S")) || gamepad_button_check_pressed(0, gp_padd) || gamepad_button_check_pressed(0, gp_shoulderr)) &amp;&amp; !debug_enabled;
+    in_loadslot =   (keyboard_check_pressed(ord("D")) || gamepad_button_check_pressed(0, gp_shoulderlb)) &amp;&amp; !debug_enabled;
+}
 </string>
           </argument>
         </arguments>
@@ -905,7 +909,7 @@ else if (!place_meeting(x, y, obj_area_focus) &amp;&amp; view_object != id)
           <argument>
             <kind>1</kind>
             <string>/* Draw puzzle bar */
-if (!debug_enabled)
+if (!debug_enabled &amp;&amp; can_control)
 {
     hud_x = view_xview[0] + sprite_get_width(spr_hud_puzzle_frame_endcap); /* Position to draw relative to */
     hud_y = (view_yview[0] + view_hview[0]) - sprite_get_height(spr_hud_puzzle_frame_endcap);
@@ -974,7 +978,7 @@ if (!debug_enabled)
       </action>
     </event>
   </events>
-  <PhysicsObject>0</PhysicsObject>
+  <PhysicsObject>-1</PhysicsObject>
   <PhysicsObjectSensor>0</PhysicsObjectSensor>
   <PhysicsObjectShape>0</PhysicsObjectShape>
   <PhysicsObjectDensity>0.5</PhysicsObjectDensity>

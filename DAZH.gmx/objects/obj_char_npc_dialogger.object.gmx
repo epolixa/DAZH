@@ -46,123 +46,29 @@
           <argument>
             <kind>1</kind>
             <string>/* Default dialog */
-DIALOGUE[0,0] = "";    /* Dialogue text page */
-DIALOGUE[0,1] = noone; /* Bip sound to use */
-DIALOGUE[0,2] = noone; /* Talksprite for page */
-DIALOGUE[0,3] = "";    /* Page label (who/what is speaking) */
+DIALOGUE[0,0] = "";    /* Page label (who/what is speaking) */
+DIALOGUE[0,1] = "";    /* Dialogue text page */
 page = 0;              /* Current page */
-linepos = 0;         /* Next character in the page to write */
+charpos = 0;         /* Next character in the page to write */
 
-/* Example formatted dialogue string:
- * "Hello there %rfriend%w, are you having a good time?%n
- * "It sure is a %ypleasant day%w today.%n"
- * "I hope it doesn't %1...%4 rain.%e"
- *
- * The first line is read with "friend" printed in red text
- * The second line is read with "pleasant day" printed in yellow text
- * The third line is read with "..." printed slower than the other text
- *
- * %n ends the line before the message width is reached
- * %e ends the page before the page end is reached
- */
+speaker = noone;     /* NPC that created the dialogger */
 
 /* Optional choices to appear at the end of the dialogue */
-CHOICES[0] = "";
+CHOICES[0,0] = "";    /* Choice label */
+CHOICES[0,1] = noone; /* Choice script */
 
 /* Constants */
 msg_width  = 20; /* Character limit per line */
 msg_height = 4;  /* Line limit per page */
+msg = "";        /* Display message */
 
-/* Default text variables */
-write_color = c_white;
-write_speed = 4;
+/* Writing variables */
+write_delay = 4;
 
 /* Set the write-letter alarm */
-alarm[0] = write_speed*10;
+alarm[0] = write_delay;
 
 </string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>605</id>
-        <kind>0</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>0</useapplyto>
-        <exetype>0</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>Focus view</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string></string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="1" enumb="0">
-      <action>
-        <libid>1</libid>
-        <id>605</id>
-        <kind>0</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>0</useapplyto>
-        <exetype>0</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>Focus view back to player</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string></string>
           </argument>
         </arguments>
       </action>
@@ -205,18 +111,16 @@ alarm[0] = write_speed*10;
           <argument>
             <kind>1</kind>
             <string>/* Add character to the message */
-var char = string_char_at(DIALOGUE[page,0], linepos);
-if (char == "%") /* Special character */
-{
+msg = string_copy(DIALOGUE[page,1], 0, charpos); /* Append char */
+charpos++;
 
-}
-else             /* Just add the character, play a bip sound */
-{
-       
-}
+/* play a sound */
 
-/* Reset alarm */
-alarm[0] = write_speed*10;
+/* Reset alarm if there's more to write on current page */
+if (string_length(DIALOGUE[page,1]) &gt; charpos)
+{
+    alarm[0] = write_delay;
+}
 </string>
           </argument>
         </arguments>
@@ -239,7 +143,7 @@ alarm[0] = write_speed*10;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>User input</string>
+            <string>Player input, paging</string>
           </argument>
         </arguments>
       </action>
@@ -259,7 +163,82 @@ alarm[0] = write_speed*10;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>in_page = keyboard_check_pressed(vk_space); /* Start next page of text */
+            <string>/* Player input */
+in_page = keyboard_check_pressed(vk_space); /* Start next page of text */
+
+/* Go trough pages */
+if (in_page)
+{
+    if ((page + 1) &lt; array_height_2d(DIALOGUE)) /* Pages remaining */
+    {
+        /* play a sound */
+        msg = ""; charpos = 0;
+        page++;
+        alarm[0] = write_delay; /* Reset alarm */
+    }
+    else /* No pages remaining, no choices */
+    {
+        /* play a different sound */
+        speaker.speaking = false;
+        var player = instance_nearest(x, y, obj_char_player);
+        player.can_control = true;
+        instance_destroy();
+    }
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="73">
+      <action>
+        <libid>1</libid>
+        <id>605</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>Draw dialog</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/* Position */
+var hud_x = view_xview[0] + sprite_get_width(spr_hud_puzzle_frame_endcap); /* Position to draw relative to */
+var hud_y = (view_yview[0] + view_hview[0]) - sprite_get_height(spr_hud_puzzle_frame_endcap);
+var lineheight = 10;
+    
+/* Draw BG */
+draw_set_color(c_black);
+draw_rectangle(view_xview[0], hud_y, hud_x + view_wview[0], hud_y + view_hview[0], false);
+
+/* Text */
+draw_set_colour(c_white); draw_set_halign(fa_left);
+draw_text(hud_x, hud_y, msg);
 </string>
           </argument>
         </arguments>

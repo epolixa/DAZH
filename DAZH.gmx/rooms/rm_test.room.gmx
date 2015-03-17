@@ -115,6 +115,7 @@
     <instance objName="obj_area_breakable" x="640" y="272" name="inst_44AC014A" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_area_wall" x="672" y="408" name="inst_9BE33071" locked="0" code="" scaleX="4.5" scaleY="0.5" colour="4294967295" rotation="0"/>
     <instance objName="obj_cont_chest" x="712" y="392" name="inst_FE51DA4F" locked="0" code="" scaleX="-1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_char_npc_test" x="312" y="272" name="inst_67A3C33C" locked="0" code="DIALOGUE[0,0] = &quot;LABEL&quot;;&#xA;DIALOGUE[0,1] = &quot;test text#text test#text text#test test&quot;;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
   </instances>
   <tiles>
     <tile bgName="bg_tile_gardens" x="144" y="296" w="8" h="8" xo="0" yo="8" id="10000866" name="inst_F38CB76E" depth="1000000" locked="0" colour="4294967295" scaleX="1" scaleY="1"/>
