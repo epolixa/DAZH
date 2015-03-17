@@ -5,7 +5,7 @@
   <visible>-1</visible>
   <depth>0</depth>
   <persistent>0</persistent>
-  <parentName>&lt;undefined&gt;</parentName>
+  <parentName>obj_char_npc</parentName>
   <maskName>&lt;undefined&gt;</maskName>
   <events>
     <event eventtype="0" enumb="0">
@@ -48,14 +48,17 @@
             <string>/* Default dialog */
 DIALOGUE[0,0] = "";    /* Page label (who/what is speaking) */
 DIALOGUE[0,1] = "";    /* Dialogue text page */
+DIALOGUE[0,2] = noone; /* Optional talksprite */
 page = 0;              /* Current page */
 charpos = 0;         /* Next character in the page to write */
+page_end = false;     /* Reached the end of the page */
 
 speaker = noone;     /* NPC that created the dialogger */
 
 /* Optional choices to appear at the end of the dialogue */
 CHOICES[0,0] = "";    /* Choice label */
 CHOICES[0,1] = noone; /* Choice script */
+selchoice = 0;        /* Selected choice */
 
 /* Constants */
 msg_width  = 20; /* Character limit per line */
@@ -117,10 +120,11 @@ charpos++;
 /* play a sound */
 
 /* Reset alarm if there's more to write on current page */
-if (string_length(DIALOGUE[page,1]) &gt; charpos)
+if (charpos &lt;= string_length(DIALOGUE[page,1]))
 {
     alarm[0] = write_delay;
 }
+else if (!page_end) page_end = true;
 </string>
           </argument>
         </arguments>
@@ -143,7 +147,7 @@ if (string_length(DIALOGUE[page,1]) &gt; charpos)
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>Player input, paging</string>
+            <string>Player input, paging, choices</string>
           </argument>
         </arguments>
       </action>
@@ -165,25 +169,46 @@ if (string_length(DIALOGUE[page,1]) &gt; charpos)
             <kind>1</kind>
             <string>/* Player input */
 in_page = keyboard_check_pressed(vk_space); /* Start next page of text */
+in_left =  (keyboard_check_pressed(vk_left)  || -gamepad_axis_value(0, gp_axislh)) &amp;&amp; !debug_entering_text;
+in_right = (keyboard_check_pressed(vk_right) || gamepad_axis_value(0, gp_axislh))  &amp;&amp; !debug_entering_text;
 
 /* Go trough pages */
 if (in_page)
 {
-    if ((page + 1) &lt; array_height_2d(DIALOGUE)) /* Pages remaining */
+    if (page_end)
     {
-        /* play a sound */
-        msg = ""; charpos = 0;
-        page++;
-        alarm[0] = write_delay; /* Reset alarm */
+        if ((page + 1) &lt; array_height_2d(DIALOGUE)) /* Pages remaining */
+        {
+            /* play a sound */
+            msg = ""; charpos = 0; page_end = false;
+            page++;
+            alarm[0] = write_delay; /* Reset alarm */
+        }
+        else if (CHOICES[0,0] != "") /* Select a choice */
+        {
+            script_execute(CHOICES[selchoice,1]);   
+        }
+        else /* No pages remaining, no choices */
+        {
+            /* play a different sound */
+            speaker.speaking = false;
+            var player = instance_nearest(x, y, obj_char_player);
+            player.can_control = true;
+            instance_destroy();
+        }
     }
-    else /* No pages remaining, no choices */
+    else
     {
-        /* play a different sound */
-        speaker.speaking = false;
-        var player = instance_nearest(x, y, obj_char_player);
-        player.can_control = true;
-        instance_destroy();
+        charpos = string_length(DIALOGUE[page,1]);
     }
+}
+
+if (page_end &amp;&amp; CHOICES[0,0] != "")
+{   
+    if (in_left &amp;&amp; selchoice &gt; 0)
+        selchoice--;
+    if (in_right &amp;&amp; selchoice &lt; (array_height_2d(CHOICES) - 1))
+        selchoice++;     
 }
 </string>
           </argument>
@@ -230,15 +255,41 @@ if (in_page)
             <string>/* Position */
 var hud_x = view_xview[0] + sprite_get_width(spr_hud_puzzle_frame_endcap); /* Position to draw relative to */
 var hud_y = (view_yview[0] + view_hview[0]) - sprite_get_height(spr_hud_puzzle_frame_endcap);
-var lineheight = 10;
     
-/* Draw BG */
+/* BG */
 draw_set_color(c_black);
 draw_rectangle(view_xview[0], hud_y, hud_x + view_wview[0], hud_y + view_hview[0], false);
 
-/* Text */
+/* Talksprite &amp; Label */
 draw_set_colour(c_white); draw_set_halign(fa_left);
-draw_text(hud_x, hud_y, msg);
+if (DIALOGUE[page,2] != noone)
+{
+    draw_sprite(DIALOGUE[page,2],0,hud_x,hud_y + 2); /* TS */
+    draw_text(hud_x, hud_y + 42, DIALOGUE[page,0]); /* label */
+}
+else draw_text(hud_x, hud_y + 2, DIALOGUE[page,0]);
+
+/* Text */
+draw_text(hud_x + 60, hud_y, msg);
+
+/* Choices */
+if (page_end)
+{
+    if (CHOICES[0,0] != "")
+    {
+        for (var i = 0; i &lt; array_height_2d(CHOICES); i++)
+        {
+            if (i == selchoice) draw_set_colour(c_fuchsia);
+            else                draw_set_color(c_white);
+            draw_text(hud_x + 60 + (60*i), hud_y + 42, CHOICES[i,0]);
+        }
+    }
+    else
+    {
+        draw_set_colour(c_fuchsia);
+        draw_text(hud_x + 60, hud_y + 42, "...");
+    }
+}
 </string>
           </argument>
         </arguments>

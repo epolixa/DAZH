@@ -656,9 +656,12 @@ if (next_chip &lt; 0 &amp;&amp; chip_total &gt; 0)
 
 /* Shooting chips */
 if (in_shoot &amp;&amp; puzzlebar[slot, 0] != noone &amp;&amp; puzzlebar[slot, 0] != c_purple)
-{
-    shot = instance_create(x + sprite_width/2, y, obj_proj_chip);
-    if (in_right || in_left &amp;&amp; !(in_right &amp;&amp; in_left)) shot.xvel = (in_right - in_left)*8;
+{   
+    var shot;
+    if (in_up) shot = instance_create(x, y - sprite_height/2, obj_proj_chip);
+    else shot = instance_create(x + sprite_width/2, y, obj_proj_chip);
+    if (in_up) shot.yvel = -8;
+    else if (in_right || in_left &amp;&amp; !(in_right &amp;&amp; in_left)) shot.xvel = (in_right - in_left)*8;
     else shot.xvel = image_xscale*8;
     shot.COLOR = puzzlebar[slot, 0].COLOR;
     with(puzzlebar[slot, 0]) instance_destroy();
