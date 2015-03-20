@@ -51,6 +51,179 @@ CURRENT[0] = 0; CURRENT[1] = 0; /* [xvel, yvel] Water current force/direction */
           </argument>
         </arguments>
       </action>
+      <action>
+        <libid>1</libid>
+        <id>605</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>Particle</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/* Water particles */
+water_part_float = part_type_create();
+part_type_sprite(water_part_float, spr_particle_water, false, false, true);
+part_type_size(water_part_float, 1, 1, 0, 0);
+part_type_speed(water_part_float, 0, 0, 0, 0);     /* Default */
+part_type_direction(water_part_float, 0, 0, 0, 0); /* Default */
+part_type_life(water_part_float, 10, 30);
+
+alarm[0] = 1;  /* Set part speed/gravity */
+alarm[1] = 10; /* Create a particle */
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="1">
+      <action>
+        <libid>1</libid>
+        <id>605</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>Create particle</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/* Pick location */
+var partx = (x - sprite_width/2 + 4) + (floor(random(sprite_width)) - 2); 
+var party = (y - sprite_height/2 + 4) + (floor(random(sprite_height)) - 2);
+
+/* Create a particle */
+part_particles_create(global.part_sys, partx, party, water_part_float, 1);
+
+/* Reset alarm */
+alarm[1] = 10;
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>605</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>Particle properties</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/* Modify particle properties based on current */
+if (CURRENT[0] != 0)
+{
+    part_type_speed(water_part_float, 0, abs(CURRENT[0]), 0, 0);
+    if (CURRENT[0] &gt; 0)
+    {
+        part_type_gravity(water_part_float, abs(CURRENT[0]), 0);
+        part_type_direction(water_part_float, 350, 10, 0, 0);   
+    }
+    else
+    {
+        part_type_gravity(water_part_float, abs(CURRENT[0]), 180);
+        part_type_direction(water_part_float, 170, 190, 0, 0);   
+    }        
+}
+else if (CURRENT[1] != 0)
+{
+    part_type_speed(water_part_float, 0, abs(CURRENT[1]), 0, 0);
+    if (CURRENT[1] &gt; 0)
+    {
+        part_type_gravity(water_part_float, abs(CURRENT[1]), 270);
+        part_type_direction(water_part_float, 260, 280, 0, 0);   
+    }
+    else
+    {
+        part_type_gravity(water_part_float, abs(CURRENT[1]), 90);
+        part_type_direction(water_part_float, 80, 100, 0, 0);   
+    }        
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
     </event>
     <event eventtype="3" enumb="0">
       <action>

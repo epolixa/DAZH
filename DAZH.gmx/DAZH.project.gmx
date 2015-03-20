@@ -35,6 +35,7 @@
       <sprite>sprites\spr_particle_collect</sprite>
       <sprite>sprites\spr_particle_puff</sprite>
       <sprite>sprites\spr_particle_bubble</sprite>
+      <sprite>sprites\spr_particle_water</sprite>
     </sprites>
     <sprites name="Item">
       <sprites name="Chip">
@@ -72,8 +73,8 @@
       <sprite>sprites\spr_proj_3chip</sprite>
     </sprites>
     <sprites name="Enemy">
-      <sprite>sprites\spr_enemy_bub</sprite>
-      <sprite>sprites\spr_enemy_bub_mask</sprite>
+      <sprite>sprites\spr_enemy_turret</sprite>
+      <sprite>sprites\spr_enemy_turret_mask</sprite>
     </sprites>
     <sprites name="Container">
       <sprite>sprites\spr_cont_chest</sprite>
@@ -155,6 +156,7 @@
     </objects>
     <objects name="Enemy">
       <object>objects\obj_enemy</object>
+      <object>objects\obj_enemy_turret</object>
     </objects>
     <objects name="Container">
       <object>objects\obj_cont</object>
@@ -168,6 +170,7 @@
   </objects>
   <rooms name="rooms">
     <room>rooms\rm_load</room>
+    <room>rooms\rm_cove</room>
     <room>rooms\rm_test</room>
     <room>rooms\rm_test_2</room>
     <room>rooms\rm_title</room>

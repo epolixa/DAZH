@@ -66,7 +66,7 @@ msg_height = 4;  /* Line limit per page */
 msg = "";        /* Display message */
 
 /* Writing variables */
-write_delay = 4;
+write_delay = 2;
 
 /* Set the write-letter alarm */
 alarm[0] = write_delay;

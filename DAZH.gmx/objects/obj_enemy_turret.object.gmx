@@ -5,10 +5,10 @@
   <visible>-1</visible>
   <depth>0</depth>
   <persistent>0</persistent>
-  <parentName>&lt;undefined&gt;</parentName>
+  <parentName>obj_enemy</parentName>
   <maskName>&lt;undefined&gt;</maskName>
   <events>
-    <event eventtype="7" enumb="2">
+    <event eventtype="0" enumb="0">
       <action>
         <libid>1</libid>
         <id>605</id>
@@ -25,7 +25,7 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>Globals</string>
+            <string>Constants &amp; Vars</string>
           </argument>
         </arguments>
       </action>
@@ -45,73 +45,18 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>/* ENV globals */
-globalvar debug_enabled; /* Is debug mode enabled? */
-debug_enabled = false;
-globalvar debug_entering_text; /* Is the user entering text in debug mode? */
-debug_entering_text = false;
-globalvar command_list; /* List of previously-entered commands */
-command_list = ds_list_create();
-globalvar command_output; /* Command output */
-command_output[0] = "Press ENTER to use commands.";
-command_output[1] = 600;
-globalvar showareas; /* Are areas visible? */
-showareas = false;
-</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>605</id>
-        <kind>0</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>0</useapplyto>
-        <exetype>0</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>Particle System</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>/* Global particle system */
-globalvar part_sys; part_sys = part_system_create();
+            <string>/* Constants &amp; Vars */
+DELAY = 800;      /* Delay between shots */
+FOLLOW = false; /* Always aim at player */
+aim = 0;        /* Angle to shoot at */
 
-/* Global particles... */
-globalvar part_splash; part_splash = part_type_create(); /* Splash particles */
-part_type_sprite(part_splash, spr_particle_puff, false, false, true);
-part_type_colour1(part_splash, c_aqua);
-part_type_size(part_splash, 1, 1, 0, 0);
-part_type_speed(part_splash, 2, 4, 0, 0);
-part_type_gravity(part_splash, 0.2, 270);
-part_type_life(part_splash, 20, 30); 
+alarm[0] = DELAY;
 </string>
           </argument>
         </arguments>
       </action>
+    </event>
+    <event eventtype="2" enumb="0">
       <action>
         <libid>1</libid>
         <id>605</id>
@@ -128,7 +73,7 @@ part_type_life(part_splash, 20, 30);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>Goto first room</string>
+            <string>Shoot chip</string>
           </argument>
         </arguments>
       </action>
@@ -148,8 +93,55 @@ part_type_life(part_splash, 20, 30);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>/* Goto first room */
-room = rm_cove;
+            <string>/* Shoot a chip */
+chip = instance_create(x + sprite_width, y, obj_proj_chip);
+chip.COLOR = c_purple;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="3" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>605</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string></string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if (FOLLOW)
+{
+
+}
 </string>
           </argument>
         </arguments>
