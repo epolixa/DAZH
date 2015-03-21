@@ -82,8 +82,8 @@
   </sprites>
   <backgrounds name="background">
     <background>background\bg_tile_gardens</background>
-    <background>background\bg_test</background>
     <background>background\bg_tile_water</background>
+    <background>background\bg_checker</background>
   </backgrounds>
   <paths name="paths"/>
   <scripts name="scripts">
@@ -171,8 +171,6 @@
   <rooms name="rooms">
     <room>rooms\rm_load</room>
     <room>rooms\rm_cove</room>
-    <room>rooms\rm_test</room>
-    <room>rooms\rm_test_2</room>
     <room>rooms\rm_title</room>
   </rooms>
   <constants number="2">
