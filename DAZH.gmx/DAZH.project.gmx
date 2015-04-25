@@ -34,7 +34,6 @@
     <sprites name="Particle">
       <sprite>sprites\spr_particle_collect</sprite>
       <sprite>sprites\spr_particle_puff</sprite>
-      <sprite>sprites\spr_particle_bubble</sprite>
       <sprite>sprites\spr_particle_water</sprite>
     </sprites>
     <sprites name="Item">
@@ -55,6 +54,7 @@
       </sprites>
       <sprite>sprites\spr_amb_doorarrow_up</sprite>
       <sprite>sprites\spr_amb_wordbubble</sprite>
+      <sprite>sprites\spr_amb_bubble</sprite>
     </sprites>
     <sprites name="HUD">
       <sprites name="Puzzle Bar">
@@ -142,6 +142,7 @@
       <object>objects\obj_amb_frog</object>
       <object>objects\obj_amb_doorarrow</object>
       <object>objects\obj_amb_wordbubble</object>
+      <object>objects\obj_amb_bubble</object>
     </objects>
     <objects name="Item">
       <object>objects\obj_item</object>
