@@ -94,7 +94,6 @@
     </scripts>
     <scripts name="Area">
       <script>scripts\show_area.gml</script>
-      <script>scripts\door_travel.gml</script>
     </scripts>
     <scripts name="Particle">
       <script>scripts\splash.gml</script>

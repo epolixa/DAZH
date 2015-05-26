@@ -100,22 +100,29 @@ in_transition = false; /* True while traveling through a door */
             <kind>1</kind>
             <string>show_area();
 
-/* Door stuff */
 if (place_meeting(x, y, player))
 { 
-    if (!instance_exists(obj_amb_doorarrow))
+    if (!instance_exists(obj_amb_doorarrow)) /* Show door arrow */
     {
         var arrow = instance_create(x, y - sprite_height, obj_amb_doorarrow);
+        arrow.owner = id;
         arrow.sprite_index = asset_get_index("spr_amb_doorarrow_" + DOOR);
     }
     
-    if ((DOOR == "up" &amp;&amp; player.in_up)      ||
+    if ((DOOR == "up" &amp;&amp; player.in_up)      || /* Door travel actuation */
         (DOOR == "left"  &amp;&amp; player.in_left) || 
         (DOOR == "right" &amp;&amp; player.in_right))
-        door_travel();
+    {
+        if (ROOM_X &gt;= 0 &amp;&amp; ROOM_X &lt;= room_width) player.x = ROOM_X;
+        if (ROOM_Y &gt;= 0 &amp;&amp; ROOM_Y &lt;= room_height) player.y = ROOM_Y; 
+        room = ROOM;
+    }
 }
-else if (instance_exists(obj_amb_doorarrow))
-    with (instance_nearest(x, y, obj_amb_doorarrow)) instance_destroy();
+else if (instance_exists(obj_amb_doorarrow)) /* Hide door arrow */
+{
+    var arrow = instance_nearest(x, y, obj_amb_doorarrow) 
+    if (arrow.DOOR == id) with (arrow) instance_destroy();
+}
 </string>
           </argument>
         </arguments>

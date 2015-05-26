@@ -16,7 +16,7 @@
   <clearDisplayBuffer>-1</clearDisplayBuffer>
   <makerSettings>
     <isSet>-1</isSet>
-    <w>1024</w>
+    <w>870</w>
     <h>600</h>
     <showGrid>-1</showGrid>
     <showObjects>-1</showObjects>
@@ -27,8 +27,8 @@
     <deleteUnderlyingObj>0</deleteUnderlyingObj>
     <deleteUnderlyingTiles>-1</deleteUnderlyingTiles>
     <page>1</page>
-    <xoffset>-61</xoffset>
-    <yoffset>-28</yoffset>
+    <xoffset>-118</xoffset>
+    <yoffset>-115</yoffset>
   </makerSettings>
   <backgrounds>
     <background visible="-1" foreground="0" name="bg_checker" x="0" y="0" htiled="-1" vtiled="-1" hspeed="0" vspeed="0" stretch="0"/>
@@ -116,7 +116,7 @@
     <instance objName="obj_area_breakable" x="496" y="696" name="inst_999F274F" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_area_breakable" x="496" y="712" name="inst_9EABAFE2" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_area_breakable" x="496" y="728" name="inst_3A7A3EB2" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_area_door" x="968" y="112" name="inst_71955C33" locked="0" code="ROOM = &quot;rm_cove2&quot;;&#xA;ROOM_X = 168;&#xA;ROOM_Y = 152;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_area_door" x="968" y="112" name="inst_71955C33" locked="0" code="ROOM = rm_cove2;&#xA;ROOM_X = 48;&#xA;ROOM_Y = 152;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_item_chip" x="632" y="184" name="inst_D646E888" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_item_chip" x="680" y="152" name="inst_48F69FFD" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_item_chip" x="600" y="128" name="inst_2156EDD3" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
@@ -135,6 +135,7 @@
     <instance objName="obj_item_chip" x="952" y="312" name="inst_8C1DED9A" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_item_chip" x="904" y="88" name="inst_B7661486" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_item_chip" x="920" y="64" name="inst_D71857CA" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_area_door" x="184" y="584" name="inst_550B86FC" locked="0" code="ROOM = rm_cove2;&#xA;ROOM_X = 464;&#xA;ROOM_Y = 224;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
   </instances>
   <tiles>
     <tile bgName="bg_tile_gardens" x="392" y="216" w="8" h="8" xo="0" yo="8" id="10001822" name="inst_F9F8EB0F" depth="1000000" locked="0" colour="4294967295" scaleX="1" scaleY="1"/>

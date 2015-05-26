@@ -98,7 +98,7 @@ speaking = false; /* Char currently speaking? */
           <argument>
             <kind>1</kind>
             <string>/* Player input */
-in_speak = (keyboard_check_pressed(vk_up));
+in_speak = (keyboard_check_pressed(vk_up) || -gamepad_axis_value(0, gp_axislv))
 </string>
           </argument>
         </arguments>
