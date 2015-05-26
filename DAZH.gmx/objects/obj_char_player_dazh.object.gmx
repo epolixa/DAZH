@@ -459,16 +459,6 @@ else
             xvel = 0.5*sign(x - WALL.x)*JUMPSTR;
             image_xscale = -image_xscale; 
         }
-        else if (airborn &amp;&amp; puzzlebar[slot, 0] != noone &amp;&amp; puzzlebar[slot, 0] != c_purple) /* Chip-jumping */
-        {        
-            shot = instance_create(x, y, obj_proj_chip);
-            shot.yvel = 8;
-            shot.COLOR = puzzlebar[slot, 0].COLOR;
-            with(puzzlebar[slot, 0]) instance_destroy();
-            puzzlebar[slot, 0] = noone;  
-        
-            if (cjumpstr &gt; 0) {yvel = -cjumpstr*JUMPSTR; if (cjumpstr &gt; 0.1) cjumpstr -= 0.1;}
-        }
         else if (!airborn) /* A regular jump */
         {
             yvel = -1*JUMPSTR;
@@ -529,16 +519,16 @@ yprev = y;
 
 if (!noclip)
 {
-    if (place_meeting(x + xvel, y, obj_area_wall)) /* Horz collision */
+    if (place_meeting(x + xvel, y, obj_area_wall) || x + xvel &lt; 0 || x + xvel &gt; room_width) /* Horz collision */
     {
-        while (!place_meeting(x + sign(xvel), y, obj_area_wall))
+        while (!place_meeting(x + sign(xvel), y, obj_area_wall) &amp;&amp; x + sign(xvel) &gt; 0 &amp;&amp; x + sign(xvel) &lt; room_width) /* Collide with wall or room boundries */
             x += sign(xvel); /* Simulate collision */
         xvel = 0;            /* Halt velocity */      
     }
     
-    if (place_meeting(x, y + yvel, obj_area_wall)) /* Vert collision */
+    if (place_meeting(x, y + yvel, obj_area_wall) || y + yvel &lt; 0 || y + yvel &gt; room_height) /* Vert collision */
     {
-        while (!place_meeting(x, y + sign(yvel), obj_area_wall))
+        while (!place_meeting(x, y + sign(yvel), obj_area_wall) &amp;&amp; y + sign(yvel) &gt; 0 &amp;&amp; y + sign(yvel) &lt; room_height)
             y += sign(yvel);
         if (sign(yvel) == 1 &amp;&amp; airborn) /* Landing */
         {
@@ -654,14 +644,22 @@ if (next_chip &lt; 0 &amp;&amp; chip_total &gt; 0)
 if (in_shoot &amp;&amp; puzzlebar[slot, 0] != noone &amp;&amp; puzzlebar[slot, 0] != c_purple)
 {   
     var shot;
-    if (in_up) shot = instance_create(x, y - sprite_height/2, obj_proj_chip);
-    else shot = instance_create(x + sprite_width/2, y, obj_proj_chip);
-    if (in_up) shot.yvel = -8;
-    else if (in_right || in_left &amp;&amp; !(in_right &amp;&amp; in_left)) shot.xvel = (in_right - in_left)*8;
-    else shot.xvel = image_xscale*8;
+    if (airborn &amp;&amp; in_down) /* Chip-jumping */
+    {        
+        shot = instance_create(x, y + sprite_height/2, obj_proj_chip);
+        shot.yvel = 8;    
+        if (cjumpstr &gt; 0) {yvel = -cjumpstr*JUMPSTR; if (cjumpstr &gt; 0.1) cjumpstr -= 0.1;}
+    }
+    else {    
+        if (in_up) shot = instance_create(x, y - sprite_height/2, obj_proj_chip);
+        else shot = instance_create(x + sprite_width/2, y, obj_proj_chip);
+        if (in_up) shot.yvel = -8;
+        else if (in_right || in_left &amp;&amp; !(in_right &amp;&amp; in_left)) shot.xvel = (in_right - in_left)*8;
+        else shot.xvel = image_xscale*8;
+    }
     shot.COLOR = puzzlebar[slot, 0].COLOR;
     with(puzzlebar[slot, 0]) instance_destroy();
-    puzzlebar[slot, 0] = noone;    
+    puzzlebar[slot, 0] = noone;   
 }
 
 /* Change slot */

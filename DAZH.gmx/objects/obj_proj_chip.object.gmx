@@ -231,6 +231,7 @@ instance_destroy();
             <string>/* Color */
 image_blend = COLOR;
 part_type_colour1(chip_part_item, COLOR);
+part_type_colour1(chip_part_tail, COLOR);
 </string>
           </argument>
         </arguments>

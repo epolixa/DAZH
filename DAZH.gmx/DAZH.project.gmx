@@ -53,6 +53,8 @@
         <sprite>sprites\spr_frog_mask</sprite>
       </sprites>
       <sprite>sprites\spr_amb_doorarrow_up</sprite>
+      <sprite>sprites\spr_amb_doorarrow_right</sprite>
+      <sprite>sprites\spr_amb_doorarrow_left</sprite>
       <sprite>sprites\spr_amb_wordbubble</sprite>
       <sprite>sprites\spr_amb_bubble</sprite>
     </sprites>
@@ -173,6 +175,7 @@
     <room>rooms\rm_load</room>
     <room>rooms\rm_cove</room>
     <room>rooms\rm_title</room>
+    <room>rooms\rm_cove2</room>
   </rooms>
   <constants number="2">
     <constant name="GM_build_date">41883.6565948727</constant>

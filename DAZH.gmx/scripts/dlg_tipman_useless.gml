@@ -12,4 +12,3 @@ with (branch)
 }
  
 instance_destroy();
-

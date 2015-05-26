@@ -15,20 +15,20 @@
   <clearViewBackground>-1</clearViewBackground>
   <clearDisplayBuffer>-1</clearDisplayBuffer>
   <makerSettings>
-    <isSet>0</isSet>
-    <w>0</w>
-    <h>0</h>
-    <showGrid>0</showGrid>
-    <showObjects>0</showObjects>
-    <showTiles>0</showTiles>
-    <showBackgrounds>0</showBackgrounds>
-    <showForegrounds>0</showForegrounds>
+    <isSet>-1</isSet>
+    <w>1024</w>
+    <h>600</h>
+    <showGrid>-1</showGrid>
+    <showObjects>-1</showObjects>
+    <showTiles>-1</showTiles>
+    <showBackgrounds>-1</showBackgrounds>
+    <showForegrounds>-1</showForegrounds>
     <showViews>0</showViews>
     <deleteUnderlyingObj>0</deleteUnderlyingObj>
-    <deleteUnderlyingTiles>0</deleteUnderlyingTiles>
-    <page>0</page>
-    <xoffset>0</xoffset>
-    <yoffset>0</yoffset>
+    <deleteUnderlyingTiles>-1</deleteUnderlyingTiles>
+    <page>1</page>
+    <xoffset>-61</xoffset>
+    <yoffset>-28</yoffset>
   </makerSettings>
   <backgrounds>
     <background visible="-1" foreground="0" name="bg_checker" x="0" y="0" htiled="-1" vtiled="-1" hspeed="0" vspeed="0" stretch="0"/>
@@ -57,7 +57,7 @@
     <instance objName="obj_area_wall" x="488" y="480" name="inst_271D595F" locked="0" code="" scaleX="6" scaleY="4.5" colour="4294967295" rotation="0"/>
     <instance objName="obj_area_water" x="552" y="376" name="inst_80CD4C4A" locked="0" code="CURRENT[1] = -0.1;&#xA;" scaleX="2" scaleY="2" colour="4294967295" rotation="0"/>
     <instance objName="obj_area_water" x="552" y="292" name="inst_AF1B40CF" locked="0" code="" scaleX="2" scaleY="3.25" colour="4294967295" rotation="0"/>
-    <instance objName="obj_char_player_dazh" x="412" y="192" name="inst_4FBA48BD" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_char_player_dazh" x="408" y="192" name="inst_4FBA48BD" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_env" x="-16" y="-16" name="inst_76211760" locked="0" code="GRAVITY = 0.3;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_area_wall" x="376" y="264" name="inst_FD1CC6C7" locked="0" code="" scaleX="1" scaleY="2" colour="4294967295" rotation="0"/>
     <instance objName="obj_area_wall" x="344" y="264" name="inst_07BA69D2" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
@@ -116,6 +116,25 @@
     <instance objName="obj_area_breakable" x="496" y="696" name="inst_999F274F" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_area_breakable" x="496" y="712" name="inst_9EABAFE2" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_area_breakable" x="496" y="728" name="inst_3A7A3EB2" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_area_door" x="968" y="112" name="inst_71955C33" locked="0" code="ROOM = &quot;rm_cove2&quot;;&#xA;ROOM_X = 168;&#xA;ROOM_Y = 152;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_item_chip" x="632" y="184" name="inst_D646E888" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_item_chip" x="680" y="152" name="inst_48F69FFD" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_item_chip" x="600" y="128" name="inst_2156EDD3" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_item_chip" x="656" y="152" name="inst_E2EE3059" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_item_chip" x="608" y="160" name="inst_471412F8" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_item_chip" x="624" y="112" name="inst_B1F93CD9" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_item_chip" x="712" y="200" name="inst_CDE1F84E" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_item_chip" x="696" y="96" name="inst_E626C597" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_item_chip" x="448" y="160" name="inst_66C14E8E" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_item_chip" x="168" y="184" name="inst_83DFC521" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_item_chip" x="112" y="128" name="inst_C3AA8DB1" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_item_chip" x="136" y="96" name="inst_1EF52163" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_item_chip" x="800" y="272" name="inst_D6751061" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_item_chip" x="864" y="312" name="inst_BAC552CF" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_item_chip" x="912" y="248" name="inst_FBB74C70" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_item_chip" x="952" y="312" name="inst_8C1DED9A" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_item_chip" x="904" y="88" name="inst_B7661486" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_item_chip" x="920" y="64" name="inst_D71857CA" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
   </instances>
   <tiles>
     <tile bgName="bg_tile_gardens" x="392" y="216" w="8" h="8" xo="0" yo="8" id="10001822" name="inst_F9F8EB0F" depth="1000000" locked="0" colour="4294967295" scaleX="1" scaleY="1"/>
